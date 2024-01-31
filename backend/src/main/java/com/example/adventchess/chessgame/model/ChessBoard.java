@@ -59,7 +59,7 @@ public class ChessBoard {
     }
 
     // Method to check if a position is within the board boundaries
-    private boolean isValidPosition(int row, int column) {
+    public static boolean isValidPosition(int row, int column) {
         return row >= 0 && row < 8 && column >= 0 && column < 8;
     }
 

@@ -1,6 +1,8 @@
 package adventchess.chessgame.model;
+import java.util.ArrayList;
+import java.util.List;
 
-public class ChessPiece {
+public abstract class ChessPiece {
     private String name;
     private String color;
     private int homeRow;
@@ -41,5 +43,15 @@ public class ChessPiece {
     public void setCurrentPosition(int row, int column){
         this.curRow = row;
         this.curColumn = column;
+    }
+
+
+    // Abstract method for possible moves
+    public abstract List<int[]> possibleMoves();
+
+
+    // Method to check if a position is within the board boundaries
+    public static boolean isValidPosition(int row, int column) {
+        return row >= 0 && row < 8 && column >= 0 && column < 8;
     }
 }

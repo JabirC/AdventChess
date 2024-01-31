@@ -39,4 +39,22 @@ public class ChessBoardTest {
         }
     }
 
+    @Test
+    public void testIsValidPosition() {
+        // public static boolean isValidPosition(int row, int column)
+
+        // Test valid positions
+        assertTrue(ChessBoard.isValidPosition(0, 0));  // Top-left corner
+        assertTrue(ChessBoard.isValidPosition(0, 0));  // Top-left corner
+        assertTrue(ChessBoard.isValidPosition(7, 7));  // Bottom-right corner
+        assertTrue(ChessBoard.isValidPosition(3, 5));  // Middle of the board
+
+        // Test invalid positions
+        assertFalse(ChessBoard.isValidPosition(-1, 2));  // Row below the board
+        assertFalse(ChessBoard.isValidPosition(8, 4));   // Row above the board
+        assertFalse(ChessBoard.isValidPosition(2, -3));  // Column left of the board
+        assertFalse(ChessBoard.isValidPosition(6, 8));   // Column right of the board
+
+    }
+
 }

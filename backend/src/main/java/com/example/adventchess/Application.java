@@ -1,4 +1,4 @@
-package com.chess.adventchess;
+package com.example.adventchess;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

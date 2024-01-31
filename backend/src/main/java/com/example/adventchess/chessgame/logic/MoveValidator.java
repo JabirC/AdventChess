@@ -1,6 +1,6 @@
-package src.engine.logic;
+package adventchess.chessgame.logic;
 
-import com.chess.adventchess.model.ChessBoard;
+import adventchess.chessgame.model.ChessBoard;
 
 public class MoveValidator {
     public static boolean isValidMove(ChessBoard board, int fromRow, int fromCol, int toRow, int toCol) {

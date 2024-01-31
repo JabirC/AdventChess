@@ -1,6 +1,6 @@
-package src.engine.logic;
+package adventchess.chessgame.logic;
 
-import com.chess.adventchess.model.ChessBoard;
+import adventchess.chessgame.model.ChessBoard;
 
 public class ChessGame {
     private ChessBoard board;

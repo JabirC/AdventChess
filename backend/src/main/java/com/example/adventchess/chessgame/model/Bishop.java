@@ -7,7 +7,7 @@ public class Bishop extends ChessPiece{
         super("Bishop", color, homeRow, homeColumn);
     }
 
-    public List<int[]> possibleMoves() {
+    public List<int[]> possibleMoves(ChessBoard board) {
         int[] position = getCurrentPosition();
         int currentRow = position[0];
         int currentColumn = position[1];
@@ -32,7 +32,7 @@ public class Bishop extends ChessPiece{
     }
 
     public boolean isValidMove(ChessBoard board, int toRow, int toCol){
-        List<int[]> moves = possibleMoves();  
+        // List<int[]> moves = possibleMoves();  
         return true;
     }
     

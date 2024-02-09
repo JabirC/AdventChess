@@ -7,31 +7,112 @@ public class Rook extends ChessPiece{
         super("Rook", color, homeRow, homeColumn);
     }
 
-    public List<int[]> possibleMoves() {
+    public List<int[]> possibleMoves(ChessBoard board) {
         int[] position = getCurrentPosition();
         int currentRow = position[0];
         int currentColumn = position[1];
 
         List<int[]> moves = new ArrayList<>();
 
-        // Check moves along the rank (horizontal)
-        for (int i = 0; i < 8; i++) {
+        // Check moves along the right columns (horizontal)
+        for (int i = currentColumn; i < 8; i++) {
             if (i != currentColumn) {
-                moves.add(new int[]{currentRow, i});
+                ChessPiece square = board.getPieceAt(currentRow,i);
+                // Square is occupied
+                if(square != null){
+                    // Square contains enemy piece
+                    if(!square.getColor().equals(getColor())){
+                        moves.add(new int[]{currentRow, i});
+                        break;
+                    }
+                    // Square contains ally piece
+                    else{
+                        break;
+                    }
+                }
+                // Square is empty
+                else if(square == null){
+                    moves.add(new int[]{currentRow, i});
+                }
             }
         }
 
-        // Check moves along the file (vertical)
-        for (int i = 0; i < 8; i++) {
-            if (i != currentRow) {
-                moves.add(new int[]{i, currentColumn});
+        // Check moves along the left columns (horizontal)
+        for (int i = currentColumn; i >= 0; i--) {
+            if (i != currentColumn) {
+                ChessPiece square = board.getPieceAt(currentRow,i);
+                // Square is occupied
+                if(square != null){
+                    // Square contains enemy piece
+                    if(!square.getColor().equals(getColor())){
+                        moves.add(new int[]{currentRow, i});
+                        break;
+                    }
+                    // Square contains ally piece
+                    else{
+                        break;
+                    }
+                }
+                // Square is empty
+                else if(square == null){
+                    moves.add(new int[]{currentRow, i});
+                }
             }
         }
+
+        // Check moves along the upper rows (horizontal)
+        for (int i = currentRow; i < 8; i++) {
+            if (i != currentRow) {
+                ChessPiece square = board.getPieceAt(i,currentColumn);
+                // Square is occupied
+                if(square != null){
+                    // Square contains enemy piece
+                    if(!square.getColor().equals(getColor())){
+                        moves.add(new int[]{i, currentColumn});
+                        break;
+                    }
+                    // Square contains ally piece
+                    else{
+                        break;
+                    }
+                }
+                // Square is empty
+                else if(square == null){
+                    moves.add(new int[]{i, currentColumn});
+                }
+            }
+        }
+
+        // Check moves along the bottom rows (horizontal)
+        for (int i = currentRow; i >= 0; i--) {
+            if (i != currentRow) {
+                ChessPiece square = board.getPieceAt(i,currentColumn);
+                // Square is occupied
+                if(square != null){
+                    // Square contains enemy piece
+                    if(!square.getColor().equals(getColor())){
+                        moves.add(new int[]{i, currentColumn});
+                        break;
+                    }
+                    // Square contains ally piece
+                    else{
+                        break;
+                    }
+                }
+                // Square is empty
+                else if(square == null){
+                    moves.add(new int[]{i, currentColumn});
+                }
+            }
+        }
+        
+
+
         return moves;
     }
 
     public boolean isValidMove(ChessBoard board, int toRow, int toCol){
-        List<int[]> moves = possibleMoves();  
+        // List<int[]> moves = possibleMoves();  
         return true;
     }
 }

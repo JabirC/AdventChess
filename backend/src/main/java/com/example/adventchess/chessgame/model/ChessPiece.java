@@ -51,7 +51,7 @@ public abstract class ChessPiece {
     }
 
     // Abstract method for possible moves
-    public abstract List<int[]> possibleMoves();
+    public abstract List<int[]> possibleMoves(ChessBoard board);
 
     // Abstract method to check if valid move
     public abstract boolean isValidMove(ChessBoard board, int toRow, int toCol);

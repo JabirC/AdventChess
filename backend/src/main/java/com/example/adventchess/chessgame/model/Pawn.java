@@ -8,7 +8,7 @@ public class Pawn extends ChessPiece{
         super("Pawn", color, homeRow, homeColumn);
     }
 
-    public List<int[]> possibleMoves() {
+    public List<int[]> possibleMoves(ChessBoard board) {
         int[] position = getCurrentPosition();
         int currentRow = position[0];
         int currentColumn = position[1];
@@ -19,26 +19,38 @@ public class Pawn extends ChessPiece{
         List<int[]> moves = new ArrayList<>();
 
         if (isValidPosition(currentRow + forwardDirection, currentColumn)) {
-            moves.add(new int[]{currentRow + forwardDirection, currentColumn});
+            // Check if square in the front is empty
+            if(board.getPieceAt(currentRow + forwardDirection, currentColumn) == null){
+                moves.add(new int[]{currentRow + forwardDirection, currentColumn});
+
+                // Optionally, a pawn can move two squares forward on its first move
+                if (currentRow == getHome()[0]) {
+                    moves.add(new int[]{currentRow + 2 * forwardDirection, currentColumn});
+                }
+            }
         }
 
-        // Optionally, a pawn can move two squares forward on its first move
-        if (currentRow == getHome()[0]) {
-            moves.add(new int[]{currentRow + 2 * forwardDirection, currentColumn});
-        }
-
+        // Capture piece diagonally to the right
         if(isValidPosition(currentRow + forwardDirection, currentColumn + forwardDirection)){
-            moves.add(new int[]{currentRow + forwardDirection, currentColumn + forwardDirection});
+            ChessPiece rightDiagSquare = board.getPieceAt(currentRow + forwardDirection, currentColumn + forwardDirection);
+            // Right diagonal square is occupied by piece of opposite color
+            if(rightDiagSquare != null && !rightDiagSquare.getColor().equals(getColor())){
+                moves.add(new int[]{currentRow + forwardDirection, currentColumn + forwardDirection});
+            }
         }
-
+        // Capture piece diagonally to the left
         if(isValidPosition(currentRow + forwardDirection, currentColumn - forwardDirection)){
-            moves.add(new int[]{currentRow + forwardDirection, currentColumn - forwardDirection});
+            // Left diagonal square is occupied by piece of opposite color
+            ChessPiece leftDiagSquare = board.getPieceAt(currentRow + forwardDirection, currentColumn - forwardDirection);
+            if(leftDiagSquare != null && !leftDiagSquare.getColor().equals(getColor())){
+                moves.add(new int[]{currentRow + forwardDirection, currentColumn - forwardDirection});
+            }
         }
         return moves;
     }
 
     public boolean isValidMove(ChessBoard board, int toRow, int toCol){
-        List<int[]> moves = possibleMoves();  
+        // List<int[]> moves = possibleMoves();  
         return true;
     }
     

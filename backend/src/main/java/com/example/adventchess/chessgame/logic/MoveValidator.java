@@ -20,8 +20,7 @@ public class MoveValidator {
         ChessPiece piece = board.getPieceAt(fromRow, fromCol);
         String pieceName = piece.getName();
         String pieceColor = piece.getColor();
-        List<int[]> moves = piece.possibleMoves();
-
-        return true;
+        // List<int[]> moves = piece.possibleMoves();  
+        return piece.isValidMove(board, toRow, toCol);
     }
 }

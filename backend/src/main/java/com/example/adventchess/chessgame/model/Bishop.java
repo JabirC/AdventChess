@@ -30,5 +30,10 @@ public class Bishop extends ChessPiece{
             moves.add(new int[]{newRow, newCol});
         }
     }
+
+    public boolean isValidMove(ChessBoard board, int toRow, int toCol){
+        List<int[]> moves = possibleMoves();  
+        return true;
+    }
     
 }

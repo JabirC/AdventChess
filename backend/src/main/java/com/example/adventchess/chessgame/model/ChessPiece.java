@@ -45,13 +45,14 @@ public abstract class ChessPiece {
         this.curColumn = column;
     }
 
-
-    // Abstract method for possible moves
-    public abstract List<int[]> possibleMoves();
-
-
     // Method to check if a position is within the board boundaries
     public static boolean isValidPosition(int row, int column) {
         return row >= 0 && row < 8 && column >= 0 && column < 8;
     }
+
+    // Abstract method for possible moves
+    public abstract List<int[]> possibleMoves();
+
+    // Abstract method to check if valid move
+    public abstract boolean isValidMove(ChessBoard board, int toRow, int toCol);
 }

@@ -49,13 +49,33 @@ public class ChessBoard {
                 // Update the piece's current position
                 piece.setCurrentPosition(row, column);
             } else {
-                // Handle error or throw an exception (square is occupied)
-                System.out.println("Error: Square is already occupied");
+                // throw an exception (square is occupied)
+                throw new IllegalStateException("Square is already occupied: Cannot place the piece");
             }
         } else {
-            // Handle error or throw an exception (invalid position)
-            System.out.println("Error: Invalid position");
+            // throw an exception (invalid position)
+            throw new IllegalArgumentException("Invalid position: Position is outside the board boundaries");
         }
+    }
+
+    // Method to remove a chess piece on the board
+    public ChessPiece deletePiece(int row, int col){
+        // Check if the position is within the board boundaries
+        if (isValidPosition(row, col)) {
+            ChessPiece piece = getPieceAt(row, col);
+            // Check if a piece is at the position
+            if(piece != null){
+                board[row][col] = null;
+                return piece;
+            } else{
+                // throw an exception (No pieces at position)
+                throw new IllegalStateException("Square is not occupied: Cannot delete piece at unoccupied square");
+            }
+        } else {
+            // throw an exception (invalid position)
+            throw new IllegalArgumentException("Invalid position: Position is outside the board boundaries");
+        }
+
     }
 
     // Method to check if a position is within the board boundaries
@@ -67,5 +87,14 @@ public class ChessBoard {
     // Getter method to retrieve the current state of the board
     public ChessPiece[][] getBoard() {
         return board;
+    }
+
+    public ChessPiece getPieceAt(int fromRow, int fromCol){
+        if(board[fromRow][fromCol] == null){
+            return null;
+        }
+        else{
+            return board[fromRow][fromCol];
+        }
     }
 }

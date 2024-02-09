@@ -6,6 +6,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class PawnTest {
 
+
+    
     @Test
     public void testPossibleMovesWhitePawn() {
         // Create a white pawn at the initial position
@@ -54,10 +56,7 @@ public class PawnTest {
         Pawn blackPawnNonStandard = new Pawn("Black", 6, 3);
         blackPawnNonStandard.setCurrentPosition(5,3);
         moves = blackPawnNonStandard.possibleMoves();
-        for(int[] line: moves){
-            System.out.println(line[0]);
-            System.out.println(line[1]);
-        }
+
         assertFalse(containsMove(moves,new int[]{6, 3})); 
         assertFalse(containsMove(moves,new int[]{6, 4})); 
         assertTrue(containsMove(moves,new int[]{4, 3})); 
@@ -74,6 +73,13 @@ public class PawnTest {
             }
         }
         return false;
+    }
+
+
+    @Test
+    public void testValidMoveWhitePawn() {
+        ChessBoard board = new ChessBoard();
+        ChessPiece[][] chessBoard = board.getBoard();
     }
 
 

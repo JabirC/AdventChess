@@ -12,8 +12,6 @@ public class Rook extends ChessPiece{
         int currentRow = position[0];
         int currentColumn = position[1];
 
-        // Depending on the pawn's color, it can move forward one square
-
         List<int[]> moves = new ArrayList<>();
 
         // Check moves along the rank (horizontal)
@@ -30,5 +28,10 @@ public class Rook extends ChessPiece{
             }
         }
         return moves;
+    }
+
+    public boolean isValidMove(ChessBoard board, int toRow, int toCol){
+        List<int[]> moves = possibleMoves();  
+        return true;
     }
 }

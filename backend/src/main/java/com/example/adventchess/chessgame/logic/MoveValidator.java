@@ -1,11 +1,27 @@
 package adventchess.chessgame.logic;
+import java.util.ArrayList;
+import java.util.List;
+import adventchess.chessgame.model.*;
 
-import adventchess.chessgame.model.ChessBoard;
 
 public class MoveValidator {
     public static boolean isValidMove(ChessBoard board, int fromRow, int fromCol, int toRow, int toCol) {
-        // Implement move validation logic
-        // ...
-        return true; // Replace with actual validation logic
+        // Check if the coordinates are within the bounds of the chessboard
+        if (!ChessBoard.isValidPosition(fromRow, fromCol) || !ChessBoard.isValidPosition(toRow, toCol)) {
+            return false;
+        }
+
+        // Check if there is a piece at the source position
+        if (board.getPieceAt(fromRow, fromCol) == null) {
+            return false;
+        }
+
+        // // Get the piece at the source position
+        ChessPiece piece = board.getPieceAt(fromRow, fromCol);
+        String pieceName = piece.getName();
+        String pieceColor = piece.getColor();
+        List<int[]> moves = piece.possibleMoves();
+
+        return true;
     }
 }

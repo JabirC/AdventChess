@@ -57,4 +57,94 @@ public class ChessBoardTest {
 
     }
 
+    @Test
+    public void testGetPieceAt() {
+        // Create a chessboard
+        ChessBoard chessBoard = new ChessBoard();
+
+        // Set up pieces on the board
+        ChessPiece rook = new Rook("White", 5, 4);
+        ChessPiece bishop = new Bishop("White", 2, 3);
+        ChessPiece knight = new Knight("Black", 5,7);
+
+        chessBoard.placePiece(rook, 5, 4);     // Place rook at (0, 0)
+        chessBoard.placePiece(bishop, 2, 3);   // Place bishop at (2, 3)
+        chessBoard.placePiece(knight, 5, 3);   // Place knight at (7, 7)
+
+        // Test getPieceAt method
+        assertEquals(rook, chessBoard.getPieceAt(5, 4));   // Rook at (0, 0)
+        assertEquals(bishop, chessBoard.getPieceAt(2, 3)); // Bishop at (2, 3)
+        assertEquals(knight, chessBoard.getPieceAt(5, 3)); // Knight at (7, 7)
+
+        // Test for an empty square
+        assertNull(chessBoard.getPieceAt(4, 4));           // Empty square at (4, 4)
+    }
+
+    @Test
+    public void testPlacePieceValidPosition() {
+        ChessBoard chessBoard = new ChessBoard();
+        ChessPiece piece = chessBoard.getPieceAt(0,0);
+
+        // Test placing a piece at a valid position
+        chessBoard.placePiece(piece, 2, 2);
+
+        // Assert that the piece is placed at the correct position
+        assertEquals(piece, chessBoard.getPieceAt(2, 2));
+    }
+
+    @Test
+    public void testPlacePieceInvalidPosition() {
+        ChessBoard chessBoard = new ChessBoard();
+        ChessPiece piece = chessBoard.getPieceAt(0,0);
+
+        // Test placing a piece at an invalid position
+        assertThrows(IllegalArgumentException.class, () -> chessBoard.placePiece(piece, -1, 5));
+    }
+
+    @Test
+    public void testPlacePieceOccupiedSquare() {
+        ChessBoard chessBoard = new ChessBoard();
+        ChessPiece piece = chessBoard.getPieceAt(0,0);
+        ChessPiece piece2 = chessBoard.getPieceAt(0,2);
+
+        // Place the first piece
+        chessBoard.placePiece(piece, 3, 3);
+
+        // Test placing another piece on an occupied square
+        assertThrows(IllegalStateException.class, () -> chessBoard.placePiece(piece2, 3, 3));
+
+        // Assert that the second piece is not placed on an occupied square
+        assertEquals(piece, chessBoard.getPieceAt(3, 3));
+    }
+
+    @Test
+    public void testDeletePieceValidPositionOccupiedSquare() {
+        ChessBoard chessBoard = new ChessBoard();
+        ChessPiece piece = chessBoard.getPieceAt(0,0);
+        chessBoard.placePiece(piece, 2, 2);
+
+        // Test deleting a piece at a valid position (occupied square)
+        ChessPiece deletedPiece = chessBoard.deletePiece(2, 2);
+
+        // Assert that the correct piece is deleted
+        assertEquals(piece, deletedPiece);
+        // Assert that the square is now empty
+        assertNull(chessBoard.getPieceAt(2, 2));
+    }
+
+    @Test
+    public void testDeletePieceValidPositionUnoccupiedSquare() {
+        ChessBoard chessBoard = new ChessBoard();
+
+        // Test deleting a piece at a valid position (unoccupied square)
+        assertThrows(IllegalStateException.class, () -> chessBoard.deletePiece(3, 3));
+    }
+
+    @Test
+    public void testDeletePieceInvalidPosition() {
+        ChessBoard chessBoard = new ChessBoard();
+
+        // Test deleting a piece at an invalid position
+        assertThrows(IllegalArgumentException.class, () -> chessBoard.deletePiece(-1, 5));
+    }
 }

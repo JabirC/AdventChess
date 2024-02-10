@@ -6,99 +6,57 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class BishopTest {
 
-    // @Test
-    // public void testPossibleMovesWhiteBishopWhiteSquare() {
-    //     Bishop bishop = new Bishop("White", 3, 2);
+    @Test
+    void testPossibleMovesBishopCenterBoard() {
+        // Test case 1: Bishop at the center of the board
+        ChessBoard board = new ChessBoard();
+        ChessPiece bishop = board.getPieceAt(0,2);
+        board.placePiece(bishop, 3, 3);
 
-    //     // Test possible moves
-    //     List<int[]> moves = bishop.possibleMoves();
+        List<int[]> bishopMoves = bishop.possibleMoves(board);
+        assertEquals(8, bishopMoves.size());
+        assertTrue(containsMove(bishopMoves, new int[]{4, 4}));
+        assertTrue(containsMove(bishopMoves, new int[]{5, 5}));
+        assertTrue(containsMove(bishopMoves, new int[]{6, 6}));
+        assertTrue(containsMove(bishopMoves, new int[]{4, 2}));
+        assertTrue(containsMove(bishopMoves, new int[]{5, 1}));
+        assertTrue(containsMove(bishopMoves, new int[]{6, 0}));
+        assertTrue(containsMove(bishopMoves, new int[]{2, 2}));
+        assertTrue(containsMove(bishopMoves, new int[]{2, 4}));
+    }
 
-    //     // Assert that the list of moves contains the expected moves
-    //     assertTrue(containsMove(moves, new int[]{5, 0})); // Along the file (Diagonal)
-    //     assertTrue(containsMove(moves, new int[]{4, 1})); // Along the file (Diagonal)
-    //     assertTrue(containsMove(moves, new int[]{2, 3})); // Along the file (Diagonal)
-    //     assertTrue(containsMove(moves, new int[]{1, 4})); // Along the file (Diagonal)
-    //     assertTrue(containsMove(moves, new int[]{0, 5})); // Along the file (Diagonal)
-    //     assertTrue(containsMove(moves, new int[]{1, 0})); // Along the file (Diagonal)
-    //     assertTrue(containsMove(moves, new int[]{2, 1})); // Along the file (Diagonal)
-    //     assertTrue(containsMove(moves, new int[]{4, 3})); // Along the file (Diagonal)
-    //     assertTrue(containsMove(moves, new int[]{5, 4})); // Along the file (Diagonal)
-    //     assertTrue(containsMove(moves, new int[]{6, 5})); // Along the file (Diagonal)
-    //     assertTrue(containsMove(moves, new int[]{7, 6})); // Along the file (Diagonal)
-    //     assertFalse(containsMove(moves, new int[]{5, 1})); // Along the file (Diagonal)
-    //     assertEquals(11, moves.size()); // Ensure no unexpected moves
-    // }
-    
+    @Test
+    void testPossibleMovesBishopCornerBoard() {
+        // Test case 2: Bishop at the corner of the board
+        ChessBoard board = new ChessBoard();
+        ChessPiece bishop = board.getPieceAt(7,2);
+        
+        List<int[]> bishopMoves = bishop.possibleMoves(board);
+        assertEquals(0, bishopMoves.size());
+    }
 
-    // @Test
-    // public void testPossibleMovesBlackBishopWhiteSquare() {
-    //     Bishop bishop = new Bishop("Black", 3, 2);
+    @Test
+    void testPossibleMovesBishopSurrounded() {
+        // Test case 2: Bishop at the corner of the board
+        // Set up
+        ChessBoard board = new ChessBoard();
+        ChessPiece bishop = board.getPieceAt(0,2);
+        board.placePiece(bishop, 5, 3);
 
-    //     // Test possible moves
-    //     List<int[]> moves = bishop.possibleMoves();
+        ChessPiece knight = board.getPieceAt(7,1);
+        board.placePiece(knight, 4, 2);
+        
+        ChessPiece queen = board.getPieceAt(7,3);
+        board.placePiece(queen, 4, 4);
+        
+        List<int[]> bishopMoves = bishop.possibleMoves(board);
+        assertEquals(4, bishopMoves.size());
+        assertTrue(containsMove(bishopMoves, new int[]{4, 4}));
+        assertTrue(containsMove(bishopMoves, new int[]{4, 2}));
+        assertTrue(containsMove(bishopMoves, new int[]{6, 2}));
+        assertTrue(containsMove(bishopMoves, new int[]{6, 4}));
+    }
 
-    //     // Assert that the list of moves contains the expected moves
-    //     assertTrue(containsMove(moves, new int[]{5, 0})); // Along the file (Diagonal)
-    //     assertTrue(containsMove(moves, new int[]{4, 1})); // Along the file (Diagonal)
-    //     assertTrue(containsMove(moves, new int[]{2, 3})); // Along the file (Diagonal)
-    //     assertTrue(containsMove(moves, new int[]{1, 4})); // Along the file (Diagonal)
-    //     assertTrue(containsMove(moves, new int[]{0, 5})); // Along the file (Diagonal)
-    //     assertTrue(containsMove(moves, new int[]{1, 0})); // Along the file (Diagonal)
-    //     assertTrue(containsMove(moves, new int[]{2, 1})); // Along the file (Diagonal)
-    //     assertTrue(containsMove(moves, new int[]{4, 3})); // Along the file (Diagonal)
-    //     assertTrue(containsMove(moves, new int[]{5, 4})); // Along the file (Diagonal)
-    //     assertTrue(containsMove(moves, new int[]{6, 5})); // Along the file (Diagonal)
-    //     assertTrue(containsMove(moves, new int[]{7, 6})); // Along the file (Diagonal)
-    //     assertFalse(containsMove(moves, new int[]{5, 1})); // Along the file (Diagonal)
-    //     assertEquals(11, moves.size()); // Ensure no unexpected moves
-    // }
-
-    // @Test
-    // public void testPossibleMovesWhiteBishopBlackSquare() {
-    //     Bishop bishop = new Bishop("White", 3, 5);
-
-    //     // Test possible moves
-    //     List<int[]> moves = bishop.possibleMoves();
-
-    //     // Assert that the list of moves contains the expected moves
-    //     assertTrue(containsMove(moves, new int[]{0, 2})); // Along the file (Diagonal)
-    //     assertTrue(containsMove(moves, new int[]{1, 3})); // Along the file (Diagonal)
-    //     assertTrue(containsMove(moves, new int[]{2, 4})); // Along the file (Diagonal)
-    //     assertTrue(containsMove(moves, new int[]{4, 6})); // Along the file (Diagonal)
-    //     assertTrue(containsMove(moves, new int[]{5, 7})); // Along the file (Diagonal)
-    //     assertTrue(containsMove(moves, new int[]{1, 7})); // Along the file (Diagonal)
-    //     assertTrue(containsMove(moves, new int[]{2, 6})); // Along the file (Diagonal)
-    //     assertTrue(containsMove(moves, new int[]{4, 4})); // Along the file (Diagonal)
-    //     assertTrue(containsMove(moves, new int[]{5, 3})); // Along the file (Diagonal)
-    //     assertTrue(containsMove(moves, new int[]{6, 2})); // Along the file (Diagonal)
-    //     assertTrue(containsMove(moves, new int[]{7, 1})); // Along the file (Diagonal)
-    //     assertFalse(containsMove(moves, new int[]{4, 5})); // Along the file (Diagonal)
-    //     assertEquals(11, moves.size()); // Ensure no unexpected moves
-    // }
-    
-
-    // @Test
-    // public void testPossibleMovesBlackBishopBlackSquare() {
-    //     Bishop bishop = new Bishop("Black", 3, 5);
-
-    //     // Test possible moves
-    //     List<int[]> moves = bishop.possibleMoves();
-
-    //     // Assert that the list of moves contains the expected moves
-    //     assertTrue(containsMove(moves, new int[]{0, 2})); // Along the file (Diagonal)
-    //     assertTrue(containsMove(moves, new int[]{1, 3})); // Along the file (Diagonal)
-    //     assertTrue(containsMove(moves, new int[]{2, 4})); // Along the file (Diagonal)
-    //     assertTrue(containsMove(moves, new int[]{4, 6})); // Along the file (Diagonal)
-    //     assertTrue(containsMove(moves, new int[]{5, 7})); // Along the file (Diagonal)
-    //     assertTrue(containsMove(moves, new int[]{1, 7})); // Along the file (Diagonal)
-    //     assertTrue(containsMove(moves, new int[]{2, 6})); // Along the file (Diagonal)
-    //     assertTrue(containsMove(moves, new int[]{4, 4})); // Along the file (Diagonal)
-    //     assertTrue(containsMove(moves, new int[]{5, 3})); // Along the file (Diagonal)
-    //     assertTrue(containsMove(moves, new int[]{6, 2})); // Along the file (Diagonal)
-    //     assertTrue(containsMove(moves, new int[]{7, 1})); // Along the file (Diagonal)
-    //     assertFalse(containsMove(moves, new int[]{4, 5})); // Along the file (Diagonal)
-    //     assertEquals(11, moves.size()); // Ensure no unexpected moves
-    // }
 
     // Helper method to check if a specific move is present in the list
     private boolean containsMove(List<int[]> moves, int[] targetMove) {

@@ -50,6 +50,13 @@ public abstract class ChessPiece {
         return row >= 0 && row < 8 && column >= 0 && column < 8;
     }
 
+    // Add a square to the list of possible moves
+    public static void addMove(List<int[]> moves, int newRow, int newCol) {
+        if (isValidPosition(newRow, newCol)) {
+            moves.add(new int[]{newRow, newCol});
+        }
+    }
+
     // Abstract method for possible moves
     public abstract List<int[]> possibleMoves(ChessBoard board);
 

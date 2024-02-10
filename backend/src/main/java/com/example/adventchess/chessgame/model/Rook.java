@@ -22,7 +22,7 @@ public class Rook extends ChessPiece{
                 if(square != null){
                     // Square contains enemy piece
                     if(!square.getColor().equals(getColor())){
-                        moves.add(new int[]{currentRow, i});
+                        addMove(moves, currentRow, i);
                         break;
                     }
                     // Square contains ally piece
@@ -32,7 +32,7 @@ public class Rook extends ChessPiece{
                 }
                 // Square is empty
                 else if(square == null){
-                    moves.add(new int[]{currentRow, i});
+                    addMove(moves, currentRow, i);
                 }
             }
         }
@@ -45,7 +45,7 @@ public class Rook extends ChessPiece{
                 if(square != null){
                     // Square contains enemy piece
                     if(!square.getColor().equals(getColor())){
-                        moves.add(new int[]{currentRow, i});
+                        addMove(moves, currentRow, i);
                         break;
                     }
                     // Square contains ally piece
@@ -55,7 +55,7 @@ public class Rook extends ChessPiece{
                 }
                 // Square is empty
                 else if(square == null){
-                    moves.add(new int[]{currentRow, i});
+                    addMove(moves, currentRow, i);
                 }
             }
         }
@@ -68,7 +68,7 @@ public class Rook extends ChessPiece{
                 if(square != null){
                     // Square contains enemy piece
                     if(!square.getColor().equals(getColor())){
-                        moves.add(new int[]{i, currentColumn});
+                        addMove(moves, i, currentColumn);
                         break;
                     }
                     // Square contains ally piece
@@ -78,7 +78,7 @@ public class Rook extends ChessPiece{
                 }
                 // Square is empty
                 else if(square == null){
-                    moves.add(new int[]{i, currentColumn});
+                    addMove(moves, i, currentColumn);
                 }
             }
         }
@@ -91,7 +91,7 @@ public class Rook extends ChessPiece{
                 if(square != null){
                     // Square contains enemy piece
                     if(!square.getColor().equals(getColor())){
-                        moves.add(new int[]{i, currentColumn});
+                        addMove(moves, i, currentColumn);
                         break;
                     }
                     // Square contains ally piece
@@ -101,7 +101,7 @@ public class Rook extends ChessPiece{
                 }
                 // Square is empty
                 else if(square == null){
-                    moves.add(new int[]{i, currentColumn});
+                    addMove(moves, i, currentColumn);
                 }
             }
         }

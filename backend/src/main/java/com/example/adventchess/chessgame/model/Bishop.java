@@ -25,11 +25,6 @@ public class Bishop extends ChessPiece{
         return moves;
     }
 
-    private void addMove(List<int[]> moves, int newRow, int newCol) {
-        if (isValidPosition(newRow, newCol)) {
-            moves.add(new int[]{newRow, newCol});
-        }
-    }
 
     public boolean isValidMove(ChessBoard board, int toRow, int toCol){
         // List<int[]> moves = possibleMoves();  

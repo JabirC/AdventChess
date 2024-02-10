@@ -23,17 +23,20 @@ public class Knight extends ChessPiece{
          };
 
         for (int[] offset : possibleOffsets) {
-            addMove(moves, currentRow + offset[0], currentColumn + offset[1]);
+            ChessPiece square = board.getPieceAt(currentRow + offset[0], currentColumn + offset[1]);
+            if(square != null){
+                if(!square.getColor().equals(getColor())){
+                    addMove(moves, currentRow + offset[0], currentColumn + offset[1]);
+                }
+            }
+            else if(square == null){
+                addMove(moves, currentRow + offset[0], currentColumn + offset[1]);
+            }
         }
 
         return moves;
     }
 
-    private void addMove(List<int[]> moves, int newRow, int newCol) {
-        if (isValidPosition(newRow, newCol)) {
-            moves.add(new int[]{newRow, newCol});
-        }
-    }
     public boolean isValidMove(ChessBoard board, int toRow, int toCol){
         // List<int[]> moves = possibleMoves();  
         return true;

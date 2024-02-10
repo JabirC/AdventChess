@@ -21,11 +21,11 @@ public class Pawn extends ChessPiece{
         if (isValidPosition(currentRow + forwardDirection, currentColumn)) {
             // Check if square in the front is empty
             if(board.getPieceAt(currentRow + forwardDirection, currentColumn) == null){
-                moves.add(new int[]{currentRow + forwardDirection, currentColumn});
+                addMove(moves, currentRow + forwardDirection, currentColumn);
 
                 // Optionally, a pawn can move two squares forward on its first move
                 if (currentRow == getHome()[0]) {
-                    moves.add(new int[]{currentRow + 2 * forwardDirection, currentColumn});
+                    addMove(moves, currentRow + 2 * forwardDirection, currentColumn);
                 }
             }
         }
@@ -35,7 +35,7 @@ public class Pawn extends ChessPiece{
             ChessPiece rightDiagSquare = board.getPieceAt(currentRow + forwardDirection, currentColumn + forwardDirection);
             // Right diagonal square is occupied by piece of opposite color
             if(rightDiagSquare != null && !rightDiagSquare.getColor().equals(getColor())){
-                moves.add(new int[]{currentRow + forwardDirection, currentColumn + forwardDirection});
+                addMove(moves, currentRow + forwardDirection, currentColumn + forwardDirection);
             }
         }
         // Capture piece diagonally to the left
@@ -43,7 +43,7 @@ public class Pawn extends ChessPiece{
             // Left diagonal square is occupied by piece of opposite color
             ChessPiece leftDiagSquare = board.getPieceAt(currentRow + forwardDirection, currentColumn - forwardDirection);
             if(leftDiagSquare != null && !leftDiagSquare.getColor().equals(getColor())){
-                moves.add(new int[]{currentRow + forwardDirection, currentColumn - forwardDirection});
+                addMove(moves, currentRow + forwardDirection, currentColumn - forwardDirection);
             }
         }
         return moves;

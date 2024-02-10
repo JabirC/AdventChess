@@ -6,42 +6,56 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class KnightTest {
 
-    // @Test
-    // public void testPossibleMovesWhiteKnight() {
-    //     // Create a knight at position (3, 3)
-    //     Knight knight = new Knight("White", 3, 3);
+    @Test
+    void testPossibleMovesKnight() {
+        // Set up
+        ChessBoard board = new ChessBoard();
+        ChessPiece knight = board.getPieceAt(0,1);
 
-    //     // Test possible moves
-    //     List<int[]> moves = knight.possibleMoves();
+        // Rook can move horizontally and vertically
+        List<int[]> knightMoves = knight.possibleMoves(board);
+        assertEquals(2, knightMoves.size());
 
-    //     // Assert that the list of moves contains the expected moves
-    //     assertTrue(containsMove(moves, new int[]{1, 2})); // Up-left
-    //     assertTrue(containsMove(moves, new int[]{1, 4})); // Up-right
-    //     assertTrue(containsMove(moves, new int[]{2, 1})); // Left-up
-    //     assertTrue(containsMove(moves, new int[]{2, 5})); // Right-up
-    //     assertTrue(containsMove(moves, new int[]{4, 1})); // Left-down
-    //     assertTrue(containsMove(moves, new int[]{4, 5})); // Right-down
-    //     assertTrue(containsMove(moves, new int[]{5, 2})); // Down-left
-    //     assertTrue(containsMove(moves, new int[]{5, 4})); // Down-right
-    //     assertFalse(containsMove(moves, new int[]{3, 3})); // Current position
-    //     assertEquals(8, moves.size()); // Ensure no unexpected moves
-    // }
+        // Check horizontal moves
+        assertTrue(containsMove(knightMoves, new int[]{2, 0}));
+        assertTrue(containsMove(knightMoves, new int[]{2, 2}));
+    }
 
-    // @Test
-    // public void testPossibleMovesBlackKnight() {
-    //     // Create a knight at position (3, 3)
-    //     Knight knight = new Knight("Black", 7, 1);
+    @Test
+    void testPossibleMovesKnightBlocked() {
+        // Set up
+        ChessBoard board = new ChessBoard();
+        Knight knight = new Knight("White", 3, 4);
+        board.placePiece(knight, 3, 4);
 
-    //     // Test possible moves
-    //     List<int[]> moves = knight.possibleMoves();
+        ChessPiece whitePawn1 = board.getPieceAt(1, 2);
+        board.placePiece(whitePawn1, 2, 2);
 
-    //     // Assert that the list of moves contains the expected moves
-    //     assertTrue(containsMove(moves, new int[]{6, 3})); // Up-left
-    //     assertTrue(containsMove(moves, new int[]{5, 2})); // Up-right
-    //     assertTrue(containsMove(moves, new int[]{5, 0})); // Left-up
-    //     assertFalse(containsMove(moves, new int[]{7, 1})); // Current position
-    //     assertEquals(3, moves.size()); // Ensure no unexpected moves
-    // }
+        ChessPiece whitePawn2 = board.getPieceAt(1, 6);
+        board.placePiece(whitePawn2, 2, 6);
+
+        ChessPiece blackPawn1 = board.getPieceAt(6, 2);
+        board.placePiece(blackPawn1, 4, 2);
+
+        ChessPiece blackPawn2 = board.getPieceAt(6, 6);
+        board.placePiece(blackPawn2, 4, 6);
+
+        ChessPiece blackPawn3 = board.getPieceAt(6, 3);
+        board.placePiece(blackPawn3, 5, 3);
+
+        ChessPiece blackPawn4 = board.getPieceAt(6, 5);
+        board.placePiece(blackPawn4, 5, 5);
+
+        // 4 possible moves: can eat 4 black pawns
+        List<int[]> knightMoves = knight.possibleMoves(board);
+        assertEquals(4, knightMoves.size());
+
+
+        assertTrue(containsMove(knightMoves, new int[]{4, 2}));
+        assertTrue(containsMove(knightMoves, new int[]{4, 6}));
+        assertTrue(containsMove(knightMoves, new int[]{5, 3}));
+        assertTrue(containsMove(knightMoves, new int[]{5, 5}));
+    }
 
     // Helper method to check if a specific move is present in the list
     private boolean containsMove(List<int[]> moves, int[] targetMove) {

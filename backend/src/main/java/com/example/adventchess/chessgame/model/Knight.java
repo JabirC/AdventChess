@@ -23,14 +23,16 @@ public class Knight extends ChessPiece{
          };
 
         for (int[] offset : possibleOffsets) {
-            ChessPiece square = board.getPieceAt(currentRow + offset[0], currentColumn + offset[1]);
-            if(square != null){
-                if(!square.getColor().equals(getColor())){
+            if(isValidPosition(currentRow + offset[0], currentColumn + offset[1])){
+                ChessPiece square = board.getPieceAt(currentRow + offset[0], currentColumn + offset[1]);
+                if(square != null){
+                    if(!square.getColor().equals(getColor())){
+                        addMove(moves, currentRow + offset[0], currentColumn + offset[1]);
+                    }
+                }
+                else if(square == null){
                     addMove(moves, currentRow + offset[0], currentColumn + offset[1]);
                 }
-            }
-            else if(square == null){
-                addMove(moves, currentRow + offset[0], currentColumn + offset[1]);
             }
         }
 

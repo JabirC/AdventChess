@@ -7,47 +7,46 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class KingTest {
 
-    // @Test
-    // public void testPossibleMovesWhiteKing() {
-    //     // Create a king at position (3, 3)
-    //     King king = new King("White", 3, 3);
+    @Test
+    void testPossibleMovesKing() {
+        // Test case 1: King at the center of the board
+        ChessBoard board1 = new ChessBoard();
+        ChessPiece king1 = board1.getPieceAt(0,4);
+        board1.placePiece(king1, 3, 3);
 
-    //     // Test possible moves
-    //     List<int[]> moves = king.possibleMoves();
+        List<int[]> king1Moves = king1.possibleMoves(board1);
+        assertEquals(8, king1Moves.size());
+        assertTrue(ChessBoard.containsMove(king1Moves, new int[]{2, 2}));
+        assertTrue(ChessBoard.containsMove(king1Moves, new int[]{2, 3}));
+        assertTrue(ChessBoard.containsMove(king1Moves, new int[]{2, 4}));
+        assertTrue(ChessBoard.containsMove(king1Moves, new int[]{3, 2}));
+        assertTrue(ChessBoard.containsMove(king1Moves, new int[]{3, 4}));
+        assertTrue(ChessBoard.containsMove(king1Moves, new int[]{4, 2}));
+        assertTrue(ChessBoard.containsMove(king1Moves, new int[]{4, 3}));
+        assertTrue(ChessBoard.containsMove(king1Moves, new int[]{4, 4}));
+    }
 
-    //     // Assert that the list of moves contains the expected moves
-    //     assertTrue(ChessBoard.containsMove(moves, new int[]{2, 2})); // Diagonal up-left
-    //     assertTrue(ChessBoard.containsMove(moves, new int[]{2, 3})); // Up
-    //     assertTrue(ChessBoard.containsMove(moves, new int[]{2, 4})); // Diagonal up-right
-    //     assertTrue(ChessBoard.containsMove(moves, new int[]{3, 2})); // Left
-    //     assertTrue(ChessBoard.containsMove(moves, new int[]{3, 4})); // Right
-    //     assertTrue(ChessBoard.containsMove(moves, new int[]{4, 2})); // Diagonal down-left
-    //     assertTrue(ChessBoard.containsMove(moves, new int[]{4, 3})); // Down
-    //     assertTrue(ChessBoard.containsMove(moves, new int[]{4, 4})); // Diagonal down-right
-    //     assertFalse(ChessBoard.containsMove(moves, new int[]{3, 3})); // Current position
-    //     assertEquals(8, moves.size()); // Ensure no unexpected moves
-    // }
+    @Test
+    void testPossibleMovesKingCorner() {
+        // Test case 2: King at the corner of the board
+        ChessBoard board = new ChessBoard();
+        ChessPiece king = board.getPieceAt(7,4);
+        board.deletePiece(0,0);
+        board.placePiece(king, 0, 0);
 
+        List<int[]> kingMoves = king.possibleMoves(board);
+        assertEquals(3, kingMoves.size());
+        assertTrue(ChessBoard.containsMove(kingMoves, new int[]{0, 1}));
+        assertTrue(ChessBoard.containsMove(kingMoves, new int[]{1, 0}));
+        assertTrue(ChessBoard.containsMove(kingMoves, new int[]{1, 1}));
+    }
 
-    // @Test
-    // public void testPossibleMovesBlackKing() {
-    //     // Create a king at position (3, 3)
-    //     King king = new King("Black", 3, 3);
+    @Test
+    void testPossibleMovesKingOwnCorner() {
+        ChessBoard board = new ChessBoard();
+        ChessPiece king = board.getPieceAt(7,4);
 
-    //     // Test possible moves
-    //     List<int[]> moves = king.possibleMoves();
-
-    //     // Assert that the list of moves contains the expected moves
-    //     assertTrue(ChessBoard.containsMove(moves, new int[]{2, 2})); // Diagonal up-left
-    //     assertTrue(ChessBoard.containsMove(moves, new int[]{2, 3})); // Up
-    //     assertTrue(ChessBoard.containsMove(moves, new int[]{2, 4})); // Diagonal up-right
-    //     assertTrue(ChessBoard.containsMove(moves, new int[]{3, 2})); // Left
-    //     assertTrue(ChessBoard.containsMove(moves, new int[]{3, 4})); // Right
-    //     assertTrue(ChessBoard.containsMove(moves, new int[]{4, 2})); // Diagonal down-left
-    //     assertTrue(ChessBoard.containsMove(moves, new int[]{4, 3})); // Down
-    //     assertTrue(ChessBoard.containsMove(moves, new int[]{4, 4})); // Diagonal down-right
-    //     assertFalse(ChessBoard.containsMove(moves, new int[]{3, 3})); // Current position
-    //     assertEquals(8, moves.size()); // Ensure no unexpected moves
-    // }
-
+        List<int[]> kingMoves = king.possibleMoves(board);
+        assertEquals(0, kingMoves.size());
+    }
 }

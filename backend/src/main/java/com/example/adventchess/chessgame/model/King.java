@@ -20,7 +20,20 @@ public class King extends ChessPiece{
             for (int j = -1; j <= 1; j++) {
                 // Exclude the position of the king itself
                 if (i != 0 || j != 0) {
-                    addMove(moves, currentRow + i, currentColumn + j);
+                    if(isValidPosition(currentRow + i, currentColumn + j)){
+                        ChessPiece square = board.getPieceAt(currentRow + i, currentColumn + j);
+                        // Square is occupied
+                        if(square != null){
+                            // Enemy piece
+                            if(!square.getColor().equals(getColor())){
+                                addMove(moves, currentRow + i, currentColumn + j);
+                            }
+                        }
+                        // Square is unoccupied
+                        else if(square == null){
+                            addMove(moves, currentRow + i, currentColumn + j);
+                        }
+                    }
                 }
             }
         }

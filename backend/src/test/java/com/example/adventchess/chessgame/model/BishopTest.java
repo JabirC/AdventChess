@@ -15,14 +15,14 @@ public class BishopTest {
 
         List<int[]> bishopMoves = bishop.possibleMoves(board);
         assertEquals(8, bishopMoves.size());
-        assertTrue(containsMove(bishopMoves, new int[]{4, 4}));
-        assertTrue(containsMove(bishopMoves, new int[]{5, 5}));
-        assertTrue(containsMove(bishopMoves, new int[]{6, 6}));
-        assertTrue(containsMove(bishopMoves, new int[]{4, 2}));
-        assertTrue(containsMove(bishopMoves, new int[]{5, 1}));
-        assertTrue(containsMove(bishopMoves, new int[]{6, 0}));
-        assertTrue(containsMove(bishopMoves, new int[]{2, 2}));
-        assertTrue(containsMove(bishopMoves, new int[]{2, 4}));
+        assertTrue(ChessBoard.containsMove(bishopMoves, new int[]{4, 4}));
+        assertTrue(ChessBoard.containsMove(bishopMoves, new int[]{5, 5}));
+        assertTrue(ChessBoard.containsMove(bishopMoves, new int[]{6, 6}));
+        assertTrue(ChessBoard.containsMove(bishopMoves, new int[]{4, 2}));
+        assertTrue(ChessBoard.containsMove(bishopMoves, new int[]{5, 1}));
+        assertTrue(ChessBoard.containsMove(bishopMoves, new int[]{6, 0}));
+        assertTrue(ChessBoard.containsMove(bishopMoves, new int[]{2, 2}));
+        assertTrue(ChessBoard.containsMove(bishopMoves, new int[]{2, 4}));
     }
 
     @Test
@@ -51,21 +51,10 @@ public class BishopTest {
         
         List<int[]> bishopMoves = bishop.possibleMoves(board);
         assertEquals(4, bishopMoves.size());
-        assertTrue(containsMove(bishopMoves, new int[]{4, 4}));
-        assertTrue(containsMove(bishopMoves, new int[]{4, 2}));
-        assertTrue(containsMove(bishopMoves, new int[]{6, 2}));
-        assertTrue(containsMove(bishopMoves, new int[]{6, 4}));
-    }
-
-
-    // Helper method to check if a specific move is present in the list
-    private boolean containsMove(List<int[]> moves, int[] targetMove) {
-        for (int[] move : moves) {
-            if (Arrays.equals(move, targetMove)) {
-                return true;
-            }
-        }
-        return false;
+        assertTrue(ChessBoard.containsMove(bishopMoves, new int[]{4, 4}));
+        assertTrue(ChessBoard.containsMove(bishopMoves, new int[]{4, 2}));
+        assertTrue(ChessBoard.containsMove(bishopMoves, new int[]{6, 2}));
+        assertTrue(ChessBoard.containsMove(bishopMoves, new int[]{6, 4}));
     }
 
 

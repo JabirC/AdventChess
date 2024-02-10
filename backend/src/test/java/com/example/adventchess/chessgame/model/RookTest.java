@@ -18,20 +18,20 @@ public class RookTest {
         assertEquals(11, rookMoves.size());
 
         // Check horizontal moves
-        assertTrue(containsMove(rookMoves, new int[]{3, 0}));
-        assertTrue(containsMove(rookMoves, new int[]{3, 1}));
-        assertTrue(containsMove(rookMoves, new int[]{3, 2}));
-        assertTrue(containsMove(rookMoves, new int[]{3, 4}));
-        assertTrue(containsMove(rookMoves, new int[]{3, 5}));
-        assertTrue(containsMove(rookMoves, new int[]{3, 6}));
-        assertTrue(containsMove(rookMoves, new int[]{3, 7}));
+        assertTrue(ChessBoard.containsMove(rookMoves, new int[]{3, 0}));
+        assertTrue(ChessBoard.containsMove(rookMoves, new int[]{3, 1}));
+        assertTrue(ChessBoard.containsMove(rookMoves, new int[]{3, 2}));
+        assertTrue(ChessBoard.containsMove(rookMoves, new int[]{3, 4}));
+        assertTrue(ChessBoard.containsMove(rookMoves, new int[]{3, 5}));
+        assertTrue(ChessBoard.containsMove(rookMoves, new int[]{3, 6}));
+        assertTrue(ChessBoard.containsMove(rookMoves, new int[]{3, 7}));
 
         // Check vertical moves
-        assertFalse(containsMove(rookMoves, new int[]{1, 3}));
-        assertTrue(containsMove(rookMoves, new int[]{2, 3}));
-        assertTrue(containsMove(rookMoves, new int[]{4, 3}));
-        assertTrue(containsMove(rookMoves, new int[]{5, 3}));
-        assertTrue(containsMove(rookMoves, new int[]{6, 3}));
+        assertFalse(ChessBoard.containsMove(rookMoves, new int[]{1, 3}));
+        assertTrue(ChessBoard.containsMove(rookMoves, new int[]{2, 3}));
+        assertTrue(ChessBoard.containsMove(rookMoves, new int[]{4, 3}));
+        assertTrue(ChessBoard.containsMove(rookMoves, new int[]{5, 3}));
+        assertTrue(ChessBoard.containsMove(rookMoves, new int[]{6, 3}));
     }
 
 
@@ -56,39 +56,10 @@ public class RookTest {
 
         // Rook can move horizontally and vertically
         List<int[]> rookMoves = rook.possibleMoves(board);
-        printListIntArrays(rookMoves);
         assertEquals(2, rookMoves.size());
 
-        assertTrue(containsMove(rookMoves, new int[]{4, 4}));
-        assertTrue(containsMove(rookMoves, new int[]{3, 5}));
+        assertTrue(ChessBoard.containsMove(rookMoves, new int[]{4, 4}));
+        assertTrue(ChessBoard.containsMove(rookMoves, new int[]{3, 5}));
     }
-
-    // Helper method to check if a specific move is present in the list
-    private boolean containsMove(List<int[]> moves, int[] targetMove) {
-        for (int[] move : moves) {
-            if (Arrays.equals(move, targetMove)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private static void printListIntArrays(List<int[]> list) {
-        for (int[] array : list) {
-            printIntArray(array);
-        }
-    }
-
-    private static void printIntArray(int[] array) {
-        System.out.print("[ ");
-        for (int i = 0; i < array.length; i++) {
-            System.out.print(array[i]);
-            if (i < array.length - 1) {
-                System.out.print(", ");
-            }
-        }
-        System.out.println(" ]");
-    }
-
 
 }

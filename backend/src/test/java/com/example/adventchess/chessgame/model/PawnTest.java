@@ -16,8 +16,8 @@ public class PawnTest {
 
         // Forward one square, forward two sqaures
         assertEquals(2, moves.size());
-        assertTrue(containsMove(moves, (new int[]{2, 1})));
-        assertTrue(containsMove(moves, (new int[]{3, 1})));
+        assertTrue(ChessBoard.containsMove(moves, (new int[]{2, 1})));
+        assertTrue(ChessBoard.containsMove(moves, (new int[]{3, 1})));
     }
 
 
@@ -31,8 +31,8 @@ public class PawnTest {
 
         // Forward one square, forward two sqaures
         assertEquals(2, moves.size());
-        assertTrue(containsMove(moves, (new int[]{5, 1})));
-        assertTrue(containsMove(moves, (new int[]{4, 1})));
+        assertTrue(ChessBoard.containsMove(moves, (new int[]{5, 1})));
+        assertTrue(ChessBoard.containsMove(moves, (new int[]{4, 1})));
     }
 
     @Test
@@ -50,26 +50,26 @@ public class PawnTest {
         // Black Pawn can capture two pawns diagonally
         List<int[]> blockingPawnMoves = blockingPawn.possibleMoves(board);
         assertEquals(2, blockingPawnMoves.size());
-        assertTrue(containsMove(blockingPawnMoves, (new int[]{1, 0})));
-        assertTrue(containsMove(blockingPawnMoves, (new int[]{1, 2})));
+        assertTrue(ChessBoard.containsMove(blockingPawnMoves, (new int[]{1, 0})));
+        assertTrue(ChessBoard.containsMove(blockingPawnMoves, (new int[]{1, 2})));
 
         // Testing moves for the white pawn left of the original white pawn
         ChessPiece WhitePawnLeft = board.getPieceAt(1,0);
         List<int[]> WhitePawnLeftMoves = WhitePawnLeft.possibleMoves(board);
         // 3 possible moves: forward 1 square, forward 2 squares, eat the blocking pawn right diagonal
         assertEquals(3, WhitePawnLeftMoves.size());
-        assertTrue(containsMove(WhitePawnLeftMoves, (new int[]{2, 0})));
-        assertTrue(containsMove(WhitePawnLeftMoves, (new int[]{3, 0})));
-        assertTrue(containsMove(WhitePawnLeftMoves, (new int[]{2, 1})));
+        assertTrue(ChessBoard.containsMove(WhitePawnLeftMoves, (new int[]{2, 0})));
+        assertTrue(ChessBoard.containsMove(WhitePawnLeftMoves, (new int[]{3, 0})));
+        assertTrue(ChessBoard.containsMove(WhitePawnLeftMoves, (new int[]{2, 1})));
 
         // Testing moves for the white pawn right of the original white pawn
         ChessPiece WhitePawnRight = board.getPieceAt(1,2);
         List<int[]> WhitePawnRightMoves = WhitePawnRight.possibleMoves(board);
         // 3 possible moves: forward 1 square, forward 2 squares, eat the blocking pawn left diagonal
         assertEquals(3, WhitePawnRightMoves.size());
-        assertTrue(containsMove(WhitePawnRightMoves, (new int[]{2, 2})));
-        assertTrue(containsMove(WhitePawnRightMoves, (new int[]{3, 2})));
-        assertTrue(containsMove(WhitePawnRightMoves, (new int[]{2, 1})));
+        assertTrue(ChessBoard.containsMove(WhitePawnRightMoves, (new int[]{2, 2})));
+        assertTrue(ChessBoard.containsMove(WhitePawnRightMoves, (new int[]{3, 2})));
+        assertTrue(ChessBoard.containsMove(WhitePawnRightMoves, (new int[]{2, 1})));
     }
 
 
@@ -88,26 +88,26 @@ public class PawnTest {
         // White Pawn can capture two pawns diagonally
         List<int[]> blockingPawnMoves = blockingPawn.possibleMoves(board);
         assertEquals(2, blockingPawnMoves.size());
-        assertTrue(containsMove(blockingPawnMoves, new int[]{6, 0}));
-        assertTrue(containsMove(blockingPawnMoves, new int[]{6, 2}));
+        assertTrue(ChessBoard.containsMove(blockingPawnMoves, new int[]{6, 0}));
+        assertTrue(ChessBoard.containsMove(blockingPawnMoves, new int[]{6, 2}));
 
         // Testing moves for the black pawn left of the original black pawn
         ChessPiece blackPawnLeft = board.getPieceAt(6, 0);
         List<int[]> blackPawnLeftMoves = blackPawnLeft.possibleMoves(board);
         // 3 possible moves: forward 1 square, forward 2 squares, eat the blocking pawn right diagonal
         assertEquals(3, blackPawnLeftMoves.size());
-        assertTrue(containsMove(blackPawnLeftMoves, new int[]{5, 0}));
-        assertTrue(containsMove(blackPawnLeftMoves, new int[]{4, 0}));
-        assertTrue(containsMove(blackPawnLeftMoves, new int[]{5, 1}));
+        assertTrue(ChessBoard.containsMove(blackPawnLeftMoves, new int[]{5, 0}));
+        assertTrue(ChessBoard.containsMove(blackPawnLeftMoves, new int[]{4, 0}));
+        assertTrue(ChessBoard.containsMove(blackPawnLeftMoves, new int[]{5, 1}));
 
         // Testing moves for the black pawn right of the original black pawn
         ChessPiece blackPawnRight = board.getPieceAt(6, 2);
         List<int[]> blackPawnRightMoves = blackPawnRight.possibleMoves(board);
         // 3 possible moves: forward 1 square, forward 2 squares, eat the blocking pawn left diagonal
         assertEquals(3, blackPawnRightMoves.size());
-        assertTrue(containsMove(blackPawnRightMoves, new int[]{5, 2}));
-        assertTrue(containsMove(blackPawnRightMoves, new int[]{4, 2}));
-        assertTrue(containsMove(blackPawnRightMoves, new int[]{5, 1}));
+        assertTrue(ChessBoard.containsMove(blackPawnRightMoves, new int[]{5, 2}));
+        assertTrue(ChessBoard.containsMove(blackPawnRightMoves, new int[]{4, 2}));
+        assertTrue(ChessBoard.containsMove(blackPawnRightMoves, new int[]{5, 1}));
     }
 
     @Test
@@ -124,22 +124,22 @@ public class PawnTest {
         List<int[]> whitePawnMoves = whitePawn.possibleMoves(board);
         assertEquals(4, whitePawnMoves.size());
         // Diagonals
-        assertTrue(containsMove(whitePawnMoves, new int[]{2, 0}));
-        assertTrue(containsMove(whitePawnMoves, new int[]{2, 2}));
+        assertTrue(ChessBoard.containsMove(whitePawnMoves, new int[]{2, 0}));
+        assertTrue(ChessBoard.containsMove(whitePawnMoves, new int[]{2, 2}));
         // Forward
-        assertTrue(containsMove(whitePawnMoves, new int[]{2, 1}));
-        assertTrue(containsMove(whitePawnMoves, new int[]{3, 1}));
+        assertTrue(ChessBoard.containsMove(whitePawnMoves, new int[]{2, 1}));
+        assertTrue(ChessBoard.containsMove(whitePawnMoves, new int[]{3, 1}));
 
         // Capturing pawn1 can capture a white pawn
         List<int[]> capturingPawn1Moves = capturingPawn1.possibleMoves(board);
         assertEquals(1, capturingPawn1Moves.size());
-        assertTrue(containsMove(capturingPawn1Moves, new int[]{1, 1}));
+        assertTrue(ChessBoard.containsMove(capturingPawn1Moves, new int[]{1, 1}));
 
         // Capturing pawn1 can capture two white pawns
         List<int[]> capturingPawn2Moves = capturingPawn2.possibleMoves(board);
         assertEquals(2, capturingPawn2Moves.size());
-        assertTrue(containsMove(capturingPawn2Moves, new int[]{1, 1}));
-        assertTrue(containsMove(capturingPawn2Moves, new int[]{1, 3}));
+        assertTrue(ChessBoard.containsMove(capturingPawn2Moves, new int[]{1, 1}));
+        assertTrue(ChessBoard.containsMove(capturingPawn2Moves, new int[]{1, 3}));
     }
 
     @Test
@@ -156,22 +156,22 @@ public class PawnTest {
         List<int[]> blackPawnMoves = blackPawn.possibleMoves(board);
         assertEquals(4, blackPawnMoves.size());
         // Diagonals
-        assertTrue(containsMove(blackPawnMoves, new int[]{5, 0}));
-        assertTrue(containsMove(blackPawnMoves, new int[]{5, 2}));
+        assertTrue(ChessBoard.containsMove(blackPawnMoves, new int[]{5, 0}));
+        assertTrue(ChessBoard.containsMove(blackPawnMoves, new int[]{5, 2}));
         // Forward
-        assertTrue(containsMove(blackPawnMoves, new int[]{5, 1}));
-        assertTrue(containsMove(blackPawnMoves, new int[]{4, 1}));
+        assertTrue(ChessBoard.containsMove(blackPawnMoves, new int[]{5, 1}));
+        assertTrue(ChessBoard.containsMove(blackPawnMoves, new int[]{4, 1}));
 
         // Capturing pawn1 can capture a black pawn
         List<int[]> capturingPawn1Moves = capturingPawn1.possibleMoves(board);
         assertEquals(1, capturingPawn1Moves.size());
-        assertTrue(containsMove(capturingPawn1Moves, new int[]{6, 1}));
+        assertTrue(ChessBoard.containsMove(capturingPawn1Moves, new int[]{6, 1}));
 
         // Capturing pawn2 can capture two black pawns
         List<int[]> capturingPawn2Moves = capturingPawn2.possibleMoves(board);
         assertEquals(2, capturingPawn2Moves.size());
-        assertTrue(containsMove(capturingPawn2Moves, new int[]{6, 1}));
-        assertTrue(containsMove(capturingPawn2Moves, new int[]{6, 3}));
+        assertTrue(ChessBoard.containsMove(capturingPawn2Moves, new int[]{6, 1}));
+        assertTrue(ChessBoard.containsMove(capturingPawn2Moves, new int[]{6, 3}));
     }
 
 
@@ -195,18 +195,6 @@ public class PawnTest {
         // The pawn is at the edge of the board, so it should have no possible moves
         assertEquals(0, blackPawn.possibleMoves(board).size());
     }
-
-
-    // Helper method to check if a specific move is present in the list
-    private boolean containsMove(List<int[]> moves, int[] targetMove) {
-        for (int[] move : moves) {
-            if (Arrays.equals(move, targetMove)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
 
     @Test
     public void testValidMoveWhitePawn() {

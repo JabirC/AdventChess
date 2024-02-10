@@ -17,8 +17,8 @@ public class KnightTest {
         assertEquals(2, knightMoves.size());
 
         // Check horizontal moves
-        assertTrue(containsMove(knightMoves, new int[]{2, 0}));
-        assertTrue(containsMove(knightMoves, new int[]{2, 2}));
+        assertTrue(ChessBoard.containsMove(knightMoves, new int[]{2, 0}));
+        assertTrue(ChessBoard.containsMove(knightMoves, new int[]{2, 2}));
     }
 
     @Test
@@ -51,19 +51,10 @@ public class KnightTest {
         assertEquals(4, knightMoves.size());
 
 
-        assertTrue(containsMove(knightMoves, new int[]{4, 2}));
-        assertTrue(containsMove(knightMoves, new int[]{4, 6}));
-        assertTrue(containsMove(knightMoves, new int[]{5, 3}));
-        assertTrue(containsMove(knightMoves, new int[]{5, 5}));
+        assertTrue(ChessBoard.containsMove(knightMoves, new int[]{4, 2}));
+        assertTrue(ChessBoard.containsMove(knightMoves, new int[]{4, 6}));
+        assertTrue(ChessBoard.containsMove(knightMoves, new int[]{5, 3}));
+        assertTrue(ChessBoard.containsMove(knightMoves, new int[]{5, 5}));
     }
 
-    // Helper method to check if a specific move is present in the list
-    private boolean containsMove(List<int[]> moves, int[] targetMove) {
-        for (int[] move : moves) {
-            if (Arrays.equals(move, targetMove)) {
-                return true;
-            }
-        }
-        return false;
-    }
 }

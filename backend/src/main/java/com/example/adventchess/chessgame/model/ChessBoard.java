@@ -1,4 +1,7 @@
 package adventchess.chessgame.model;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class ChessBoard {
     private ChessPiece[][] board;
@@ -81,6 +84,16 @@ public class ChessBoard {
     // Method to check if a position is within the board boundaries
     public static boolean isValidPosition(int row, int column) {
         return row >= 0 && row < 8 && column >= 0 && column < 8;
+    }
+
+    // Helper method to check if a specific move is present in the list
+    public static boolean containsMove(List<int[]> moves, int[] targetMove) {
+        for (int[] move : moves) {
+            if (Arrays.equals(move, targetMove)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 

@@ -1,4 +1,7 @@
 import adventchess.chessgame.model.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -37,6 +40,96 @@ public class ChessBoardTest {
         for (int i = 0; i < 8; i++) {
             assertTrue(board[6][i] instanceof Pawn);
         }
+    }
+
+    @Test
+    public void testChessBoardSpecificInitializationDefault() {
+        String[][] initialState = {
+            {"BR", "BN", "BB", "BQ", "BK", "BB", "BN", "BR"},
+            {"BP", "BP", "BP", "BP", "BP", "BP", "BP", "BP"},
+            {"--", "--", "--", "--", "--", "--", "--", "--"},
+            {"--", "--", "--", "--", "--", "--", "--", "--"},
+            {"--", "--", "--", "--", "--", "--", "--", "--"},
+            {"--", "--", "--", "--", "--", "--", "--", "--"},
+            {"WP", "WP", "WP", "WP", "WP", "WP", "WP", "WP"},
+            {"WR", "WN", "WB", "WQ", "WK", "WB", "WN", "WR"}
+        };
+
+        ChessBoard chessBoard = new ChessBoard(initialState);
+        ChessPiece[][] board = chessBoard.getBoard();
+
+        // Check that the white pieces are in their starting positions
+        assertTrue(board[0][0] instanceof Rook);
+        assertTrue(board[0][1] instanceof Knight);
+        assertTrue(board[0][2] instanceof Bishop);
+        assertTrue(board[0][3] instanceof Queen);
+        assertTrue(board[0][4] instanceof King);
+        assertTrue(board[0][5] instanceof Bishop);
+        assertTrue(board[0][6] instanceof Knight);
+        assertTrue(board[0][7] instanceof Rook);
+
+        for (int i = 0; i < 8; i++) {
+            assertTrue(board[1][i] instanceof Pawn);
+        }
+
+        // Check that the black pieces are in their starting positions
+        assertTrue(board[7][0] instanceof Rook);
+        assertTrue(board[7][1] instanceof Knight);
+        assertTrue(board[7][2] instanceof Bishop);
+        assertTrue(board[7][3] instanceof Queen);
+        assertTrue(board[7][4] instanceof King);
+        assertTrue(board[7][5] instanceof Bishop);
+        assertTrue(board[7][6] instanceof Knight);
+        assertTrue(board[7][7] instanceof Rook);
+
+        for (int i = 0; i < 8; i++) {
+            assertTrue(board[6][i] instanceof Pawn);
+        }
+    }
+
+    @Test
+    public void testChessBoardSpecificInitializationCustom() {
+        // Non-default board state
+        String[][] initialState = {
+            {"--", "--", "--", "--", "--", "--", "--", "--"},
+            {"--", "--", "--", "--", "--", "--", "--", "--"},
+            {"--", "--", "BR", "--", "--", "--", "--", "--"},
+            {"--", "--", "--", "--", "--", "--", "--", "--"},
+            {"--", "--", "--", "--", "--", "--", "--", "--"},
+            {"--", "--", "--", "--", "--", "--", "--", "--"},
+            {"BP", "BP", "BP", "BP", "BP", "BP", "BP", "BP"},
+            {"WR", "WN", "WB", "WQ", "WK", "WB", "WN", "WR"}
+        };
+
+        ChessBoard chessBoard = new ChessBoard(initialState);
+        ChessPiece[][] board = chessBoard.getBoard();
+        
+
+        // Check if all pieces were correctly initialized
+        assertTrue(board[5][2] instanceof Rook);
+
+        for (int i = 0; i < 8; i++) {
+            assertTrue(board[1][i] instanceof Pawn);
+            assertTrue((board[1][i]).getColor().equals("Black"));
+        }
+
+        assertTrue(board[0][0] instanceof Rook);
+        assertTrue(board[0][1] instanceof Knight);
+        assertTrue(board[0][2] instanceof Bishop);
+        assertTrue(board[0][3] instanceof Queen);
+        assertTrue(board[0][4] instanceof King);
+        assertTrue(board[0][5] instanceof Bishop);
+        assertTrue(board[0][6] instanceof Knight);
+        assertTrue(board[0][7] instanceof Rook);
+
+        assertTrue((board[0][0]).getColor().equals("White"));
+        assertTrue((board[0][1]).getColor().equals("White"));
+        assertTrue((board[0][2]).getColor().equals("White"));
+        assertTrue((board[0][3]).getColor().equals("White"));
+        assertTrue((board[0][4]).getColor().equals("White"));
+        assertTrue((board[0][5]).getColor().equals("White"));
+        assertTrue((board[0][6]).getColor().equals("White"));
+        assertTrue((board[0][7]).getColor().equals("White"));
     }
 
     @Test
@@ -146,5 +239,30 @@ public class ChessBoardTest {
 
         // Test deleting a piece at an invalid position
         assertThrows(IllegalArgumentException.class, () -> chessBoard.deletePiece(-1, 5));
+    }
+
+    @Test
+    public void testGetPieces() {
+        ChessBoard chessBoard = new ChessBoard();
+        ArrayList<ChessPiece> whitePieces = chessBoard.getPieces("White");
+        ArrayList<ChessPiece> blackPieces = chessBoard.getPieces("Black");
+
+        assertTrue(whitePieces.size() == 16);
+        assertTrue(blackPieces.size() == 16);
+
+        ChessPiece whiteKing = chessBoard.getKing("White");
+        ChessPiece blackKing = chessBoard.getKing("Black");
+
+        assertTrue(whitePieces.contains(whiteKing));
+        assertTrue(blackPieces.contains(blackKing));
+
+        assertFalse(whitePieces.contains(blackKing));
+        assertFalse(blackPieces.contains(whiteKing));
+
+        assertTrue(whiteKing.getName().equals("King"));
+        assertTrue(whiteKing.getColor().equals("White"));
+
+        assertTrue(blackKing.getName().equals("King"));
+        assertTrue(blackKing.getColor().equals("Black"));
     }
 }

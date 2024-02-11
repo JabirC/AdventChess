@@ -83,4 +83,13 @@ public class ChessPieceTest {
         pawn.setCurrentPosition(6, 4);
         assertArrayEquals(new int[]{6, 4}, pawn.getCurrentPosition());
     }
+
+    @Test
+    public void testIsValidMove() {
+        ChessBoard board = new ChessBoard();
+        ChessPiece wKnight = board.getPieceAt(0,1);
+        assertTrue(wKnight.isValidMove(board, 2, 0));
+        assertTrue(wKnight.isValidMove(board, 2, 2));
+        assertFalse(wKnight.isValidMove(board, 1, 3));
+    }
 }

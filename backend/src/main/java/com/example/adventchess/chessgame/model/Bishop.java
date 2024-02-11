@@ -112,11 +112,4 @@ public class Bishop extends ChessPiece{
 
         return moves;
     }
-
-
-    public boolean isValidMove(ChessBoard board, int toRow, int toCol){
-        // List<int[]> moves = possibleMoves();  
-        return true;
-    }
-    
 }

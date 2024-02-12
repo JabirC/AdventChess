@@ -205,7 +205,41 @@ public class ChessBoard {
             // throw an exception (invalid position)
             throw new IllegalArgumentException("Invalid position: Position is outside the board boundaries");
         }
+    }
 
+    public ChessPiece movePiece(ChessPiece piece, int[] to){
+        ChessPiece pieceAtDestination = getPieceAt(to[0], to[1]);
+
+        // If no pieces at destination
+        if(pieceAtDestination == null){
+            placePiece(piece, to[0], to[1]);
+        }
+        // If destination square is occupied
+        else{
+            deletePiece(to[0], to[1]);
+            placePiece(piece, to[0], to[1]);
+        }
+        // Return the deleted piece or null if square was unoccupied
+        return pieceAtDestination;
+    }
+
+    // Reverse a move made using the movePiece method
+    public void reverseMove(ChessPiece deletedPiece, int[] to, int[] from){
+        ChessPiece movedPiece = getPieceAt(to[0], to[1]);
+        // Place moved piece back at its original square
+        placePiece(movedPiece, from[0], from[1]);
+
+        // If a piece was deleted by the move, reinstate it back to the board
+        if(deletedPiece != null){
+            placePiece(deletedPiece, to[0], to[1]);
+            String color = deletedPiece.getColor();
+            if(color.equals("White")){
+                whitePieces.add(deletedPiece);
+            }
+            else{
+                blackPieces.add(deletedPiece);
+            }
+        }
     }
 
     // Method to check if a position is within the board boundaries

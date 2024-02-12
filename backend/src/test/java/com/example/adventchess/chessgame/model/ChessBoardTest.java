@@ -243,6 +243,7 @@ public class ChessBoardTest {
 
     @Test
     public void testGetPieces() {
+        // Testing default chess state
         ChessBoard chessBoard = new ChessBoard();
         ArrayList<ChessPiece> whitePieces = chessBoard.getPieces("White");
         ArrayList<ChessPiece> blackPieces = chessBoard.getPieces("Black");
@@ -264,5 +265,109 @@ public class ChessBoardTest {
 
         assertTrue(blackKing.getName().equals("King"));
         assertTrue(blackKing.getColor().equals("Black"));
+    }
+
+    @Test
+    public void testMovePiece() {
+        ChessBoard board = new ChessBoard();
+
+        // Test moving a pawn to an unoccupied square
+        ChessPiece pawn = board.getPieceAt(1,0);
+        ChessPiece deleted = board.movePiece(pawn, new int[]{3, 0});
+
+        assertTrue(deleted == null);
+
+        ChessPiece pawn1 = board.getPieceAt(3,0);
+
+        assertTrue(pawn == pawn1);
+        assertTrue(pawn1.getHome()[0] == 1);
+        assertTrue(pawn1.getHome()[1] == 0);
+        assertTrue(pawn1.getCurrentPosition()[0] == 3);
+        assertTrue(pawn1.getCurrentPosition()[1] == 0);
+
+        ChessPiece emptySquare = board.getPieceAt(1,0);
+
+        assertTrue(emptySquare == null);
+    }
+
+    @Test
+    public void testMovePieceWithDeletion() {
+        ChessBoard board = new ChessBoard();
+        ChessPiece blackKnight = board.getPieceAt(7,1);
+        ChessPiece whiteQueen = board.getPieceAt(0,3);
+
+        // Test moving a piece to an occupied square
+        ChessPiece deleted = board.movePiece(blackKnight, new int[]{0, 3});
+        String deletedColor = deleted.getColor();
+
+        assertTrue(whiteQueen == deleted);
+        assertTrue(board.getPieceAt(7,1) == null);
+        assertTrue(blackKnight == board.getPieceAt(0,3));
+        assertTrue(deleted.getCurrentPosition()[0] == 0);
+        assertTrue(deleted.getCurrentPosition()[1] == 3);
+        assertTrue(board.getPieces(deletedColor).size() == 15);
+    }
+
+    @Test
+    public void testReverseMoveNoDeletion() {
+        ChessBoard board = new ChessBoard();
+
+        ChessPiece pawn = board.getPieceAt(1,0);
+        ChessPiece deleted = board.movePiece(pawn, new int[]{3, 0});
+
+        assertTrue(deleted == null);
+
+        ChessPiece pawn1 = board.getPieceAt(3,0);
+
+        assertTrue(pawn == pawn1);
+        assertTrue(pawn1.getHome()[0] == 1);
+        assertTrue(pawn1.getHome()[1] == 0);
+        assertTrue(pawn1.getCurrentPosition()[0] == 3);
+        assertTrue(pawn1.getCurrentPosition()[1] == 0);
+
+        ChessPiece emptySquare = board.getPieceAt(1,0);
+
+        assertTrue(emptySquare == null);
+
+        // Test reversing a move that did not result in a deleted piece
+        board.reverseMove(deleted, new int[]{3, 0}, new int[]{1, 0});
+
+        assertTrue(pawn1.getHome()[0] == 1);
+        assertTrue(pawn1.getHome()[1] == 0);
+        assertTrue(pawn1.getCurrentPosition()[0] == 1);
+        assertTrue(pawn1.getCurrentPosition()[1] == 0);
+
+        ChessPiece pawn2 = board.getPieceAt(3,0);
+
+        assertTrue(pawn2 == null);
+    }
+
+
+    @Test
+    public void testReverseMoveWithDeletion() {
+        ChessBoard board = new ChessBoard();
+        ChessPiece blackKnight = board.getPieceAt(7,1);
+        ChessPiece whiteQueen = board.getPieceAt(0,3);
+
+        ChessPiece deleted = board.movePiece(blackKnight, new int[]{0, 3});
+        String deletedColor = deleted.getColor();
+
+        assertTrue(whiteQueen == deleted);
+        assertTrue(board.getPieceAt(7,1) == null);
+        assertTrue(blackKnight == board.getPieceAt(0,3));
+        assertTrue(deleted.getCurrentPosition()[0] == 0);
+        assertTrue(deleted.getCurrentPosition()[1] == 3);
+        assertTrue(board.getPieces(deletedColor).size() == 15);
+
+        // Test reversing a move that resulted in a deleted piece
+        board.reverseMove(deleted, new int[]{0, 3}, new int[]{7, 1});
+
+        assertTrue(whiteQueen == board.getPieceAt(0,3));
+        assertTrue(blackKnight == board.getPieceAt(7,1));
+        assertTrue(deleted.getCurrentPosition()[0] == 0);
+        assertTrue(deleted.getCurrentPosition()[1] == 3);
+        assertTrue(blackKnight.getCurrentPosition()[0] == 7);
+        assertTrue(blackKnight.getCurrentPosition()[1] == 1);
+        assertTrue(board.getPieces(deletedColor).size() == 16);
     }
 }

@@ -1,5 +1,6 @@
 package adventchess.chessgame.logic;
-
+import java.util.ArrayList;
+import java.util.List;
 import adventchess.chessgame.model.*;
 
 public class ChessGame {
@@ -42,5 +43,22 @@ public class ChessGame {
         }
         return false;
     }
-    // Additional methods for game state, game outcome, etc.
+
+    public boolean isCheckMated(String color){
+        if(isChecked(color)){
+            return true;
+        }
+        return false;
+    }
+
+    // public boolean hasLegalKingMoves(String color) {
+    //     ChessPiece king = board.getKing(color);
+    //     int[] currentPosition = king.getCurrentPosition();
+    //     List<int[]> possibleMoves = king.possibleMoves(board);
+
+    //     for(int[] move: possibleMoves){
+    //         ChessPiece deleted = board.simulate(king, move);
+    //     }
+    //     return true;
+    // }
 }

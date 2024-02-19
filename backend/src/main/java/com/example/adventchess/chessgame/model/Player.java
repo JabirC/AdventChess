@@ -1,13 +1,18 @@
 package adventchess.chessgame.model;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class Player {
     private String name;
     private String color;
     private boolean turn;
+    private ArrayList<ChessPiece> piecesEaten;
 
     public Player(String name, String color) {
         this.name = name;
         this.color = color;
+        this.piecesEaten = new ArrayList<>();
         if(color.equals("White")){
             this.turn = true;
         }
@@ -16,7 +21,7 @@ public class Player {
         }
     }
 
-    // Getter methods for name and color
+    // Getter methods
 
     public String getName(){
         return name;
@@ -26,9 +31,12 @@ public class Player {
         return color;
     }
 
+    public ArrayList<ChessPiece> getPiecesEaten(){
+        return piecesEaten;
+    }
+
     public boolean isTurn(){
         return turn;
     }
 
-    // Other methods or attributes related to the player
 }

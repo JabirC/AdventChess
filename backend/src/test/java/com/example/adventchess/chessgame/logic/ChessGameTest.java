@@ -2,6 +2,7 @@ import adventchess.chessgame.model.*;
 import adventchess.chessgame.logic.*;
 import java.util.List;
 import java.util.Arrays;
+import java.util.ArrayList;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -602,5 +603,52 @@ public class ChessGameTest {
         ChessGame game = new ChessGame("Alice", "Bob", board);
         assertTrue(game.isStaleMate("Black"));
         assertFalse(game.isStaleMate("White"));
+    }
+
+    @Test
+    public void testMakeMove() {
+        ChessGame game = new ChessGame("Alice", "Bob");
+        ChessBoard board = game.getBoard();
+        Player playerWhite = game.getPlayer("White");
+        Player playerBlack = game.getPlayer("Black");
+        boolean moveMade;
+
+        moveMade = game.makeMove("White", 1, 0, 3, 0);
+        assertTrue(moveMade);
+        assertTrue(board.getPieceAt(3,0).getHome()[0] == 1);
+        assertTrue(board.getPieceAt(3,0).getHome()[1] == 0);
+        assertTrue(board.getPieceAt(1,0) == null);
+
+        moveMade = game.makeMove("White", 1, 0, 3, 0);
+        assertFalse(moveMade);
+        assertTrue(board.getPieceAt(3,0).getHome()[0] == 1);
+        assertTrue(board.getPieceAt(3,0).getHome()[1] == 0);
+        assertTrue(board.getPieceAt(1,0) == null);
+
+
+        ChessPiece blackKnight = board.getPieceAt(7,1);
+        board.placePiece(blackKnight, 4, 1);
+
+        moveMade = game.makeMove("White", 3, 0, 4, 1);
+        assertTrue(moveMade);
+        assertTrue(board.getPieceAt(4,1) instanceof Pawn);
+        ArrayList<ChessPiece> pieces = playerWhite.getPiecesEaten();
+        assertTrue(pieces.size() == 1);
+        assertTrue(board.getPieces("Black").size() == 15);
+        assertTrue(board.getPieces("White").size() == 16);
+        assertTrue(pieces.get(0) instanceof Knight);
+
+
+        moveMade = game.makeMove("White", 3, 7, 4, 6);
+        assertFalse(moveMade);
+
+        moveMade = game.makeMove("White", 4, 1, 5, 0);
+        assertFalse(moveMade);
+
+        moveMade = game.makeMove("White", 4, 1, 5, 1);
+        assertTrue(moveMade);
+
+        assertTrue(board.getPieceAt(5,1).getHome()[0] == 1);
+        assertTrue(board.getPieceAt(5,1).getHome()[1] == 0);
     }
 }

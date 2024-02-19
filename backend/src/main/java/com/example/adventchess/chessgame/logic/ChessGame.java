@@ -20,14 +20,25 @@ public class ChessGame {
         playerBlack = new Player("Black", playerBlackName);
     }
 
-    public void makeMove(int fromRow, int fromCol, int toRow, int toCol) {
+    public boolean makeMove(String color, int fromRow, int fromCol, int toRow, int toCol) {
+        // There is a piece at the square and move is valid
         if (MoveValidator.isValidMove(board, fromRow, fromCol, toRow, toCol)) {
-            // Update the game state based on the move
-            // ...
-        } else {
-            // Handle invalid move
-            // ...
+            ChessPiece piece = board.getPieceAt(fromRow, fromCol);
+
+            // Piece is of the same color as the player making the move
+            if(piece.getColor().equals(color)){
+                ChessPiece deleted = board.movePiece(piece, new int[]{toRow, toCol});
+
+                // A piece was eaten as a result of this move
+                if(deleted != null){
+                    Player player = color.equals("White")? playerWhite : playerBlack;
+                    player.getPiecesEaten().add(deleted);
+                }
+
+                return true;
+            }
         }
+        return false;
     }
 
     public boolean isChecked(String color){
@@ -117,5 +128,15 @@ public class ChessGame {
             }
         }
         return false;
+    }
+
+    // Getters
+    public ChessBoard getBoard(){
+        return board;
+    }
+
+    public Player getPlayer(String color){
+        Player player = color.equals("White")? playerWhite : playerBlack;
+        return player;
     }
 }

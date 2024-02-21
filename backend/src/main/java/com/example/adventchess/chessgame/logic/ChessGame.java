@@ -2,22 +2,26 @@ package adventchess.chessgame.logic;
 import java.util.ArrayList;
 import java.util.List;
 import adventchess.chessgame.model.*;
+import java.util.Scanner;
 
 public class ChessGame {
     private ChessBoard board;
     private Player playerWhite;
     private Player playerBlack;
+    private Player currentPlayer;
 
     public ChessGame(String playerWhiteName, String playerBlackName) {
         this.board = new ChessBoard();
-        playerWhite = new Player("White", playerWhiteName);
-        playerBlack = new Player("Black", playerBlackName);
+        playerWhite = new Player(playerWhiteName, "White");
+        playerBlack = new Player(playerBlackName, "Black");
+        currentPlayer = playerWhite;
     }
 
     public ChessGame(String playerWhiteName, String playerBlackName, String[][] initialState) {
         this.board = new ChessBoard(initialState);
         playerWhite = new Player("White", playerWhiteName);
         playerBlack = new Player("Black", playerBlackName);
+        currentPlayer = playerWhite;
     }
 
     public boolean makeMove(String color, int fromRow, int fromCol, int toRow, int toCol) {
@@ -29,6 +33,10 @@ public class ChessGame {
             if(piece.getColor().equals(color)){
                 ChessPiece deleted = board.movePiece(piece, new int[]{toRow, toCol});
 
+                if(isChecked(color)){
+                    board.reverseMove(deleted, new int[]{toRow, toCol}, new int[]{fromRow, fromCol});
+                    return false;
+                }
                 // A piece was eaten as a result of this move
                 if(deleted != null){
                     Player player = color.equals("White")? playerWhite : playerBlack;
@@ -139,4 +147,143 @@ public class ChessGame {
         Player player = color.equals("White")? playerWhite : playerBlack;
         return player;
     }
+
+    private void switchTurns() {
+        // Switch turns between players
+        currentPlayer = (currentPlayer == playerWhite) ? playerBlack: playerWhite;
+    }
+
+    private void displayBoard() {
+        ChessPiece[][] boardArray = board.getBoard();
+        
+        System.out.println(" +-------------------------");
+        
+        for (int i = 7; i >= 0; i--) {
+            System.out.print((i + 1) + "|");
+            for (int j = 0; j < 8; j++) {
+                ChessPiece piece = boardArray[i][j];
+                String pieceString = getPieceString(piece);
+                System.out.print(" " + pieceString);
+            }
+            System.out.println();
+        }
+        
+        System.out.println(" +-------------------------");
+        System.out.println("   a  b  c  d  e  f  g  h");
+    }
+    
+    private String getPieceString(ChessPiece piece) {
+        if (piece == null) {
+            return "--";
+        }
+    
+        switch (piece.getColor()) {
+            case "White":
+                switch (piece.getName()) {
+                    case "King":
+                        return "WK";
+                    case "Queen":
+                        return "WQ";
+                    case "Rook":
+                        return "WR";
+                    case "Bishop":
+                        return "WB";
+                    case "Knight":
+                        return "WN";
+                    case "Pawn":
+                        return "WP";
+                }
+                break;
+            case "Black":
+                switch (piece.getName()) {
+                    case "King":
+                        return "BK";
+                    case "Queen":
+                        return "BQ";
+                    case "Rook":
+                        return "BR";
+                    case "Bishop":
+                        return "BB";
+                    case "Knight":
+                        return "BN";
+                    case "Pawn":
+                        return "BP";
+                }
+                break;
+        }
+    
+        return "--"; // Default if no match is found
+    }
+
+    private int[][] getPlayerMove() {
+        Scanner scanner = new Scanner(System.in);
+        
+        while (true) {
+            try {
+                System.out.print("Enter your move (e.g., 'e2 e4'): ");
+                String input = scanner.nextLine().trim();
+                // Split the input into two parts
+                String[] parts = input.split(" ");
+                
+                if (parts.length == 2) {
+                    // Parse the coordinates and create a PlayerMove object
+                    int[] from = parseCoordinates(parts[0]);
+                    int[] to = parseCoordinates(parts[1]);
+
+                    int[][] ret = new int[2][];
+                    ret[0] = from;
+                    ret[1] = to;
+
+                    System.out.print(ret[0][0]);
+                    System.out.print(ret[0][1]);
+                    System.out.print(ret[1][0]);
+                    System.out.print(ret[1][1]);
+                    return ret;
+                } else {
+                    System.out.println("Invalid input. Please enter two space-separated coordinates.");
+                }
+            } catch (Exception e) {
+                System.out.println("Invalid input format. Please try again.");
+            }
+        }
+    }
+    
+    private int[] parseCoordinates(String input) {
+        int[] coordinates = new int[2];
+        coordinates[1] = input.charAt(0) - 'a'; // Convert column (file) to index
+        coordinates[0] = input.charAt(1) - '1'; // Convert row (rank) to index
+        return coordinates;
+    }
+
+    public void startGame() {
+        // Game loop
+        while (true) {
+            // Display the current game state
+            displayBoard();
+            String color = currentPlayer.getColor();
+
+            // Check for game over conditions
+            if (isCheckMated(color)) {
+                System.out.println(color + " has lost");
+                break;
+            }
+
+            if(isStaleMate(color)){
+                System.out.println("Tie due to StaleMate");
+                break;
+            }
+
+            // Get player input
+            int[][] move = getPlayerMove();
+
+            if(!makeMove(color, move[0][0], move[0][1], move[1][0], move[1][1])){
+
+                continue;
+            }
+
+            // Switch turns
+            switchTurns();
+        }
+    }
+
 }

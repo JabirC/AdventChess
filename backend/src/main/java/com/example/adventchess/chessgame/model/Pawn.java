@@ -25,7 +25,9 @@ public class Pawn extends ChessPiece{
 
                 // Optionally, a pawn can move two squares forward on its first move
                 if (currentRow == getHome()[0]) {
-                    addMove(moves, currentRow + 2 * forwardDirection, currentColumn);
+                    if(isValidPosition(currentRow + 2 * forwardDirection, currentColumn) && board.getPieceAt(currentRow + 2 * forwardDirection, currentColumn) == null){
+                        addMove(moves, currentRow + 2 * forwardDirection, currentColumn);
+                    }
                 }
             }
         }

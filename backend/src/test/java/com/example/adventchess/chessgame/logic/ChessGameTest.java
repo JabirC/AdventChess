@@ -520,6 +520,25 @@ public class ChessGameTest {
     }
 
     @Test
+    public void testIsCheckMated9() {
+        String[][] board = {
+            {"BR", "BN", "BB", "--", "BK", "BB", "BN", "BR"},
+            {"BP", "BP", "BP", "BP", "--", "BP", "BP", "BP"},
+            {"--", "--", "--", "--", "--", "--", "--", "--"},
+            {"--", "--", "--", "--", "BP", "--", "--", "--"},
+            {"--", "--", "--", "--", "--", "--", "WP", "BQ"},
+            {"--", "--", "--", "--", "--", "WP", "--", "--"},
+            {"WP", "WP", "WP", "WP", "WP", "--", "--", "WP"},
+            {"WR", "WN", "WB", "WQ", "WK", "WB", "WN", "WR"}
+        };
+        ChessGame game = new ChessGame("Alice", "Bob", board);
+        assertTrue(game.isChecked("White"));
+        assertFalse(game.hasLegalKingMoves("White"));
+        assertFalse(game.hasLegalPieceMoves("White"));
+        assertTrue(game.isCheckMated("White"));
+    }
+
+    @Test
     public void testIsStaleMate() {
         String[][] board = {
             {"--", "--", "--", "--", "BK", "--", "--", "--"},

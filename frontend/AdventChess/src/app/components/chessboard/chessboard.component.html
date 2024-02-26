@@ -1,1 +1,9 @@
-<p>chessboard works!</p>
+<!-- chessboard.component.html -->
+
+<div class="chessboard w-full sm:w-4/5 md:w-3/5 lg:w-5/12 xl:w-5/12">
+    <div *ngFor="let row of [1, 2, 3, 4, 5, 6, 7, 8]" class="flex">
+        <div *ngFor="let col of [1, 2, 3, 4, 5, 6, 7, 8]" class="square flex items-center justify-center" [style.width.%]="100 / 8" [style.padding-bottom.%]="100 / 8" [class.dark]="isDarkSquare(row, col)"  [class.light]="!isDarkSquare(row, col)">
+          <!-- Add chess pieces here if needed -->
+        </div>
+    </div>
+</div>

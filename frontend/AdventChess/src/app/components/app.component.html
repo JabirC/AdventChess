@@ -10,12 +10,12 @@
 <style>
 </style>
 
-<main class="main">
+<main class="main flex flex-col items-center justify-center">
     <h1 class="text-3xl font-bold underline">
         Hello, {{ title }}!
     </h1>
-    <div class="chessboard-container">
-        <app-chessboard></app-chessboard>
+    <div class="chessboard-container w-full sm:w-4/5 md:w-3/5 lg:w-5/12 xl:w-5/12 flex items-center justify-center">
+        <app-chessboard class="w-full"></app-chessboard>
     </div>
 </main>
 

@@ -8,6 +8,9 @@
           <rect [attr.x]="col * 50" [attr.y]="row * 50" width="50" height="50"
                 [attr.fill]="evenRow ? (evenCol ? '#769656' : '#eeeed2') : (evenCol ? '#eeeed2' : '#769656')">
           </rect>
+          <image *ngIf="boardState[row][col] != '--'" [attr.x]="col * 50" [attr.y]="row * 50" width="50" height="50"
+          [attr.href]="keyValuePairs.get(boardState[row][col])">
+          </image>
         </ng-container>
       </ng-container>
 </svg>

@@ -1,10 +1,11 @@
 import { Component} from '@angular/core';
 import { CommonModule } from '@angular/common';
+import {CdkDrag} from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-chessboard',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, CdkDrag],
   templateUrl: './chessboard.component.html',
   styleUrl: './chessboard.component.scss'
 })

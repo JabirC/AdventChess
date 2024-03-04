@@ -1,24 +1,53 @@
 <!-- chessboard.component.html -->
 
+<!-- <div #chessboardContainer class="chessboard">
+    <div *ngFor="let row of [0, 1, 2, 3, 4, 5, 6, 7]" class="flex">
+        <div *ngFor="let col of [0, 1, 2, 3, 4, 5, 6, 7]" class="square square{{row}}{{col}} flex items-center justify-center"  [class.dark]="isDarkSquare(row, col)"  [class.light]="!isDarkSquare(row, col)" appHighlightOnDrag>
+            <ng-container *ngIf="boardState[row][col] != '--'">
+              <div>
+                <img [src]="keyValuePairs.get(boardState[row][col])" class="chess-piece piece{{row}}{{col}} {{boardState[row][col]}}" 
+                draggable="true"
+                [style.z-index]="1" 
+                (dragstart)="onDragStarted($event, row, col)" 
+                (dragend)="onDragEnded($event, row, col)" />
+              </div>
+            </ng-container>
+        </div>
+    </div>
+</div> -->
 
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" class="chessboard w-full h-full" cdkDragBoundary>
-    <!-- Draw chessboard squares -->
-    <ng-container *ngFor="let row of [0, 1, 2, 3, 4, 5, 6, 7]; let evenRow = even">
-        <ng-container *ngFor="let col of [0, 1, 2, 3, 4, 5, 6, 7]; let evenCol = even">
-          <rect [attr.x]="col * 50" [attr.y]="row * 50" width="50" height="50"
-                [attr.fill]="evenRow ? (evenCol ? '#769656' : '#eeeed2') : (evenCol ? '#eeeed2' : '#769656')"
-                class="square-{{7-row}}-{{col}}">
-          </rect>
+<!-- <div #chessboardContainer class="chessboard">
+    <div *ngFor="let row of [0, 1, 2, 3, 4, 5, 6, 7]" class="flex">
+        <div *ngFor="let col of [0, 1, 2, 3, 4, 5, 6, 7]" class="square square{{row}}{{col}} flex items-center justify-center"  [class.dark]="isDarkSquare(row, col)"  [class.light]="!isDarkSquare(row, col)" appHighlightOnDrag>
+        </div>
+    </div>
+    <div *ngFor="let row of [0, 1, 2, 3, 4, 5, 6, 7]" class="flex">
+        <ng-container *ngFor="let col of [0, 1, 2, 3, 4, 5, 6, 7]" >
+            <ng-container *ngIf="boardState[row][col] != '--'">
+                <img [src]="keyValuePairs.get(boardState[row][col])" class="chess-piece piece{{row}}{{col}} {{boardState[row][col]}}" 
+                cdkDrag cdkDragBoundary=".chessboard" 
+                [style.z-index]="1" 
+                (cdkDragStarted)="onDragStarted(row, col, boardState[row][col] )" 
+                (cdkDragEnded)="onDragEnded(row, col, boardState[row][col])"  />
+            </ng-container>
         </ng-container>
-      </ng-container>
-      <ng-container *ngFor="let row of [0, 1, 2, 3, 4, 5, 6, 7]; let evenRow = even">
-        <ng-container *ngFor="let col of [0, 1, 2, 3, 4, 5, 6, 7]; let evenCol = even">
-          <image *ngIf="boardState[row][col] != '--'" class="chess-piece" 
-          cdkDrag
-          [attr.x]="col * 50" 
-          [attr.y]="row * 50" width="50" height="50"
-          [attr.href]="keyValuePairs.get(boardState[row][col])">
-          </image>
-        </ng-container>
-      </ng-container>
-</svg>
+    </div>
+</div> -->
+
+
+
+<div #chessboardContainer class="chessboard">
+    <div *ngFor="let row of [0, 1, 2, 3, 4, 5, 6, 7]" class="flex">
+        <div *ngFor="let col of [0, 1, 2, 3, 4, 5, 6, 7]" class="square square{{row}}{{col}} flex items-center justify-center"  [class.dark]="isDarkSquare(row, col)"  [class.light]="!isDarkSquare(row, col)" [style.z-index]="0"  appHighlightOnDrag>
+            <ng-container *ngIf="boardState[row][col] != '--'">
+              <div>
+                <img [src]="keyValuePairs.get(boardState[row][col])" class="chess-piece piece{{row}}{{col}} {{boardState[row][col]}}" 
+                draggable="true"
+                [style.z-index]="1" 
+                (dragstart)="onDragStarted($event, row, col, boardState[row][col] )" 
+                (dragend)="onDragEnded($event, row, col, boardState[row][col])" />
+              </div>
+            </ng-container>
+        </div>
+    </div>
+</div>

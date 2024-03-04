@@ -2,6 +2,41 @@
     border-radius: 10px;
 }
 
+.square00{
+    border-top-left-radius: 10px;
+}
+
+.square77{
+    border-bottom-right-radius: 10px;
+}
+
+.square07{
+    border-top-right-radius: 10px;
+}
+
+.square70{
+    border-bottom-left-radius: 10px;
+}
+
 .chess-piece {
     cursor: grab;
+}
+
+
+.dark {
+    background-color: #769656; /* Dark color for dark squares */
+    color: #fff2ff; /* Text color for dark squares */
+}
+
+.light {
+    background-color: #eeeed2; /* Dark color for dark squares */
+    color: #fff2ff; /* Text color for dark squares */
+} 
+
+.highlighted-element {
+    border: 2px solid #ffcc00; /* Adjust the color as needed */
+}
+
+.hidden {
+    display: none;
 }

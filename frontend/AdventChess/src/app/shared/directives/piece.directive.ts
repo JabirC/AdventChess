@@ -1,4 +1,4 @@
-import { Directive, ElementRef, Renderer2, HostListener, Input, ViewChild} from '@angular/core';
+import { Directive, ElementRef, Renderer2, HostListener, Input, ViewChild, Output, EventEmitter} from '@angular/core';
 
 @Directive({
   selector: '[pieceDrag]',
@@ -6,7 +6,10 @@ import { Directive, ElementRef, Renderer2, HostListener, Input, ViewChild} from 
 })
 export class pieceDragDirective {
   @Input() boundary!: { top: number; bottom: number; left: number; right: number; scroll: number; windowSize: number};
+  @Output() boardChanged: EventEmitter<number[]> = new EventEmitter<number[]>();
   @ViewChild('chessboardContainer') chessboardContainer!: ElementRef;
+  @Input()curRow!: number;
+  @Input()curCol!: number;
   prevRow: number = NaN;
   prevCol: number = NaN;
   constructor(private el: ElementRef, private renderer: Renderer2) {}
@@ -23,14 +26,28 @@ export class pieceDragDirective {
   @HostListener('mouseup', ['$event'])
   onMouseUp(event: MouseEvent): void {
     event.preventDefault();
+    const rect = this.el.nativeElement.getBoundingClientRect();
     this.isDragging = false;
     this.renderer.setStyle(event.target, 'z-index', 1);
 
     const className = 'highlighted-element';
     if(!(Number.isNaN(this.prevRow))){
         const prevElement = document.querySelector('.square' + this.prevRow+ this.prevCol);
-        this.renderer.removeClass(prevElement, className);
+        this.renderer.removeClass(prevElement, className);      
+        if(this.curRow == this.prevRow && this.curCol == this.prevCol){
+            this.el.nativeElement.style.left = this.curCol * rect.width + 'px';
+            this.el.nativeElement.style.top = this.curRow * rect.width + 'px';
+        }
+        else{
+            this.boardChanged.emit([this.prevRow,this.prevCol]);
+        }
     }
+    else{
+        this.el.nativeElement.style.left = this.curCol * rect.width + 'px';
+        this.el.nativeElement.style.top = this.curRow * rect.width + 'px';
+    }
+    // console.log(this.prevRow);
+    // console.log(this.prevCol);
   }
 
   @HostListener('document:mousemove', ['$event'])
@@ -58,17 +75,6 @@ export class pieceDragDirective {
       this.prevRow = mouseOnRow;
       this.prevCol = mouseOnCol;
             
-    //   const squares = document.querySelectorAll('.square');
-    //   squares.forEach((element: Element) => {
-    //         const square = element as HTMLElement;
-    //         const rowString = square.getAttribute("row");
-    //         const row = rowString ? parseInt(rowString, 10) : NaN;
-    //         const colString = square.getAttribute("col");
-    //         const col = colString ? parseInt(colString, 10) : NaN;
-    //         if(mouseOnCol != col || mouseOnRow != row){
-    //                 this.renderer.removeClass(square, className);
-    //         }
-    //     });
     }
   }
 
@@ -83,6 +89,11 @@ export class pieceDragDirective {
   onTouchEnd(event: TouchEvent): void {
     this.isDragging = false;
     this.renderer.setStyle(event.target, 'z-index', 1);
+    const className = 'highlighted-element';
+    if(!(Number.isNaN(this.prevRow))){
+        const prevElement = document.querySelector('.square' + this.prevRow+ this.prevCol);
+        this.renderer.removeClass(prevElement, className);
+    }
   }
 
   @HostListener('document:touchmove', ['$event'])
@@ -104,6 +115,22 @@ export class pieceDragDirective {
 
       this.el.nativeElement.style.left = newX + 'px';
       this.el.nativeElement.style.top = newY + 'px';
+
+      const mouseOnCol= Math.trunc((newX + rect.width/2) / rect.width) == 8? 7 : Math.trunc((newX + rect.width/2) / rect.width);
+      const mouseOnRow= Math.trunc((newY + rect.width/2) / rect.width) == 8? 7 : Math.trunc((newY + rect.width/2) / rect.width)
+
+      const className = 'highlighted-element';
+
+      if(!(Number.isNaN(this.prevRow))){
+        if(!(mouseOnRow == this.prevRow && mouseOnCol == this.prevCol)){
+            const prevElement = document.querySelector('.square' + this.prevRow+ this.prevCol);
+            this.renderer.removeClass(prevElement, className);
+        }
+      }
+      const targetElement = document.querySelector('.square' + mouseOnRow + mouseOnCol);
+      this.renderer.addClass(targetElement, className);
+      this.prevRow = mouseOnRow;
+      this.prevCol = mouseOnCol;
     }
   }
 

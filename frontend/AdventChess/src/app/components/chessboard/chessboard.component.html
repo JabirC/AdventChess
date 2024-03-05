@@ -2,7 +2,17 @@
 
 <div #chessboardContainer class="chessboard">
     <div *ngFor="let row of [0, 1, 2, 3, 4, 5, 6, 7]" class="flex">
-        <div *ngFor="let col of [0, 1, 2, 3, 4, 5, 6, 7]" class="square square{{row}}{{col}} flex items-center justify-center"  [class.dark]="isDarkSquare(row, col)"  [class.light]="!isDarkSquare(row, col)" [style.z-index]="0" [attr.row]="row" [attr.col]="col">
+        <div *ngFor="let col of [0, 1, 2, 3, 4, 5, 6, 7]" class="square square{{row}}{{col}} flex items-center justify-center"  
+        [class.dark]="isDarkSquare(row, col)"  
+        [class.light]="!isDarkSquare(row, col)" 
+        [style.z-index]="0" 
+        [attr.row]="row" 
+        [attr.col]="col"
+        [style.width]="containerWidth / 8 + 'px'"
+        [style.height]="containerWidth / 8 + 'px'"
+        [style.top]="(containerWidth / 8) * row + 'px'"
+        [style.left]="(containerWidth / 8) * col + 'px'"
+        >
         </div>
     </div>
     <div *ngFor="let row of [0, 1, 2, 3, 4, 5, 6, 7]" class="flex">
@@ -12,12 +22,19 @@
                 <img [src]="keyValuePairs.get(boardState[row][col])" class="chess-piece piece{{row}}{{col}} {{boardState[row][col]}}"        
                 [attr.row]="row" 
                 [attr.col]="col"
-                pieceDrag
-                [boundary]="boundary"
                 [curRow] = "row"
                 [curCol] = "col"
+
+                [style.width]="containerWidth / 8 + 'px'"
+                [style.height]="containerWidth / 8 + 'px'"
+                [style.top]="(containerWidth / 8) * row + 'px'"
+                [style.left]="(containerWidth / 8) * col + 'px'"
+                [style.z-index]="1" 
+
                 (boardChanged)="handleBoardChange($event, row, col)"
-                [style.z-index]="1" />
+
+                pieceDrag
+                [boundary]="boundary"/>
               </div>
             </ng-container>
         </div>

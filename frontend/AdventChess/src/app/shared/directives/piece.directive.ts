@@ -6,14 +6,19 @@ import { Directive, ElementRef, Renderer2, HostListener, Input, ViewChild, Outpu
 })
 export class pieceDragDirective {
   @Input() boundary!: { top: number; bottom: number; left: number; right: number; scroll: number; windowSize: number};
-  @Output() boardChanged: EventEmitter<number[]> = new EventEmitter<number[]>();
-  @ViewChild('chessboardContainer') chessboardContainer!: ElementRef;
   @Input()curRow!: number;
   @Input()curCol!: number;
+
+  @Output() boardChanged: EventEmitter<number[]> = new EventEmitter<number[]>();
+
+  @ViewChild('chessboardContainer') chessboardContainer!: ElementRef;
+
   prevRow: number = NaN;
   prevCol: number = NaN;
-  constructor(private el: ElementRef, private renderer: Renderer2) {}
   private isDragging = false;
+
+
+  constructor(private el: ElementRef, private renderer: Renderer2) {}
 
   @HostListener('mousedown', ['$event'])
   onMouseDown(event: MouseEvent): void {
@@ -35,19 +40,15 @@ export class pieceDragDirective {
         const prevElement = document.querySelector('.square' + this.prevRow+ this.prevCol);
         this.renderer.removeClass(prevElement, className);      
         if(this.curRow == this.prevRow && this.curCol == this.prevCol){
-            this.el.nativeElement.style.left = this.curCol * rect.width + 'px';
-            this.el.nativeElement.style.top = this.curRow * rect.width + 'px';
+            this.boardNotChanged();
         }
         else{
             this.boardChanged.emit([this.prevRow,this.prevCol]);
         }
     }
     else{
-        this.el.nativeElement.style.left = this.curCol * rect.width + 'px';
-        this.el.nativeElement.style.top = this.curRow * rect.width + 'px';
+        this.boardNotChanged();
     }
-    // console.log(this.prevRow);
-    // console.log(this.prevCol);
   }
 
   @HostListener('document:mousemove', ['$event'])
@@ -87,12 +88,24 @@ export class pieceDragDirective {
 
   @HostListener('touchend', ['$event'])
   onTouchEnd(event: TouchEvent): void {
+    event.preventDefault();
+    const rect = this.el.nativeElement.getBoundingClientRect();
     this.isDragging = false;
     this.renderer.setStyle(event.target, 'z-index', 1);
+
     const className = 'highlighted-element';
     if(!(Number.isNaN(this.prevRow))){
         const prevElement = document.querySelector('.square' + this.prevRow+ this.prevCol);
-        this.renderer.removeClass(prevElement, className);
+        this.renderer.removeClass(prevElement, className);      
+        if(this.curRow == this.prevRow && this.curCol == this.prevCol){
+            this.boardNotChanged();
+        }
+        else{
+            this.boardChanged.emit([this.prevRow,this.prevCol]);
+        }
+    }
+    else{
+        this.boardNotChanged();
     }
   }
 
@@ -132,6 +145,12 @@ export class pieceDragDirective {
       this.prevRow = mouseOnRow;
       this.prevCol = mouseOnCol;
     }
+  }
+
+  private boardNotChanged(){
+    const rect = this.el.nativeElement.getBoundingClientRect();
+    this.el.nativeElement.style.left = this.curCol * rect.width + 'px';
+    this.el.nativeElement.style.top = this.curRow * rect.width + 'px';
   }
 
   private clamp(value: number, min: number, max: number): number {

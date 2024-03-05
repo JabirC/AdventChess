@@ -1,4 +1,4 @@
-import { Component, ElementRef, Renderer2, ViewChild, AfterViewInit, HostListener} from '@angular/core';
+import { Component, ElementRef, Renderer2, ViewChild, AfterViewInit, HostListener, ChangeDetectorRef} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HighlightOnDragDirective } from '../../shared/directives/highlight-on-drag.directive'
 import { pieceDragDirective} from '../../shared/directives/piece.directive'
@@ -14,10 +14,10 @@ export class ChessboardComponent implements AfterViewInit {
   boundary = { top: 0, bottom: 100, left: 0, right: 100, scroll: 0, windowSize:0};
   boardState: string[][] = [];
   isDragging = false;
-  condition = 1;
   @ViewChild('chessboardContainer') chessboardContainer!: ElementRef;
+  containerWidth!: number;
   
-  constructor(private renderer: Renderer2) {
+  constructor(private renderer: Renderer2, private cdr: ChangeDetectorRef) {
     // Initialize the boardState with a default chessboard configuration
     this.initializeBoard();
   }
@@ -63,16 +63,15 @@ export class ChessboardComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.setSquareSizes();
-    this.setPieceSizes();
+    // this.containerWidth = this.chessboardContainer.nativeElement.clientWidth;
     this.setBoundary();
+    this.cdr.detectChanges();
   }
 
   @HostListener('window:resize', ['$event'])
   onResize(event: Event): void {
     // Handle window resize event
-    this.setSquareSizes();
-    this.setPieceSizes();
+    // this.containerWidth = this.chessboardContainer.nativeElement.clientWidth;
     this.setBoundary();
   }
 
@@ -83,61 +82,11 @@ export class ChessboardComponent implements AfterViewInit {
     this.boundary.scroll = scrollPosition;
   }
 
-  @HostListener('window:click', ['$event'])
-  onClick(event: Event): void {
-    // Handle the click event on the window
-    this.setSquareSizes();
-    this.setPieceSizes();
-    this.setBoundary();
-  }
-
-
-  private setSquareSizes(): void {
-    if (this.chessboardContainer) {
-      const containerWidth = this.chessboardContainer.nativeElement.clientWidth;
-      const squareSize = containerWidth / 8;
-
-      const squares = this.chessboardContainer.nativeElement.querySelectorAll('.square');
-      squares.forEach((square: HTMLElement) => {
-        const rowString = square.getAttribute("row");
-        const row = rowString ? parseInt(rowString, 10) : NaN;
-        const colString = square.getAttribute("col");
-        const col = colString ? parseInt(colString, 10) : NaN;
-
-        this.renderer.setStyle(square, 'width', `${squareSize}px`);
-        this.renderer.setStyle(square, 'height', `${squareSize}px`);
-        this.renderer.setStyle(square, 'top', `${ row * squareSize}px`);
-        this.renderer.setStyle(square, 'left', `${ col * squareSize}px`);
-      });
-    }
-  }
-
-  private setPieceSizes(): void {
-    if (this.chessboardContainer) {
-      const containerWidth = this.chessboardContainer.nativeElement.clientWidth;
-      const squareSize = containerWidth / 8;
-
-      const pieces = this.chessboardContainer.nativeElement.querySelectorAll('.chess-piece');
-      pieces.forEach((piece: HTMLElement) => {
-        const rowString = piece.getAttribute("row");
-        const row = rowString ? parseInt(rowString, 10) : NaN;
-        const colString = piece.getAttribute("col");
-        const col = colString ? parseInt(colString, 10) : NaN;
-
-        this.renderer.setStyle(piece, 'width', `${squareSize}px`);
-        this.renderer.setStyle(piece, 'height', `${squareSize}px`);
-        this.renderer.setStyle(piece, 'top', `${ row * squareSize}px`);
-        this.renderer.setStyle(piece, 'left', `${ col * squareSize}px`);
-      });
-    }
-  }
-
-
   private setBoundary(): void {
     if (this.chessboardContainer) {
-      const containerWidth = this.chessboardContainer.nativeElement.clientWidth;
-      this.boundary.bottom = containerWidth;
-      this.boundary.right= containerWidth;
+      this.containerWidth = this.chessboardContainer.nativeElement.clientWidth;
+      this.boundary.bottom = this.containerWidth;
+      this.boundary.right= this.containerWidth;
       this.boundary.windowSize = window.innerWidth;
     }
   }
@@ -150,15 +99,6 @@ export class ChessboardComponent implements AfterViewInit {
     this.boardState[oldRow][oldCol] = "--";
     this.boardState[newCoordinates[0]][newCoordinates[1]] = pieceName;
     console.log(this.boardState);
-
-
-    // const pieceIdentifier = '.piece' + newCoordinates[0] + newCoordinates[1];
-    // this.renderer.setStyle(document.querySelector(pieceIdentifier), "width", "60px");
-    
-    // this.rerender();
-    // this.setSquareSizes();
-    // this.setPieceSizes();
-    // this.setBoundary();
   }
 
 }

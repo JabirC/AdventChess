@@ -2,15 +2,17 @@ import { Component, ElementRef, Renderer2, ViewChild, AfterViewInit, NgZone, Hos
 import { CommonModule } from '@angular/common';
 import {CdkDrag, DragDropModule} from '@angular/cdk/drag-drop';
 import { HighlightOnDragDirective } from '../../shared/directives/highlight-on-drag.directive'
+import { pieceDragDirective} from '../../shared/directives/piece.directive'
 
 @Component({
   selector: 'app-chessboard',
   standalone: true,
-  imports: [CommonModule, CdkDrag, DragDropModule, HighlightOnDragDirective],
+  imports: [CommonModule, CdkDrag, DragDropModule, HighlightOnDragDirective, pieceDragDirective],
   templateUrl: './chessboard.component.html',
   styleUrl: './chessboard.component.scss'
 })
 export class ChessboardComponent implements AfterViewInit {
+  boundary = { top: 0, bottom: 100, left: 0, right: 100, scroll: 0, windowSize:0};
   boardState: string[][] = [];
   isDragging = false;
   @ViewChild('chessboardContainer') chessboardContainer!: ElementRef;
@@ -23,7 +25,22 @@ export class ChessboardComponent implements AfterViewInit {
   ngAfterViewInit(): void {
     this.setSquareSizes();
     this.setPieceSizes();
-    const squares = this.chessboardContainer.nativeElement.querySelectorAll('.square');
+    this.setBoundary();
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: Event): void {
+    // Handle window resize event
+    this.setSquareSizes();
+    this.setPieceSizes();
+    this.setBoundary();
+  }
+
+  @HostListener('window:scroll', ['$event'])
+  onScroll(event: Event): void {
+    // Get the vertical scroll position
+    const scrollPosition = window.scrollY;
+    this.boundary.scroll = scrollPosition;
   }
 
   private setSquareSizes(): void {
@@ -33,8 +50,15 @@ export class ChessboardComponent implements AfterViewInit {
 
       const squares = this.chessboardContainer.nativeElement.querySelectorAll('.square');
       squares.forEach((square: HTMLElement) => {
+        const rowString = square.getAttribute("row");
+        const row = rowString ? parseInt(rowString, 10) : NaN;
+        const colString = square.getAttribute("col");
+        const col = colString ? parseInt(colString, 10) : NaN;
+
         this.renderer.setStyle(square, 'width', `${squareSize}px`);
         this.renderer.setStyle(square, 'height', `${squareSize}px`);
+        this.renderer.setStyle(square, 'top', `${ row * squareSize}px`);
+        this.renderer.setStyle(square, 'left', `${ col * squareSize}px`);
       });
     }
   }
@@ -46,11 +70,29 @@ export class ChessboardComponent implements AfterViewInit {
 
       const pieces = this.chessboardContainer.nativeElement.querySelectorAll('.chess-piece');
       pieces.forEach((piece: HTMLElement) => {
+        const rowString = piece.getAttribute("row");
+        const row = rowString ? parseInt(rowString, 10) : NaN;
+        const colString = piece.getAttribute("col");
+        const col = colString ? parseInt(colString, 10) : NaN;
+
         this.renderer.setStyle(piece, 'width', `${squareSize}px`);
         this.renderer.setStyle(piece, 'height', `${squareSize}px`);
+        this.renderer.setStyle(piece, 'top', `${ row * squareSize}px`);
+        this.renderer.setStyle(piece, 'left', `${ col * squareSize}px`);
       });
     }
   }
+
+
+  private setBoundary(): void {
+    if (this.chessboardContainer) {
+      const containerWidth = this.chessboardContainer.nativeElement.clientWidth;
+      this.boundary.bottom = containerWidth;
+      this.boundary.right= containerWidth;
+      this.boundary.windowSize = window.innerWidth;
+    }
+  }
+
   private initializeBoard(): void {
     // Array representing the default starting position of pieces on a chessboard
     const defaultBoard: string[][] = [
@@ -88,41 +130,5 @@ export class ChessboardComponent implements AfterViewInit {
     return (row + col) % 2 !== 0;
   }
 
-  onDragStarted(event: Event, row: number, col:number, pieceName: string) {
-    // event.preventDefault();
-    // this.isDragging = true;
-    const piece = this.chessboardContainer.nativeElement.querySelector(`.piece${row}${col}`);
-    this.ngZone.runOutsideAngular(() => {
-      // Execute the function after a minimal delay
-      setTimeout(() => {
-        // Code to add the 'hide' class
-        this.ngZone.run(() => {
-          this.renderer.addClass(piece, "hidden");
-        });
-      }, 0);
-    });
-    if (piece) {
-      this.renderer.setStyle(piece, 'z-index', 2);
-    } else {
-      console.error('Piece element is null or undefined');
-    }
-  }
-
-  onDragEnded(event: Event, row: number, col:number, pieceName: string) {
-    event.preventDefault();
-    this.isDragging = false;
-    const piece = this.chessboardContainer.nativeElement.querySelector(`.piece${row}${col}`);
-    this.renderer.removeClass(piece, "hidden");
-    if (piece) {
-      this.renderer.setStyle(piece, 'z-index', 1);
-    } else {
-      console.error('Piece element is null or undefined');
-    }
-
-    // this.boardState[row][col] = "WK";
-
-  }
-
-  
 
 }

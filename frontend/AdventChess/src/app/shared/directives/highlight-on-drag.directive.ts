@@ -7,11 +7,11 @@ import { Directive, ElementRef, Renderer2, HostListener } from '@angular/core';
 export class HighlightOnDragDirective {
   constructor(private el: ElementRef, private renderer: Renderer2) {}
 
-  @HostListener('dragenter', ['$event']) ondragenter(event: Event) {
+  @HostListener('mouseover', ['$event']) onMouseOver(event: Event) {
     this.highlight(true);
   }
 
-  @HostListener('dragleave', ['$event']) onDragLeave(event: Event) {
+  @HostListener('mouseout', ['$event']) onMouseOut(event: Event) {
     this.highlight(false);
   }
 

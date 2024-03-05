@@ -1,5 +1,10 @@
 .chessboard {
     border-radius: 10px;
+    position: relative;
+}
+
+.square {
+    position: absolute;
 }
 
 .square00{
@@ -20,6 +25,7 @@
 
 .chess-piece {
     cursor: grab;
+    position: absolute;
 }
 
 
@@ -37,6 +43,4 @@
     border: 2px solid #ffcc00; /* Adjust the color as needed */
 }
 
-.hidden {
-    display: none;
-}
+

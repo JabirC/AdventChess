@@ -17,9 +17,9 @@
     </div>
     <div *ngFor="let row of [0, 1, 2, 3, 4, 5, 6, 7]" class="flex">
         <div *ngFor="let col of [0, 1, 2, 3, 4, 5, 6, 7]" class="flex items-center justify-center">
-            <ng-container *ngIf="boardState[getMapping(row)][col] != '--';">
+            <ng-container *ngIf="boardState[getMapping(row)][getMapping(col)] != '--';">
               <div>
-                <img [src]="keyValuePairs.get(boardState[getMapping(row)][col])" class="chess-piece piece{{row}}{{col}} {{boardState[row][col]}}"        
+                <img [src]="keyValuePairs.get(boardState[getMapping(row)][getMapping(col)])" class="chess-piece piece{{row}}{{col}} {{boardState[row][col]}}"        
                 [attr.row]="row" 
                 [attr.col]="col"
                 [curRow] = "row"

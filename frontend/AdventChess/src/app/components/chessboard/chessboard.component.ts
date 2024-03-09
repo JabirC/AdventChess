@@ -13,12 +13,14 @@ export class ChessboardComponent implements AfterViewInit {
   boundary = { top: 0, bottom: 100, left: 0, right: 100, scroll: 0, windowSize:0};
   boardState: string[][] = [];
   isWhite!: boolean;
+  orientationWhite!: boolean;
   @ViewChild('chessboardContainer') chessboardContainer!: ElementRef;
   containerWidth!: number;
   
   constructor(private renderer: Renderer2, private cdr: ChangeDetectorRef) {
     // Initialize the boardState with a default chessboard configuration
     this.isWhite = false;
+    this.isWhite? this.orientationWhite = true: this.orientationWhite = false;
     this.initializeBoard();
   }
 
@@ -67,7 +69,7 @@ export class ChessboardComponent implements AfterViewInit {
     this.setBoundary();
     this.cdr.detectChanges();
   }
-
+  
   @HostListener('window:resize', ['$event'])
   onResize(event: Event): void {
     // Handle window resize event
@@ -95,16 +97,20 @@ export class ChessboardComponent implements AfterViewInit {
     const containerWidth = this.chessboardContainer.nativeElement.clientWidth;
     const squareSize = containerWidth / 8;
 
-    const pieceName: string = this.boardState[this.getMapping(oldRow)][oldCol];
-    this.boardState[this.getMapping(oldRow)][oldCol] = "--";
-    this.boardState[this.getMapping(newCoordinates[0])][newCoordinates[1]] = pieceName;
+    const pieceName: string = this.boardState[this.getMapping(oldRow)][this.getMapping(oldCol)];
+    this.boardState[this.getMapping(oldRow)][this.getMapping(oldCol)] = "--";
+    this.boardState[this.getMapping(newCoordinates[0])][this.getMapping(newCoordinates[1])] = pieceName;
     console.log(this.boardState);
   }
 
   // Used to inverse the chessboard based on player color
-  getMapping(row: number): number{
-    const index = this.isWhite? row: 7-row;
-    return index;
+  getMapping(index: number): number{
+    const mappedIndex = this.orientationWhite? index: 7-index;
+    return mappedIndex;
+  }
+
+  rotateBoard(){
+    this.orientationWhite = !this.orientationWhite;
   }
 
 }

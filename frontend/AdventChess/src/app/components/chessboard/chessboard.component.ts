@@ -1,24 +1,24 @@
 import { Component, ElementRef, Renderer2, ViewChild, AfterViewInit, HostListener, ChangeDetectorRef} from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HighlightOnDragDirective } from '../../shared/directives/highlight-on-drag.directive'
 import { pieceDragDirective} from '../../shared/directives/piece.directive'
 
 @Component({
   selector: 'app-chessboard',
   standalone: true,
-  imports: [CommonModule, HighlightOnDragDirective, pieceDragDirective],
+  imports: [CommonModule, pieceDragDirective],
   templateUrl: './chessboard.component.html',
   styleUrl: './chessboard.component.scss'
 })
 export class ChessboardComponent implements AfterViewInit {
   boundary = { top: 0, bottom: 100, left: 0, right: 100, scroll: 0, windowSize:0};
   boardState: string[][] = [];
-  isDragging = false;
+  isWhite!: boolean;
   @ViewChild('chessboardContainer') chessboardContainer!: ElementRef;
   containerWidth!: number;
   
   constructor(private renderer: Renderer2, private cdr: ChangeDetectorRef) {
     // Initialize the boardState with a default chessboard configuration
+    this.isWhite = false;
     this.initializeBoard();
   }
 
@@ -95,10 +95,16 @@ export class ChessboardComponent implements AfterViewInit {
     const containerWidth = this.chessboardContainer.nativeElement.clientWidth;
     const squareSize = containerWidth / 8;
 
-    const pieceName: string = this.boardState[oldRow][oldCol];
-    this.boardState[oldRow][oldCol] = "--";
-    this.boardState[newCoordinates[0]][newCoordinates[1]] = pieceName;
+    const pieceName: string = this.boardState[this.getMapping(oldRow)][oldCol];
+    this.boardState[this.getMapping(oldRow)][oldCol] = "--";
+    this.boardState[this.getMapping(newCoordinates[0])][newCoordinates[1]] = pieceName;
     console.log(this.boardState);
+  }
+
+  // Used to inverse the chessboard based on player color
+  getMapping(row: number): number{
+    const index = this.isWhite? row: 7-row;
+    return index;
   }
 
 }

@@ -36,7 +36,6 @@ public class ChessGameService {
 
     public void verifyMove(String session, String gameId, String move){
         ChessGame game = userGameMap.get(session);
-        System.out.println("/topic/state" + gameId);
         messagingTemplate.convertAndSend("/topic/state" + gameId, move);
     }
 

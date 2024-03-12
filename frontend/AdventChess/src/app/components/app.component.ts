@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { ChessboardComponent } from './chessboard/chessboard.component';
 import { TopBarComponent } from './top-bar/top-bar.component';
+import { WebSocketService } from '../shared/services/websocket.service';
 
 
 @Component({
@@ -13,4 +14,9 @@ import { TopBarComponent } from './top-bar/top-bar.component';
 })
 export class AppComponent {
   title = 'AdventChess';
+
+  constructor(private webSocketService: WebSocketService) {
+    webSocketService.connect();
+  }
+  
 }

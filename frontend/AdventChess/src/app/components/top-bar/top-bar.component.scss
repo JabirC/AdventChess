@@ -14,7 +14,18 @@
   
 .logo {
     height: 40px; /* Adjust the height as needed */
-    filter: grayscale(100%);
+    // filter: grayscale(100%);
+}
+
+.logo-name {
+    font-size: 1rem;
+    font-stretch: 100%;
+    font-weight: 700;
+    background: linear-gradient(to right, #000000, rgba(130, 68, 5, 0.656)); /* Replace with your desired gradient colors */
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    display: inline-block;
 }
 
 

@@ -1,12 +1,12 @@
 
-<div class="page-container w-full flex flex-col items-center">
-    <img src="../../../assets/chessboardimg.jpg" class="cinematic" draggable="false">
-        <div class="title-container">
-                <h1 class="title"> Welcome to AdventChess!</h1> 
+<div class="page-container w-full flex flex-col items-center justify-center">
+        <div class="title-container flex flex-col items-center">
+                <h1 class="title"> Welcome to AdventChess</h1> 
+                <h2 class="subtitle">where the timeless game of chess transforms into an epic adventure!</h2>
         </div>
         <div class="home-container w-3/5 sm:w-3/5 md:w-2/5 lg:w-4/12 xl:w-4/12 flex flex-col items-center justify-center">
-            <button class="play-button">Play</button>
-            <div class="separator"></div>
-            <button class="login-button">Login</button>
+            <button class="play-button" (click)="navigateToPlay()">Play</button>
+            <!-- <div class="separator"></div> -->
+            <!-- <button class="login-button">Login</button> -->
         </div>
 </div>

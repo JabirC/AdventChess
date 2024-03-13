@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ChessboardComponent } from '../chessboard/chessboard.component';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-game',
@@ -10,10 +10,12 @@ import { Router } from '@angular/router';
   styleUrl: './game.component.scss'
 })
 export class GameComponent {
-
-  constructor(private router: Router){
-  }
-  gameMenu(){
-    this.router.navigate(['/mode']);
+  mode!: string;
+  constructor(private route: ActivatedRoute, private router: Router) {}
+  ngOnInit() {
+    this.route.params.subscribe(params => {
+      this.mode = params['mode'];
+      // console.log(this.mode);
+    });
   }
 }

@@ -1,4 +1,4 @@
-import { Component, ElementRef, Renderer2, ViewChild, AfterViewInit, HostListener, ChangeDetectorRef} from '@angular/core';
+import { Component, ElementRef, Renderer2, ViewChild, AfterViewInit, HostListener, ChangeDetectorRef, Input} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { pieceDragDirective} from '../../shared/directives/piece.directive'
 
@@ -10,6 +10,7 @@ import { pieceDragDirective} from '../../shared/directives/piece.directive'
   styleUrl: './chessboard.component.scss'
 })
 export class ChessboardComponent implements AfterViewInit {
+  @Input() mode!: string;
   boundary = { top: 0, bottom: 100, left: 0, right: 100, scroll: 0, windowSize:0};
   boardState: string[][] = [];
   isWhite!: boolean;
@@ -22,6 +23,8 @@ export class ChessboardComponent implements AfterViewInit {
     this.isWhite = false;
     this.isWhite? this.orientationWhite = true: this.orientationWhite = false;
     this.initializeBoard();
+    console.log("hadhfkjahsdfk");
+    console.log(this.mode);
   }
 
   private initializeBoard(): void {

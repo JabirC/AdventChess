@@ -28,17 +28,8 @@
     position: absolute;
 }
 
-// .dark {
-//     background-color: #769656; /* Dark color for dark squares */
-//     color: #fff2ff; /* Text color for dark squares */
-// }
-
-// .light {
-//     background-color: #eeeed2; /* Dark color for dark squares */
-//     color: #fff2ff; /* Text color for dark squares */
-// } 
 .dark {
-    background-color: #7a0c0cbe; /* Dark color for dark squares */
+    background-color: #7a3f0cbe; /* Dark color for dark squares */
     color: #fff2ff; /* Text color for dark squares */
 }
 
@@ -48,7 +39,7 @@
 } 
 
 .highlighted-element {
-    border: 2px solid #ffcc00; /* Adjust the color as needed */
+    border: 3px solid #ffcc00; /* Adjust the color as needed */
 }
 
 

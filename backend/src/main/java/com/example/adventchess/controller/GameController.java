@@ -35,9 +35,10 @@ public class GameController {
   }
 
   @MessageMapping("/connect/game")
-  public void handleConnect(Principal principal, SimpMessageHeaderAccessor headerAccessor) {
+  public void handleConnect(Principal principal, SimpMessageHeaderAccessor headerAccessor, String mode) {
         String session = principal.getName();
         if (session != null) {
+            // System.out.println(mode);
             sessionQueue.add(session);
             // Check if there are two sessions in the queue
             if (sessionQueue.size() >= 2) {

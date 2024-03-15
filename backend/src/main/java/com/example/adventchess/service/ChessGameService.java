@@ -23,6 +23,7 @@ public class ChessGameService {
 
     public void createGameSession(String session1, String session2) {
         String gameId = UUID.randomUUID().toString();
+
         ChessGame chessGame = new ChessGame(session1, session2);
 
         // Store the ChessGame instance associated with each user's session ID
@@ -30,8 +31,11 @@ public class ChessGameService {
         userGameMap.put(session2, chessGame);
 
         // Send a message to each user to notify the start of the game
-        messagingTemplate.convertAndSend("/topic/reply" + session1, gameId);
-        messagingTemplate.convertAndSend("/topic/reply" + session2, gameId);
+
+        String message = String.format("{\"gameId\" : \"%s\"}", gameId);
+
+        messagingTemplate.convertAndSend("/topic/reply" + session1, message);
+        messagingTemplate.convertAndSend("/topic/reply" + session2, message);
     }
 
     public void verifyMove(String session, String gameId, String move){

@@ -670,4 +670,37 @@ public class ChessGameTest {
         assertTrue(board.getPieceAt(5,1).getHome()[0] == 1);
         assertTrue(board.getPieceAt(5,1).getHome()[1] == 0);
     }
+
+    @Test
+    public void testCreateRandom() {
+        String[][] board = ChessGame.createRandom();
+        System.out.println(board);
+        // kings are intialized
+        assertTrue(board[0][4].equals("BK") && board[7][4].equals("WK"));
+
+        //board is mirrored
+        for(int i = 0; i < 8; i++){
+            if(!board[0][i].equals("--")){
+                char pieceBlack = board[0][i].charAt(1);
+                char pieceWhite = board[7][i].charAt(1);
+                assertTrue(pieceBlack == pieceWhite);
+            }
+        }
+        for(int i = 0; i < 8; i++){
+            if(!board[1][i].equals("--")){
+                char pieceBlack = board[1][i].charAt(1);
+                char pieceWhite = board[6][i].charAt(1);
+                assertTrue(pieceBlack == pieceWhite);
+            }
+        }
+
+        // board has no pieces in the middle
+        for (int i = 3; i < 6; i++) {
+            // Loop through each column in the current row
+            for (int j = 0; j < 8; j++) {
+                assertTrue(board[i][j].equals("--"));
+            }
+        }
+
+    }
 }

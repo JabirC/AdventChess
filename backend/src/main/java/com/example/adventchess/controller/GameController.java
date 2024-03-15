@@ -38,8 +38,8 @@ public class GameController {
     this.simpMessagingTemplate = simpMessagingTemplate;
     this.chessGameService = chessGameService;
 
-    startQueueProcessor(sessionQueueClassic);
-    startQueueProcessor(sessionQueueAdventure);
+    startQueueProcessor(sessionQueueClassic, "classic");
+    startQueueProcessor(sessionQueueAdventure, "adventure");
   }
 
   @MessageMapping("/connect/game")
@@ -65,13 +65,13 @@ public class GameController {
         chessGameService.verifyMove(session, gameId, moveMessage);
   }
 
-  private void startQueueProcessor(BlockingQueue<String> sessionQueue) {
+  private void startQueueProcessor(BlockingQueue<String> sessionQueue, String mode) {
     executorService.execute(() -> {
         while (true) {
             try {
                 String session1 = sessionQueue.take();
                 String session2 = sessionQueue.take();
-                chessGameService.createGameSession(session1, session2);
+                chessGameService.createGameSession(session1, session2, mode);
             } catch (InterruptedException e) {
                 e.printStackTrace();
                 Thread.currentThread().interrupt();

@@ -21,10 +21,18 @@ public class ChessGameService {
         this.messagingTemplate = messagingTemplate;
     }
 
-    public void createGameSession(String session1, String session2) {
+    public void createGameSession(String session1, String session2, String mode) {
         String gameId = UUID.randomUUID().toString();
+        ChessGame chessGame;
 
-        ChessGame chessGame = new ChessGame(session1, session2);
+        if(mode.equals("classic")){
+            chessGame = new ChessGame(session1, session2);
+        }
+        else {
+            String[][] adventureBoard = ChessGame.createRandom();
+            System.out.println(adventureBoard);
+            chessGame = new ChessGame(session1, session2, adventureBoard);
+        }
 
         // Store the ChessGame instance associated with each user's session ID
         userGameMap.put(session1, chessGame);

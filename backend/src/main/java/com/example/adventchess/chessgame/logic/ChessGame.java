@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.List;
 import adventchess.chessgame.model.*;
 import java.util.Scanner;
+import java.util.Random;
 
 public class ChessGame {
     private ChessBoard board;
@@ -284,6 +285,54 @@ public class ChessGame {
             // Switch turns
             switchTurns();
         }
+    }
+
+    // Creates a random initial board state
+    public static String[][] createRandom(){
+        String[][] board = new String[8][8];
+        Random random = new Random();
+
+        String[] pieces = {"R", "N", "B", "Q"};
+
+
+        for (int i = 0; i < 8; i++) {
+            // Loop through each column in the current row
+            for (int j = 0; j < 8; j++) {
+                board[i][j] = "--";
+            }
+        }
+
+        // Initialize Kings 
+        board[0][4] = "BK";
+        board[7][4] = "WK";
+
+        // Initialize a random amount of pawns
+        for(int i=0; i < 8; i++){
+            if(random.nextBoolean()){
+                board[1][i] = "BP";
+                board[6][i] = "WP";
+            }
+        }
+
+        // Initalize main pieces
+        for(int i=0; i < 8; i++){
+            if(i==4) continue;
+            if(random.nextBoolean()){
+                int pieceIndex = random.nextInt(4);
+                String piece = pieces[pieceIndex];
+
+                board[0][i] = "B" + piece;
+                board[7][i] = "W" + piece;
+
+                if(pieceIndex == 0 || pieceIndex == 3){
+                    board[1][i] = "BP";
+                    board[6][i] = "WP";
+                }
+            }
+        }
+
+        return board;
+
     }
 
 }

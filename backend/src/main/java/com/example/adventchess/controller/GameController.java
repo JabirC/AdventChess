@@ -15,6 +15,11 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.CompletableFuture;
+import java.util.HashSet;
+import java.util.Set;
+
 // import java.lang.InterruptedException;
 
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -29,6 +34,8 @@ public class GameController {
   private final BlockingQueue<String> sessionQueueClassic = new LinkedBlockingQueue<>();
   private final BlockingQueue<String> sessionQueueAdventure = new LinkedBlockingQueue<>();
   private final ExecutorService executorService = Executors.newCachedThreadPool();
+  private final Set<String> pings = new HashSet<>();
+
 
   SimpMessagingTemplate simpMessagingTemplate;
   ChessGameService chessGameService;
@@ -59,10 +66,34 @@ public class GameController {
         }
   }
 
+  @MessageMapping("/disconnect")
+  public void disconnect(Principal principal, String mode) {
+      String session = principal.getName();
+      if(mode.equals("classic")){
+        sessionQueueClassic.remove(session);
+      }
+      else if(mode.equals("adventure")){
+        sessionQueueAdventure.remove(session);
+      }
+      else{
+        System.out.println("Invalid input for mode");
+      }
+      System.out.println("user has disconnected:");
+      System.out.println(session);
+      // Perform any necessary cleanup or other actions
+  }
+
   @MessageMapping("/game/{gameId}/move")
   public void handleMove(@DestinationVariable String gameId, Principal principal, String moveMessage) {
         String session = principal.getName();
         chessGameService.verifyMove(session, gameId, moveMessage);
+  }
+  
+
+  @MessageMapping("/pong")
+  public void handleMove(Principal principal, String message) {
+        String session = principal.getName();
+        pings.add(session);
   }
 
   private void startQueueProcessor(BlockingQueue<String> sessionQueue, String mode) {
@@ -71,13 +102,59 @@ public class GameController {
             try {
                 String session1 = sessionQueue.take();
                 String session2 = sessionQueue.take();
-                chessGameService.createGameSession(session1, session2, mode);
+                CompletableFuture<Boolean> heartbeatCheck1 = checkHeartbeatAsync(session1);
+                CompletableFuture<Boolean> heartbeatCheck2 = checkHeartbeatAsync(session2);
+
+                if (heartbeatCheck1.get()) {
+                    if(heartbeatCheck2.get()){
+                      chessGameService.createGameSession(session1, session2, mode);
+                    }
+                    else{
+                      sessionQueue.add(session1);
+                    }
+                } 
+                else {
+                    if(heartbeatCheck2.get()){
+                      sessionQueue.add(session2);
+                    }
+                }
+                
+                // chessGameService.createGameSession(session1, session2, mode);
             } catch (InterruptedException e) {
                 e.printStackTrace();
                 Thread.currentThread().interrupt();
             }
+             catch (ExecutionException e) {
+              // Handle the ExecutionException
+              e.printStackTrace();
+            }
         }
     });
 }
+
+private CompletableFuture<Boolean> checkHeartbeatAsync(String sessionId) {
+  return CompletableFuture.supplyAsync(() -> {
+      try {
+          // Send ping message to the client
+          String message = String.format("{\"message\" : \"%s\"}", "PING");
+          simpMessagingTemplate.convertAndSend("/topic/ping" + sessionId, message);
+          
+          // Wait for pong response within a timeout period
+          Thread.sleep(1000); // Wait for 0.5 seconds (adjust as needed)
+          
+          // Check if pong response was received within the timeout
+          if(pings.contains(sessionId)){
+            pings.remove(sessionId);
+            return true;
+          }
+          return false;
+      } catch (InterruptedException e) {
+          // Handle interrupted exception if needed
+          e.printStackTrace();
+          return false;
+      }
+  });
+}
+
 
 }

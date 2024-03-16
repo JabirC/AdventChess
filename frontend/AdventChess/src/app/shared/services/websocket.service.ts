@@ -11,12 +11,11 @@ export class WebSocketService {
   private stompClient: any;
   webSocketEndPoint = 'http://localhost:8080/ws';
 
-  constructor() {
-    const socket = SockJS('http://localhost:8080/ws');
-    this.stompClient = Stomp.over(socket);
-  }
+  constructor() {}
 
   connect(): Promise<string> {
+    const socket = new SockJS(this.webSocketEndPoint);
+    this.stompClient = Stomp.over(socket);
     return new Promise<string>((resolve, reject) => {
         this.stompClient.connect({}, (frame: any) => {
         console.log('Connected:', frame);

@@ -1,6 +1,7 @@
 import { Component, ElementRef, Renderer2, ViewChild, AfterViewInit, HostListener, ChangeDetectorRef, Input} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { pieceDragDirective} from '../../shared/directives/piece.directive'
+import { WebSocketService } from '../../shared/services/websocket.service';
 
 @Component({
   selector: 'app-chessboard',
@@ -14,17 +15,18 @@ export class ChessboardComponent implements AfterViewInit {
   boundary = { top: 0, bottom: 100, left: 0, right: 100, scroll: 0, windowSize:0};
   boardState: string[][] = [];
   isWhite!: boolean;
+  isConnected: boolean = false;
   orientationWhite!: boolean;
   @ViewChild('chessboardContainer') chessboardContainer!: ElementRef;
   containerWidth!: number;
+  username!: string;
+  gameSession!: string;
   
-  constructor(private renderer: Renderer2, private cdr: ChangeDetectorRef) {
+  constructor(private renderer: Renderer2, private cdr: ChangeDetectorRef, private webSocketService: WebSocketService) {
     // Initialize the boardState with a default chessboard configuration
-    this.isWhite = false;
+    this.isWhite = true;
     this.isWhite? this.orientationWhite = true: this.orientationWhite = false;
     this.initializeBoard();
-    console.log("hadhfkjahsdfk");
-    console.log(this.mode);
   }
 
   private initializeBoard(): void {
@@ -39,6 +41,16 @@ export class ChessboardComponent implements AfterViewInit {
       ['WP', 'WP', 'WP', 'WP', 'WP', 'WP', 'WP', 'WP'],
       ['WR', 'WN', 'WB', 'WQ', 'WK', 'WB', 'WN', 'WR'],
     ];
+    // const defaultBoard: string[][] = [
+    //   ['--', '--', '--', '--', '--', '--', '--', '--'],
+    //   ['--', '--', '--', '--', '--', '--', '--', '--'],
+    //   ['--', '--', '--', '--', '--', '--', '--', '--'],
+    //   ['--', '--', '--', '--', '--', '--', '--', '--'],
+    //   ['--', '--', '--', '--', '--', '--', '--', '--'],
+    //   ['--', '--', '--', '--', '--', '--', '--', '--'],
+    //   ['--', '--', '--', '--', '--', '--', '--', '--'],
+    //   ['--', '--', '--', '--', '--', '--', '--', '--'],
+    // ];
 
     // Copy the default board configuration to the boardState
     this.boardState = defaultBoard.map(row => [...row]);
@@ -71,12 +83,45 @@ export class ChessboardComponent implements AfterViewInit {
     // this.containerWidth = this.chessboardContainer.nativeElement.clientWidth;
     this.setBoundary();
     this.cdr.detectChanges();
+    console.log(this.mode);
+    this.webSocketService.connect().then(user => {
+      // console.log('User:', user);
+      this.username = user;
+
+      this.webSocketService.subscribe('/topic/ping' + this.username, (message) => {
+        this.webSocketService.sendMessage("/app/pong", "PONG");
+        console.log("pinged");
+      });
+
+      this.webSocketService.subscribe('/topic/reply' + user, (message) => {
+        this.gameSession = message.gameId;
+        console.log(message);
+
+        this.webSocketService.subscribe('/topic/state' + this.gameSession, function(move){
+          console.log(move.body);
+        });
+      });
+      this.webSocketService.sendMessage("/app/connect/game", this.mode);
+    });
+
+  }
+
+  ngOnDestroy(): void {
+    this.webSocketService.disconnect(this.mode);
+  }
+
+  disc(): void {
+    this.webSocketService.disconnect(this.mode);
+  }
+
+  @HostListener('window:beforeunload', ['$event'])
+  beforeunloadHandler(event: Event) {
+    this.webSocketService.disconnect(this.mode);
   }
   
   @HostListener('window:resize', ['$event'])
   onResize(event: Event): void {
     // Handle window resize event
-    // this.containerWidth = this.chessboardContainer.nativeElement.clientWidth;
     this.setBoundary();
   }
 

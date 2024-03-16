@@ -1,6 +1,20 @@
 <!-- chessboard.component.html -->
 
-<div #chessboardContainer class="chessboard">
+<!-- <div class="rotate-container flex items-center justify-end">
+  <button class="rotate" (click)="rotateBoard()"
+  >Rotate</button>
+</div> -->
+<div class="board-control-top flex flex-row items-center justify-end w-full">
+  <div class="resign-container flex items-center justify-center">
+    <button class="resign" (click)="disc()"></button>
+  </div>
+  <div class="separator"></div>
+  <div class="rotate-container flex items-center justify-center">
+    <button class="rotate" (click)="rotateBoard()"></button>
+  </div>
+</div>
+
+<div #chessboardContainer class="chessboard" [style.height]="containerWidth + 'px'"> 
     <div *ngFor="let row of [0, 1, 2, 3, 4, 5, 6, 7]" class="flex">
         <div *ngFor="let col of [0, 1, 2, 3, 4, 5, 6, 7]" class="square square{{row}}{{col}} flex items-center justify-center"  
         [class.dark]="isDarkSquare(row, col)"  
@@ -40,4 +54,14 @@
         </div>
     </div>
 </div>
+<!-- <div class="board-control-top flex flex-row items-center justify-end w-full">
+  <div class="resign-container flex items-center justify-center">
+    <button class="resign" (click)="rotateBoard()"></button>
+  </div>
+  <div class="separator"></div>
+  <div class="rotate-container flex items-center justify-center">
+    <button class="rotate" (click)="rotateBoard()" (tap)="rotateBoard()" ></button>
+  </div>
+</div> -->
+
 

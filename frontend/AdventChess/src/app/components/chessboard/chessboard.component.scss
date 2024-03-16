@@ -43,3 +43,36 @@
 }
 
 
+.rotate-container, .resign-container {
+    height: 70px;
+}
+.rotate {
+    height: 30px;
+    width: 30px;
+    // border-radius: 10px;
+    // color: white;
+    background-image: url('../../../assets/rotate-button.png');
+    background-size: cover; /* Make sure the image covers the entire button */
+    background-repeat: no-repeat; /* Ensure the image doesn't repeat */
+    border: none; /* Remove default button border */
+    cursor: pointer; /* Change cursor to pointer on hover */
+    /* Optionally, you can add other styling such as padding, margin, etc. */
+}
+
+.resign {
+    height: 30px;
+    width: 30px;
+    // border-radius: 10px;
+    // color: white;
+    background-image: url('../../../assets/resign-button.png');
+    background-size: cover; /* Make sure the image covers the entire button */
+    background-repeat: no-repeat; /* Ensure the image doesn't repeat */
+    border: none; /* Remove default button border */
+    cursor: pointer; /* Change cursor to pointer on hover */
+    /* Optionally, you can add other styling such as padding, margin, etc. */
+}
+
+
+.separator{
+    width: 20px;
+}

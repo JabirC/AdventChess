@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { ChessboardComponent } from '../chessboard/chessboard.component';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, UrlSegment } from '@angular/router';
+import { WebSocketService } from '../../shared/services/websocket.service';
 
 @Component({
   selector: 'app-game',
@@ -11,11 +12,17 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 export class GameComponent {
   mode!: string;
-  constructor(private route: ActivatedRoute, private router: Router) {}
+  username!: string;
+
+  constructor(private route: ActivatedRoute, private router: Router, private webSocketService: WebSocketService) {
+  }
+  
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.mode = params['mode'];
       // console.log(this.mode);
     });
   }
+
+
 }

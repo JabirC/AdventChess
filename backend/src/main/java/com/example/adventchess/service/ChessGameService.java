@@ -30,7 +30,7 @@ public class ChessGameService {
         }
         else {
             String[][] adventureBoard = ChessGame.createRandom();
-            System.out.println(adventureBoard);
+            System.out.println(adventureBoard[0]);
             chessGame = new ChessGame(session1, session2, adventureBoard);
         }
 

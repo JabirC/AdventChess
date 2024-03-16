@@ -69,15 +69,6 @@ public class GameController {
   @MessageMapping("/disconnect")
   public void disconnect(Principal principal, String mode) {
       String session = principal.getName();
-      if(mode.equals("classic")){
-        sessionQueueClassic.remove(session);
-      }
-      else if(mode.equals("adventure")){
-        sessionQueueAdventure.remove(session);
-      }
-      else{
-        System.out.println("Invalid input for mode");
-      }
       System.out.println("user has disconnected:");
       System.out.println(session);
       // Perform any necessary cleanup or other actions
@@ -105,28 +96,23 @@ public class GameController {
                 CompletableFuture<Boolean> heartbeatCheck1 = checkHeartbeatAsync(session1);
                 CompletableFuture<Boolean> heartbeatCheck2 = checkHeartbeatAsync(session2);
 
-                if (heartbeatCheck1.get()) {
-                    if(heartbeatCheck2.get()){
-                      chessGameService.createGameSession(session1, session2, mode);
-                    }
-                    else{
-                      sessionQueue.add(session1);
-                    }
-                } 
-                else {
-                    if(heartbeatCheck2.get()){
-                      sessionQueue.add(session2);
-                    }
-                }
+                // Perform actions asynchronously when heartbeat checks complete
+                heartbeatCheck1.thenAccept(result1 -> {
+                    heartbeatCheck2.thenAccept(result2 -> {
+                        if (result1 && result2) {
+                            chessGameService.createGameSession(session1, session2, mode);
+                        } else if (!result1 && result2) {
+                            sessionQueue.add(session2);
+                        } else if (result1 && !result2) {
+                            sessionQueue.add(session1);
+                        }
+                    });
+                });
                 
                 // chessGameService.createGameSession(session1, session2, mode);
             } catch (InterruptedException e) {
                 e.printStackTrace();
                 Thread.currentThread().interrupt();
-            }
-             catch (ExecutionException e) {
-              // Handle the ExecutionException
-              e.printStackTrace();
             }
         }
     });
@@ -140,7 +126,7 @@ private CompletableFuture<Boolean> checkHeartbeatAsync(String sessionId) {
           simpMessagingTemplate.convertAndSend("/topic/ping" + sessionId, message);
           
           // Wait for pong response within a timeout period
-          Thread.sleep(1000); // Wait for 0.5 seconds (adjust as needed)
+          Thread.sleep(1000); // Wait for 1 second (adjust as needed)
           
           // Check if pong response was received within the timeout
           if(pings.contains(sessionId)){

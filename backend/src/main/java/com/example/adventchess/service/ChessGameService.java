@@ -1,6 +1,7 @@
 package com.example.adventchess.service;
 
 import adventchess.chessgame.logic.ChessGame;
+import com.example.adventchess.model.GameStateMessage;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+
+import com.google.gson.Gson;
+
 
 @Service
 public class ChessGameService {
@@ -24,13 +28,30 @@ public class ChessGameService {
     public void createGameSession(String session1, String session2, String mode) {
         String gameId = UUID.randomUUID().toString();
         ChessGame chessGame;
+        String[][] adventureBoard = {
+            {"BR", "BN", "BB", "BQ", "BK", "BB", "BN", "BR"},
+            {"BP", "BP", "BP", "BP", "BP", "BP", "BP", "BP"},
+            {"--", "--", "--", "--", "--", "--", "--", "--"},
+            {"--", "--", "--", "--", "--", "--", "--", "--"},
+            {"--", "--", "--", "--", "--", "--", "--", "--"},
+            {"--", "--", "--", "--", "--", "--", "--", "--"},
+            {"WP", "WP", "WP", "WP", "WP", "WP", "WP", "WP"},
+            {"WR", "WN", "WB", "WQ", "WK", "WB", "WN", "WR"}
+        };
 
         if(mode.equals("classic")){
             chessGame = new ChessGame(session1, session2);
         }
         else {
-            String[][] adventureBoard = ChessGame.createRandom();
-            System.out.println(adventureBoard[0]);
+            adventureBoard = ChessGame.createRandom();
+
+            // for (int i = 0; i < adventureBoard.length; i++) {
+            //     for (int j = 0; j < adventureBoard[i].length; j++) {
+            //         System.out.print(adventureBoard[i][j] + " ");
+            //     }
+            //     System.out.println();
+            // }
+
             chessGame = new ChessGame(session1, session2, adventureBoard);
         }
 
@@ -40,7 +61,9 @@ public class ChessGameService {
 
         // Send a message to each user to notify the start of the game
 
-        String message = String.format("{\"gameId\" : \"%s\"}", gameId);
+        Gson gson = new Gson();
+        String message = gson.toJson(new GameStateMessage(gameId, adventureBoard));
+        // String message = String.format("{\"gameId\" : \"%s\"}", gameId);
 
         messagingTemplate.convertAndSend("/topic/reply" + session1, message);
         messagingTemplate.convertAndSend("/topic/reply" + session2, message);

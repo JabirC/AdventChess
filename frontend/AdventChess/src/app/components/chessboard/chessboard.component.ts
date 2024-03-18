@@ -32,25 +32,15 @@ export class ChessboardComponent implements AfterViewInit {
   private initializeBoard(): void {
     // Array representing the default starting position of pieces on a chessboard
     const defaultBoard: string[][] = [
-      ['BR', 'BN', 'BB', 'BQ', 'BK', 'BB', 'BN', 'BR'],
-      ['BP', 'BP', 'BP', 'BP', 'BP', 'BP', 'BP', 'BP'],
       ['--', '--', '--', '--', '--', '--', '--', '--'],
       ['--', '--', '--', '--', '--', '--', '--', '--'],
       ['--', '--', '--', '--', '--', '--', '--', '--'],
       ['--', '--', '--', '--', '--', '--', '--', '--'],
-      ['WP', 'WP', 'WP', 'WP', 'WP', 'WP', 'WP', 'WP'],
-      ['WR', 'WN', 'WB', 'WQ', 'WK', 'WB', 'WN', 'WR'],
+      ['--', '--', '--', '--', '--', '--', '--', '--'],
+      ['--', '--', '--', '--', '--', '--', '--', '--'],
+      ['--', '--', '--', '--', '--', '--', '--', '--'],
+      ['--', '--', '--', '--', '--', '--', '--', '--'],
     ];
-    // const defaultBoard: string[][] = [
-    //   ['--', '--', '--', '--', '--', '--', '--', '--'],
-    //   ['--', '--', '--', '--', '--', '--', '--', '--'],
-    //   ['--', '--', '--', '--', '--', '--', '--', '--'],
-    //   ['--', '--', '--', '--', '--', '--', '--', '--'],
-    //   ['--', '--', '--', '--', '--', '--', '--', '--'],
-    //   ['--', '--', '--', '--', '--', '--', '--', '--'],
-    //   ['--', '--', '--', '--', '--', '--', '--', '--'],
-    //   ['--', '--', '--', '--', '--', '--', '--', '--'],
-    // ];
 
     // Copy the default board configuration to the boardState
     this.boardState = defaultBoard.map(row => [...row]);
@@ -95,7 +85,9 @@ export class ChessboardComponent implements AfterViewInit {
 
       this.webSocketService.subscribe('/topic/reply' + user, (message) => {
         this.gameSession = message.gameId;
-        console.log(message);
+        this.boardState = message.gameState.map((row: string) => [...row]);
+        this.isWhite = message.isWhite;
+        this.orientationWhite = message.isWhite;
 
         this.webSocketService.subscribe('/topic/state' + this.gameSession, function(move){
           console.log(move.body);

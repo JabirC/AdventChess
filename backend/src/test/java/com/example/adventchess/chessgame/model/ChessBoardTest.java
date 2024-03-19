@@ -156,9 +156,9 @@ public class ChessBoardTest {
         ChessBoard chessBoard = new ChessBoard();
 
         // Set up pieces on the board
-        ChessPiece rook = new Rook("White", 5, 4);
-        ChessPiece bishop = new Bishop("White", 2, 3);
-        ChessPiece knight = new Knight("Black", 5,7);
+        ChessPiece rook = new Rook("WR", "White", 5, 4);
+        ChessPiece bishop = new Bishop("WB", "White", 2, 3);
+        ChessPiece knight = new Knight("BN", "Black", 5,7);
 
         chessBoard.placePiece(rook, 5, 4);     // Place rook at (0, 0)
         chessBoard.placePiece(bishop, 2, 3);   // Place bishop at (2, 3)
@@ -260,10 +260,10 @@ public class ChessBoardTest {
         assertFalse(whitePieces.contains(blackKing));
         assertFalse(blackPieces.contains(whiteKing));
 
-        assertTrue(whiteKing.getName().equals("King"));
+        assertTrue(whiteKing.getName().equals("WK"));
         assertTrue(whiteKing.getColor().equals("White"));
 
-        assertTrue(blackKing.getName().equals("King"));
+        assertTrue(blackKing.getName().equals("BK"));
         assertTrue(blackKing.getColor().equals("Black"));
     }
 

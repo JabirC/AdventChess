@@ -4,8 +4,8 @@ import java.util.List;
 
 // Pawn
 public class Pawn extends ChessPiece{
-    public Pawn(String color, int homeRow, int homeColumn) {
-        super("Pawn", color, homeRow, homeColumn);
+    public Pawn(String name, String color, int homeRow, int homeColumn) {
+        super(name, color, homeRow, homeColumn);
     }
 
     public List<int[]> possibleMoves(ChessBoard board) {

@@ -3,8 +3,8 @@ import java.util.ArrayList;
 import java.util.List;
 // King
 public class King extends ChessPiece{
-    public King(String color, int homeRow, int homeColumn) {
-        super("King", color, homeRow, homeColumn);
+    public King(String name, String color, int homeRow, int homeColumn) {
+        super(name, color, homeRow, homeColumn);
     }
 
     public List<int[]> possibleMoves(ChessBoard board) {

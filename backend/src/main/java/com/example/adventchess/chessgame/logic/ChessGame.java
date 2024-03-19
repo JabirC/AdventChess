@@ -20,8 +20,8 @@ public class ChessGame {
 
     public ChessGame(String playerWhiteName, String playerBlackName, String[][] initialState) {
         this.board = new ChessBoard(initialState);
-        playerWhite = new Player("White", playerWhiteName);
-        playerBlack = new Player("Black", playerBlackName);
+        playerWhite = new Player(playerWhiteName, "White");
+        playerBlack = new Player(playerBlackName, "Black");
         currentPlayer = playerWhite;
     }
 
@@ -149,7 +149,7 @@ public class ChessGame {
         return player;
     }
 
-    private void switchTurns() {
+    public void switchTurns() {
         // Switch turns between players
         currentPlayer = (currentPlayer == playerWhite) ? playerBlack: playerWhite;
     }
@@ -287,6 +287,8 @@ public class ChessGame {
         }
     }
 
+    // public Boolean verifyMove(String playerName, )
+
     // Creates a random initial board state
     public static String[][] createRandom(){
         String[][] board = new String[8][8];
@@ -334,5 +336,32 @@ public class ChessGame {
         return board;
 
     }
+
+    public String getOpponentName(String session){
+        if(playerWhite.getName().equals(session)){
+            return playerBlack.getName();
+        }
+        else{
+            return playerWhite.getName();
+        }
+    }
+
+    public boolean isCurrentPlayer(String session){
+        return currentPlayer.getName().equals(session);
+    }
+
+    public String[][] getStringBoard(){
+        return board.getStringBoard();
+    }
+
+    public String getPlayerColor(String session){
+        if(playerWhite.getName().equals(session)){
+            return "White";
+        }
+        else{
+            return "Black";
+        }
+    }
+    
 
 }

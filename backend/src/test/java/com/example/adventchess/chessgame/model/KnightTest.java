@@ -25,7 +25,7 @@ public class KnightTest {
     void testPossibleMovesKnightBlocked() {
         // Set up
         ChessBoard board = new ChessBoard();
-        Knight knight = new Knight("White", 3, 4);
+        Knight knight = new Knight("WN","White", 3, 4);
         board.placePiece(knight, 3, 4);
 
         ChessPiece whitePawn1 = board.getPieceAt(1, 2);

@@ -4,8 +4,8 @@ import java.util.List;
 
 // Bishop
 public class Bishop extends ChessPiece{
-    public Bishop(String color, int homeRow, int homeColumn) {
-        super("Bishop", color, homeRow, homeColumn);
+    public Bishop(String name, String color, int homeRow, int homeColumn) {
+        super(name, color, homeRow, homeColumn);
     }
 
     public List<int[]> possibleMoves(ChessBoard board) {

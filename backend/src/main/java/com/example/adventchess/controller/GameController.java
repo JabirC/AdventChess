@@ -1,6 +1,7 @@
 package com.example.adventchess;
 
 import com.example.adventchess.service.ChessGameService;
+import com.example.adventchess.model.MoveMessage;
 // import java.util.Map;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
@@ -75,14 +76,14 @@ public class GameController {
   }
 
   @MessageMapping("/game/{gameId}/move")
-  public void handleMove(@DestinationVariable String gameId, Principal principal, String moveMessage) {
+  public void handleMove(@DestinationVariable String gameId, Principal principal, MoveMessage moveMessage) {
         String session = principal.getName();
         chessGameService.verifyMove(session, gameId, moveMessage);
   }
   
 
   @MessageMapping("/pong")
-  public void handleMove(Principal principal, String message) {
+  public void handlePing(Principal principal, String message) {
         String session = principal.getName();
         pings.add(session);
   }

@@ -3,8 +3,8 @@ import java.util.ArrayList;
 import java.util.List;
 // Rook
 public class Rook extends ChessPiece{
-    public Rook(String color, int homeRow, int homeColumn) {
-        super("Rook", color, homeRow, homeColumn);
+    public Rook(String name, String color, int homeRow, int homeColumn) {
+        super(name, color, homeRow, homeColumn);
     }
 
     public List<int[]> possibleMoves(ChessBoard board) {

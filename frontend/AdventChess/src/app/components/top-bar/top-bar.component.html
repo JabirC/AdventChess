@@ -1,16 +1,16 @@
 <!-- top-bar.component.html -->
 <header class="top-bar">
-        <div class="flex flex-row items-center justify-center">
+        <div class="logo-container flex flex-row items-center justify-center" (click)="home()">
             <img src="../../../assets/AdventChess-logo.png" alt="Logo" class="logo" draggable="false">
             <h1 class="logo-name">AdventChess</h1>
         </div>
         <div class="buttons-container w-full">
-            <button>
+            <button (click)="gameMenu()">
                 <h1>Play</h1>
             </button>
             <div class="separator"></div>
-            <button>
+            <!-- <button>
                 <h1>Login</h1>
-            </button>
+            </button> -->
         </div>
 </header>

@@ -21,6 +21,7 @@ export class ChessboardComponent implements AfterViewInit {
   containerWidth!: number;
   username!: string;
   gameSession!: string;
+  turn!: boolean;
   
   constructor(private renderer: Renderer2, private cdr: ChangeDetectorRef, private webSocketService: WebSocketService) {
     // Initialize the boardState with a default chessboard configuration
@@ -43,6 +44,7 @@ export class ChessboardComponent implements AfterViewInit {
     ];
 
     // Copy the default board configuration to the boardState
+    defaultBoard.reverse();
     this.boardState = defaultBoard.map(row => [...row]);
   }
 
@@ -83,14 +85,17 @@ export class ChessboardComponent implements AfterViewInit {
         console.log("pinged");
       });
 
-      this.webSocketService.subscribe('/topic/reply' + user, (message) => {
+      this.webSocketService.subscribe('/topic/reply' + this.username, (message) => {
         this.gameSession = message.gameId;
-        this.boardState = message.gameState.map((row: string) => [...row]);
+        this.boardState = message.gameState.reverse().map((row: string) => [...row]);
         this.isWhite = message.isWhite;
         this.orientationWhite = message.isWhite;
+        this.turn = message.turn;
 
-        this.webSocketService.subscribe('/topic/state' + this.gameSession, function(move){
-          console.log(move.body);
+        this.webSocketService.subscribe('/topic/state' + this.gameSession + this.username, (move)=>{
+          this.boardState = move.gameState.reverse().map((row: string) => [...row]);
+          console.log(move.turn);
+          this.turn = move.turn;
         });
       });
       this.webSocketService.sendMessage("/app/connect/game", this.mode);
@@ -134,12 +139,18 @@ export class ChessboardComponent implements AfterViewInit {
   }
 
   handleBoardChange(newCoordinates: number[], oldRow: number, oldCol: number) {
-    const containerWidth = this.chessboardContainer.nativeElement.clientWidth;
-    const squareSize = containerWidth / 8;
+    // const containerWidth = this.chessboardContainer.nativeElement.clientWidth;
+    // const squareSize = containerWidth / 8;
 
     const pieceName: string = this.boardState[this.getMapping(oldRow)][this.getMapping(oldCol)];
+    console.log(oldRow);
+    console.log(oldCol);
     this.boardState[this.getMapping(oldRow)][this.getMapping(oldCol)] = "--";
     this.boardState[this.getMapping(newCoordinates[0])][this.getMapping(newCoordinates[1])] = pieceName;
+    // this.boardState[this.getMapping(oldRow)][this.getMapping(oldCol)] = "--";
+    // this.boardState[this.getMapping(oldRow)][this.getMapping(oldCol)] = pieceName;
+
+    this.webSocketService.sendMessage(`/app/game/${this.gameSession}/move`, {fromRow: this.getMappingMove(oldRow, "row"), fromCol: this.getMappingMove(oldCol, "col"), toRow: this.getMappingMove(newCoordinates[0], "row"), toCol: this.getMappingMove(newCoordinates[1], "col")});
     console.log(this.boardState);
   }
 
@@ -147,6 +158,26 @@ export class ChessboardComponent implements AfterViewInit {
   getMapping(index: number): number{
     const mappedIndex = this.orientationWhite? index: 7-index;
     return mappedIndex;
+  }
+
+  getMappingMove(index: number, rowOrCol: String){
+    if(this.orientationWhite){
+      if(rowOrCol == "row"){
+        return 7-index;
+      }
+      else{
+        return index;
+      }
+    }
+    else{
+      if(rowOrCol == "row"){
+        return index;
+      }
+      else{
+        return 7-index;
+      }
+    }
+
   }
 
   rotateBoard(){

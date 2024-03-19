@@ -62,8 +62,6 @@
 .resign {
     height: 30px;
     width: 30px;
-    // border-radius: 10px;
-    // color: white;
     background-image: url('../../../assets/resign-button.png');
     background-size: cover; /* Make sure the image covers the entire button */
     background-repeat: no-repeat; /* Ensure the image doesn't repeat */
@@ -76,3 +74,30 @@
 .separator{
     width: 20px;
 }
+
+.status-container {
+    width: 100%;
+    // background-color: black;
+    // color: white;
+    height: 30px;
+    font-weight: 300;
+    font-size: medium;
+    color: #6b6b6ae8;
+}
+.board-control {
+    height: 70px ;
+}
+
+.loading::after {
+    display: inline-block;
+    animation: dotty steps(1,end) 1s infinite;
+    content: '';
+  }
+  
+  @keyframes dotty {
+      0%   { content: ''; }
+      25%  { content: '.'; }
+      50%  { content: '..'; }
+      75%  { content: '...'; }
+      100% { content: ''; }
+  }

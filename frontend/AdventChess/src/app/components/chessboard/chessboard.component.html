@@ -1,17 +1,27 @@
 <!-- chessboard.component.html -->
 
-<!-- <div class="rotate-container flex items-center justify-end">
-  <button class="rotate" (click)="rotateBoard()"
-  >Rotate</button>
-</div> -->
-<div class="board-control-top flex flex-row items-center justify-end w-full">
-  <div class="resign-container flex items-center justify-center">
-    <button class="resign" (click)="disc()"></button>
-  </div>
+<div class="board-control flex flex-row items-center justify-end w-full">
   <div class="separator"></div>
-  <div class="rotate-container flex items-center justify-center">
-    <button class="rotate" (click)="rotateBoard()"></button>
-  </div>
+  <ng-container *ngIf="!gameSession; else gameStarted">
+    <div class="status-container flex items-center justify-start">
+      <div class="loading">Searching for a worthy opponent</div>
+    </div>
+  </ng-container>
+  <ng-template #gameStarted>
+    <ng-container *ngIf="!turn;">
+      <div class="status-container flex items-center justify-start">
+        <div class="loading">Waiting for opponent's move</div>
+      </div>
+    </ng-container>
+    <div class="resign-container flex items-center justify-center">
+      <button class="resign" (click)="disc()"></button>
+    </div>
+    <div class="separator"></div>
+    <div class="rotate-container flex items-center justify-center">
+      <button class="rotate" (click)="rotateBoard()"></button>
+    </div>
+    <div class="separator"></div>
+  </ng-template>
 </div>
 
 <div #chessboardContainer class="chessboard" [style.height]="containerWidth + 'px'"> 
@@ -32,27 +42,44 @@
     <div *ngFor="let row of [0, 1, 2, 3, 4, 5, 6, 7]" class="flex">
         <div *ngFor="let col of [0, 1, 2, 3, 4, 5, 6, 7]" class="flex items-center justify-center">
             <ng-container *ngIf="boardState[getMapping(row)][getMapping(col)] != '--';">
-              <div>
-                <img [src]="keyValuePairs.get(boardState[getMapping(row)][getMapping(col)])" class="chess-piece piece{{row}}{{col}} {{boardState[row][col]}}"        
-                [attr.row]="row" 
-                [attr.col]="col"
-                [curRow] = "row"
-                [curCol] = "col"
+              <ng-container *ngIf="boardState[getMapping(row)][getMapping(col)].charAt(0) == 'W' && isWhite || boardState[getMapping(row)][getMapping(col)].charAt(0) == 'B' && !isWhite; else elseBlock">
+                      <div>
+                        <img [src]="keyValuePairs.get(boardState[getMapping(row)][getMapping(col)])" class="chess-piece piece{{row}}{{col}} {{boardState[row][col]}}"        
+                        [attr.row]="row" 
+                        [attr.col]="col"
+                        [curRow] = "row"
+                        [curCol] = "col"
 
-                [style.width]="containerWidth / 8 + 'px'"
-                [style.height]="containerWidth / 8 + 'px'"
-                [style.top]="(containerWidth / 8) * row + 'px'"
-                [style.left]="(containerWidth / 8) * col + 'px'"
-                [style.z-index]="1" 
+                        [style.width]="containerWidth / 8 + 'px'"
+                        [style.height]="containerWidth / 8 + 'px'"
+                        [style.top]="(containerWidth / 8) * row + 'px'"
+                        [style.left]="(containerWidth / 8) * col + 'px'"
+                        [style.z-index]="1" 
 
-                (boardChanged)="handleBoardChange($event, row, col)"
+                        (boardChanged)="handleBoardChange($event, row, col)"
 
-                pieceDrag
-                [boundary]="boundary"/>
-              </div>
+                        pieceDrag
+                        [boundary]="boundary"/>
+                      </div>
+              </ng-container>
+              <ng-template #elseBlock>
+                <div>
+                  <img [src]="keyValuePairs.get(boardState[getMapping(row)][getMapping(col)])" class="chess-piece piece{{row}}{{col}} {{boardState[row][col]}}"        
+                  [attr.row]="row" 
+                  [attr.col]="col"
+
+                  [style.width]="containerWidth / 8 + 'px'"
+                  [style.height]="containerWidth / 8 + 'px'"
+                  [style.top]="(containerWidth / 8) * row + 'px'"
+                  [style.left]="(containerWidth / 8) * col + 'px'"
+                  [style.z-index]="1"
+                  draggable="false" />
+                </div>
+              </ng-template>
             </ng-container>
         </div>
     </div>
 </div>
+
 
 

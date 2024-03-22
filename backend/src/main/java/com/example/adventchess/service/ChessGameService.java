@@ -89,12 +89,25 @@ public class ChessGameService {
             String messageSession2 = gson.toJson(new GameStateMessage(gameId, game.getStringBoard(), false, isValidMove));
             messagingTemplate.convertAndSend("/topic/state" + gameId + session, messageSession1);
             messagingTemplate.convertAndSend("/topic/state" + gameId + game.getOpponentName(session), messageSession2);
+
+            if(isValidMove){
+                String opponentColor = game.getOpponentColor(session);
+
+                if (game.isCheckMated(opponentColor)) {
+                    String terminalMessage = String.format("{\"result\" : \"%s Wins!\",\"condition\" : \"Checkmate\" }", game.getPlayerColor(session));
+                    messagingTemplate.convertAndSend("/topic/state" + gameId, terminalMessage);
+                }
+
+                if(game.isStaleMate(opponentColor)){
+                    String terminalMessage = String.format("{\"result\" : \"Tie!\",\"condition\" : \"Stalemate\" }");
+                    messagingTemplate.convertAndSend("/topic/state" + gameId, terminalMessage);
+                }
+            }
         }
         else{
             String messageSession1 = gson.toJson(new GameStateMessage(gameId, game.getStringBoard(), false, false));
             messagingTemplate.convertAndSend("/topic/state" + gameId + session, messageSession1);
         }
-        // Boolean isMoveMade = game.verifyMove(session, move);
     }
 
     public ChessGame getGameBySession(String sessionId) {

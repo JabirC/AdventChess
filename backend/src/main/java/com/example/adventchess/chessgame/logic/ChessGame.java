@@ -362,6 +362,15 @@ public class ChessGame {
             return "Black";
         }
     }
+
+    public String getOpponentColor(String session){
+        if(playerWhite.getName().equals(session)){
+            return "Black";
+        }
+        else{
+            return "White";
+        }
+    }
     
 
 }

@@ -1,5 +1,17 @@
 <!-- chessboard.component.html -->
 
+<div #overlay class="overlay flex flex-row items-center justify-center" (click)="overlayOff()">
+  <div class="overlay-message flex flex-col items-center justify-center" (click)="onOverlayMessageClick($event)">
+    <!-- <img class="overlay-img" src="../../../assets/pieces/king-w.svg"/> -->
+    <div class="overlay-title">{{message}}</div>
+    <div class="overlay-subtitle">By {{submessage}}</div>
+    <div class="overlay-separator1"></div>
+    <button class="overlay-button">Rematch</button>
+    <div class="overlay-separator2"></div>
+    <button class="overlay-button" (click)="gameMenu()">Menu</button>
+  </div>
+</div>
+
 <div class="board-control flex flex-row items-center justify-end w-full">
   <div class="separator"></div>
   <ng-container *ngIf="!gameSession; else gameStarted">
@@ -42,7 +54,7 @@
     <div *ngFor="let row of [0, 1, 2, 3, 4, 5, 6, 7]" class="flex">
         <div *ngFor="let col of [0, 1, 2, 3, 4, 5, 6, 7]" class="flex items-center justify-center">
             <ng-container *ngIf="boardState[getMapping(row)][getMapping(col)] != '--';">
-              <ng-container *ngIf="boardState[getMapping(row)][getMapping(col)].charAt(0) == 'W' && isWhite || boardState[getMapping(row)][getMapping(col)].charAt(0) == 'B' && !isWhite; else elseBlock">
+              <ng-container *ngIf="boardState[getMapping(row)][getMapping(col)].charAt(0) == 'W' && isWhite && !message || boardState[getMapping(row)][getMapping(col)].charAt(0) == 'B' && !isWhite && !message; else elseBlock">
                       <div>
                         <img [src]="keyValuePairs.get(boardState[getMapping(row)][getMapping(col)])" class="chess-piece piece{{row}}{{col}} {{boardState[row][col]}}"        
                         [attr.row]="row" 

@@ -2,6 +2,7 @@ import { Component, ElementRef, Renderer2, ViewChild, AfterViewInit, HostListene
 import { CommonModule } from '@angular/common';
 import { pieceDragDirective} from '../../shared/directives/piece.directive'
 import { WebSocketService } from '../../shared/services/websocket.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-chessboard',
@@ -18,12 +19,15 @@ export class ChessboardComponent implements AfterViewInit {
   isConnected: boolean = false;
   orientationWhite!: boolean;
   @ViewChild('chessboardContainer') chessboardContainer!: ElementRef;
+  @ViewChild('overlay') overlay!: ElementRef;
   containerWidth!: number;
   username!: string;
   gameSession!: string;
   turn!: boolean;
+  message!: string;
+  submessage!: string;
   
-  constructor(private renderer: Renderer2, private cdr: ChangeDetectorRef, private webSocketService: WebSocketService) {
+  constructor(private renderer: Renderer2, private cdr: ChangeDetectorRef, private webSocketService: WebSocketService, private router: Router) {
     // Initialize the boardState with a default chessboard configuration
     this.isWhite = true;
     this.isWhite? this.orientationWhite = true: this.orientationWhite = false;
@@ -97,6 +101,10 @@ export class ChessboardComponent implements AfterViewInit {
           console.log(move.turn);
           this.turn = move.turn;
         });
+
+        this.webSocketService.subscribe('/topic/state' + this.gameSession, (msg)=>{
+          this.overlayOn(msg.result, msg.condition);
+        });
       });
       this.webSocketService.sendMessage("/app/connect/game", this.mode);
     });
@@ -129,6 +137,7 @@ export class ChessboardComponent implements AfterViewInit {
     this.boundary.scroll = scrollPosition;
   }
 
+
   private setBoundary(): void {
     if (this.chessboardContainer) {
       this.containerWidth = this.chessboardContainer.nativeElement.clientWidth;
@@ -139,7 +148,7 @@ export class ChessboardComponent implements AfterViewInit {
   }
 
   handleBoardChange(newCoordinates: number[], oldRow: number, oldCol: number) {
-    // const containerWidth = this.chessboardContainer.nativeElement.clientWidth;
+    const containerWidth = this.chessboardContainer.nativeElement.clientWidth;
     // const squareSize = containerWidth / 8;
 
     const pieceName: string = this.boardState[this.getMapping(oldRow)][this.getMapping(oldCol)];
@@ -182,6 +191,25 @@ export class ChessboardComponent implements AfterViewInit {
 
   rotateBoard(){
     this.orientationWhite = !this.orientationWhite;
+  }
+
+  overlayOn(msg: string, submsg: string){
+    this.message = msg;
+    this.submessage = submsg;
+    this.turn = true;
+    this.overlay.nativeElement.style.display = 'block';
+  }
+
+  overlayOff(){
+    this.overlay.nativeElement.style.display = 'none';
+  }
+
+  gameMenu(){
+    this.router.navigate(['/mode']);
+  }
+
+  onOverlayMessageClick(event: MouseEvent): void {
+    event.stopPropagation();
   }
 
 }

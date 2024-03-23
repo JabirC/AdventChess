@@ -68,10 +68,9 @@ public class GameController {
   }
 
   @MessageMapping("/disconnect")
-  public void disconnect(Principal principal, String mode) {
+  public void disconnect(Principal principal, String reason) {
       String session = principal.getName();
-      System.out.println("user has disconnected:");
-      System.out.println(session);
+      chessGameService.handleDisconnect(session, reason);
       // Perform any necessary cleanup or other actions
   }
 

@@ -20,7 +20,7 @@ public class ChessGameTest {
             {"WP", "WP", "WP", "--", "--", "--", "--", "--"},
             {"WR", "--", "--", "--", "--", "BQ", "--", "WK"}
         };
-        ChessGame gameInCheck = new ChessGame("Alice", "Bob", whiteInCheckState);
+        ChessGame gameInCheck = new ChessGame("null", "Alice", "Bob", whiteInCheckState);
         assertTrue(gameInCheck.isChecked("White"));
         assertFalse(gameInCheck.isChecked("Black"));
     }
@@ -37,7 +37,7 @@ public class ChessGameTest {
             {"WP", "WP", "WP", "--", "--", "--", "--", "--"},
             {"WR", "--", "--", "--", "--", "BQ", "WR", "WK"}
         };
-        ChessGame gameInCheck = new ChessGame("Alice", "Bob", whiteNotInCheckState);
+        ChessGame gameInCheck = new ChessGame("null", "Alice", "Bob", whiteNotInCheckState);
         assertFalse(gameInCheck.isChecked("White"));
         assertFalse(gameInCheck.isChecked("Black"));
     }
@@ -54,7 +54,7 @@ public class ChessGameTest {
             {"WP", "WP", "WP", "--", "--", "--", "--", "--"},
             {"WR", "--", "--", "--", "--", "BQ", "WR", "WK"}
         };
-        ChessGame gameInCheck = new ChessGame("Alice", "Bob", whiteInCheckState);
+        ChessGame gameInCheck = new ChessGame("null", "Alice", "Bob", whiteInCheckState);
         assertTrue(gameInCheck.isChecked("White"));
         assertFalse(gameInCheck.isChecked("Black"));
     }
@@ -72,7 +72,7 @@ public class ChessGameTest {
             {"WP", "WP", "WP", "--", "--", "WP", "WP", "WP"},
             {"WR", "WN", "WB", "WQ", "WK", "WB", "WN", "WR"}
         };
-        ChessGame gameInCheck = new ChessGame("Alice", "Bob", whiteNotInCheckState);
+        ChessGame gameInCheck = new ChessGame("null", "Alice", "Bob", whiteNotInCheckState);
         assertFalse(gameInCheck.isChecked("White"));
         assertFalse(gameInCheck.isChecked("Black"));
     }
@@ -89,7 +89,7 @@ public class ChessGameTest {
             {"WP", "WP", "WP", "--", "--", "WP", "WP", "WP"},
             {"WR", "WN", "WB", "--", "WK", "WB", "WN", "WR"}
         };
-        ChessGame gameInCheck = new ChessGame("Alice", "Bob", blackInCheckState);
+        ChessGame gameInCheck = new ChessGame("null", "Alice", "Bob", blackInCheckState);
         assertFalse(gameInCheck.isChecked("White"));
         assertTrue(gameInCheck.isChecked("Black"));
     }
@@ -106,7 +106,7 @@ public class ChessGameTest {
             {"WP", "WP", "WP", "--", "--", "WP", "WP", "WP"},
             {"WR", "WN", "WB", "--", "WK", "WB", "WN", "WR"}
         };
-        ChessGame gameInCheck = new ChessGame("Alice", "Bob", blackNotInCheckState);
+        ChessGame gameInCheck = new ChessGame("null", "Alice", "Bob", blackNotInCheckState);
         assertFalse(gameInCheck.isChecked("White"));
         assertFalse(gameInCheck.isChecked("Black"));
     }
@@ -123,7 +123,7 @@ public class ChessGameTest {
             {"WP", "WP", "WP", "--", "--", "WP", "WP", "WP"},
             {"WR", "--", "WB", "--", "WK", "WB", "WN", "WR"}
         };
-        ChessGame gameInCheck = new ChessGame("Alice", "Bob", blackInCheckState);
+        ChessGame gameInCheck = new ChessGame("null", "Alice", "Bob", blackInCheckState);
         assertFalse(gameInCheck.isChecked("White"));
         assertTrue(gameInCheck.isChecked("Black"));
     }
@@ -140,7 +140,7 @@ public class ChessGameTest {
             {"WP", "WP", "WP", "--", "--", "WP", "WP", "WP"},
             {"WR", "--", "WB", "--", "WK", "WB", "WN", "WR"}
         };
-        ChessGame gameInCheck = new ChessGame("Alice", "Bob", blackInCheckState);
+        ChessGame gameInCheck = new ChessGame("null", "Alice", "Bob", blackInCheckState);
         assertFalse(gameInCheck.isChecked("White"));
         assertTrue(gameInCheck.isChecked("Black"));
     }
@@ -158,7 +158,7 @@ public class ChessGameTest {
             {"--", "--", "--", "--", "--", "--", "--", "--"},
             {"--", "--", "--", "--", "--", "--", "--", "--"}
         };
-        ChessGame gameInCheck = new ChessGame("Alice", "Bob", whiteInCheckState);
+        ChessGame gameInCheck = new ChessGame("null", "Alice", "Bob", whiteInCheckState);
         assertFalse(gameInCheck.isChecked("White"));
     }
 
@@ -174,7 +174,7 @@ public class ChessGameTest {
             {"--", "--", "--", "--", "--", "--", "--", "--"},
             {"--", "--", "--", "--", "--", "--", "BK", "--"}
         };
-        ChessGame gameInCheck = new ChessGame("Alice", "Bob", whiteInCheckState);
+        ChessGame gameInCheck = new ChessGame("null", "Alice", "Bob", whiteInCheckState);
         assertFalse(gameInCheck.isChecked("White"));
     }
 
@@ -190,7 +190,7 @@ public class ChessGameTest {
             {"WP", "WP", "WP", "--", "--", "--", "WP", "WP"},
             {"WR", "--", "WB", "--", "WK", "WB", "WN", "WR"}
         };
-        ChessGame game = new ChessGame("Alice", "Bob", board);
+        ChessGame game = new ChessGame("null", "Alice", "Bob", board);
         assertFalse(game.hasLegalKingMoves("Black"));
     }
 
@@ -206,7 +206,7 @@ public class ChessGameTest {
             {"WP", "WP", "WP", "--", "--", "WP", "WP", "WP"},
             {"WR", "--", "WB", "--", "WK", "WB", "WN", "WR"}
         };
-        ChessGame game = new ChessGame("Alice", "Bob", board);
+        ChessGame game = new ChessGame("null", "Alice", "Bob", board);
         assertTrue(game.hasLegalKingMoves("Black"));
     }
 
@@ -222,7 +222,7 @@ public class ChessGameTest {
             {"--", "--", "--", "--", "--", "--", "--", "--"},
             {"--", "--", "--", "--", "--", "--", "--", "--"}
         };
-        ChessGame game = new ChessGame("Alice", "Bob", board);
+        ChessGame game = new ChessGame("null", "Alice", "Bob", board);
         assertTrue(game.hasLegalKingMoves("White"));
     }
 
@@ -238,7 +238,7 @@ public class ChessGameTest {
             {"--", "--", "--", "--", "--", "--", "--", "--"},
             {"--", "--", "--", "--", "--", "--", "--", "--"}
         };
-        ChessGame game = new ChessGame("Alice", "Bob", board);
+        ChessGame game = new ChessGame("null", "Alice", "Bob", board);
         assertTrue(game.hasLegalKingMoves("White"));
     }
 
@@ -254,7 +254,7 @@ public class ChessGameTest {
             {"--", "--", "--", "--", "--", "--", "--", "--"},
             {"--", "--", "--", "--", "--", "--", "--", "--"}
         };
-        ChessGame game = new ChessGame("Alice", "Bob", board);
+        ChessGame game = new ChessGame("null", "Alice", "Bob", board);
         assertFalse(game.hasLegalKingMoves("White"));
     }
 
@@ -270,7 +270,7 @@ public class ChessGameTest {
             {"--", "--", "--", "--", "--", "--", "--", "--"},
             {"--", "--", "--", "--", "--", "--", "--", "--"}
         };
-        ChessGame game = new ChessGame("Alice", "Bob", board);
+        ChessGame game = new ChessGame("null", "Alice", "Bob", board);
         assertFalse(game.hasLegalPieceMoves("White"));
     }
 
@@ -286,7 +286,7 @@ public class ChessGameTest {
             {"--", "--", "--", "--", "--", "--", "--", "--"},
             {"--", "--", "WR", "--", "--", "--", "--", "--"}
         };
-        ChessGame game = new ChessGame("Alice", "Bob", board);
+        ChessGame game = new ChessGame("null", "Alice", "Bob", board);
         assertTrue(game.hasLegalPieceMoves("White"));
     }
 
@@ -302,7 +302,7 @@ public class ChessGameTest {
             {"--", "--", "--", "--", "--", "--", "--", "--"},
             {"--", "--", "WN", "--", "--", "--", "--", "--"}
         };
-        ChessGame game = new ChessGame("Alice", "Bob", board);
+        ChessGame game = new ChessGame("null", "Alice", "Bob", board);
         assertFalse(game.hasLegalPieceMoves("White"));
     }
 
@@ -318,7 +318,7 @@ public class ChessGameTest {
             {"--", "--", "--", "--", "--", "--", "--", "--"},
             {"--", "--", "WN", "--", "--", "--", "--", "--"}
         };
-        ChessGame game = new ChessGame("Alice", "Bob", board);
+        ChessGame game = new ChessGame("null", "Alice", "Bob", board);
         assertTrue(game.hasLegalPieceMoves("White"));
     }
 
@@ -334,7 +334,7 @@ public class ChessGameTest {
             {"--", "--", "--", "--", "--", "--", "--", "--"},
             {"--", "--", "WN", "--", "--", "--", "--", "--"}
         };
-        ChessGame game = new ChessGame("Alice", "Bob", board);
+        ChessGame game = new ChessGame("null", "Alice", "Bob", board);
         assertTrue(game.hasLegalPieceMoves("White"));
     }
 
@@ -351,7 +351,7 @@ public class ChessGameTest {
             {"--", "--", "--", "--", "--", "--", "--", "--"},
             {"--", "--", "WN", "--", "--", "--", "--", "--"}
         };
-        ChessGame game = new ChessGame("Alice", "Bob", board);
+        ChessGame game = new ChessGame("null", "Alice", "Bob", board);
         assertTrue(game.hasLegalPieceMoves("White"));
     }
 
@@ -367,7 +367,7 @@ public class ChessGameTest {
             {"--", "--", "--", "--", "--", "--", "--", "--"},
             {"--", "--", "WN", "--", "--", "--", "--", "--"}
         };
-        ChessGame game = new ChessGame("Alice", "Bob", board);
+        ChessGame game = new ChessGame("null", "Alice", "Bob", board);
         assertFalse(game.hasLegalPieceMoves("White"));
     }
 
@@ -383,7 +383,7 @@ public class ChessGameTest {
             {"--", "--", "--", "--", "--", "--", "--", "--"},
             {"--", "--", "--", "--", "--", "--", "--", "--"}
         };
-        ChessGame game = new ChessGame("Alice", "Bob", board);
+        ChessGame game = new ChessGame("null", "Alice", "Bob", board);
         assertTrue(game.hasLegalPieceMoves("White"));
     }
 
@@ -400,7 +400,7 @@ public class ChessGameTest {
             {"--", "--", "--", "--", "--", "--", "--", "--"},
             {"--", "--", "--", "--", "--", "--", "--", "--"}
         };
-        ChessGame game = new ChessGame("Alice", "Bob", board);
+        ChessGame game = new ChessGame("null", "Alice", "Bob", board);
         assertTrue(game.isCheckMated("White"));
     }
 
@@ -416,7 +416,7 @@ public class ChessGameTest {
             {"--", "--", "--", "--", "--", "--", "--", "--"},
             {"--", "--", "--", "--", "--", "--", "--", "--"}
         };
-        ChessGame game = new ChessGame("Alice", "Bob", board);
+        ChessGame game = new ChessGame("null", "Alice", "Bob", board);
         assertFalse(game.isCheckMated("White"));
     }
 
@@ -432,7 +432,7 @@ public class ChessGameTest {
             {"--", "WK", "--", "--", "--", "--", "--", "--"},
             {"--", "--", "--", "--", "--", "--", "--", "--"}
         };
-        ChessGame game = new ChessGame("Alice", "Bob", board);
+        ChessGame game = new ChessGame("null", "Alice", "Bob", board);
         assertTrue(game.isCheckMated("Black"));
     }
 
@@ -449,7 +449,7 @@ public class ChessGameTest {
             {"--", "--", "--", "--", "--", "--", "--", "--"},
             {"--", "--", "--", "--", "--", "--", "--", "--"}
         };
-        ChessGame game = new ChessGame("Alice", "Bob", board);
+        ChessGame game = new ChessGame("null", "Alice", "Bob", board);
         assertTrue(game.isCheckMated("Black"));
     }
 
@@ -466,7 +466,7 @@ public class ChessGameTest {
             {"--", "--", "--", "--", "--", "--", "--", "--"},
             {"--", "--", "--", "--", "--", "--", "--", "--"}
         };
-        ChessGame game = new ChessGame("Alice", "Bob", board);
+        ChessGame game = new ChessGame("null", "Alice", "Bob", board);
         assertFalse(game.isCheckMated("Black"));
     }
 
@@ -483,7 +483,7 @@ public class ChessGameTest {
             {"--", "BR", "--", "--", "--", "WP", "WP", "--"},
             {"--", "--", "--", "--", "--", "--", "WK", "--"}
         };
-        ChessGame game = new ChessGame("Alice", "Bob", board);
+        ChessGame game = new ChessGame("null", "Alice", "Bob", board);
         assertTrue(game.isCheckMated("Black"));
     }
 
@@ -499,7 +499,7 @@ public class ChessGameTest {
             {"--", "--", "--", "--", "--", "--", "--", "--"},
             {"--", "--", "--", "--", "--", "--", "--", "--"}
         };
-        ChessGame game = new ChessGame("Alice", "Bob", board);
+        ChessGame game = new ChessGame("null", "Alice", "Bob", board);
         assertFalse(game.isCheckMated("Black"));
     }
 
@@ -515,7 +515,7 @@ public class ChessGameTest {
             {"--", "--", "--", "--", "--", "--", "--", "--"},
             {"--", "--", "--", "--", "--", "--", "WK", "--"}
         };
-        ChessGame game = new ChessGame("Alice", "Bob", board);
+        ChessGame game = new ChessGame("null", "Alice", "Bob", board);
         assertTrue(game.isCheckMated("Black"));
     }
 
@@ -531,7 +531,7 @@ public class ChessGameTest {
             {"WP", "WP", "WP", "WP", "WP", "--", "--", "WP"},
             {"WR", "WN", "WB", "WQ", "WK", "WB", "WN", "WR"}
         };
-        ChessGame game = new ChessGame("Alice", "Bob", board);
+        ChessGame game = new ChessGame("null", "Alice", "Bob", board);
         assertTrue(game.isChecked("White"));
         assertFalse(game.hasLegalKingMoves("White"));
         assertFalse(game.hasLegalPieceMoves("White"));
@@ -550,7 +550,7 @@ public class ChessGameTest {
             {"--", "--", "--", "--", "--", "--", "--", "--"},
             {"--", "--", "--", "--", "--", "--", "--", "--"}
         };
-        ChessGame game = new ChessGame("Alice", "Bob", board);
+        ChessGame game = new ChessGame("null", "Alice", "Bob", board);
         assertTrue(game.isStaleMate("Black"));
         assertFalse(game.isStaleMate("White"));
     }
@@ -567,7 +567,7 @@ public class ChessGameTest {
             {"--", "--", "--", "--", "--", "WQ", "--", "--"},
             {"--", "--", "--", "--", "--", "--", "--", "BK"}
         };
-        ChessGame game = new ChessGame("Alice", "Bob", board);
+        ChessGame game = new ChessGame("null", "Alice", "Bob", board);
         assertTrue(game.isStaleMate("Black"));
         assertFalse(game.isStaleMate("White"));
     }
@@ -584,7 +584,7 @@ public class ChessGameTest {
             {"--", "--", "--", "--", "--", "--", "--", "--"},
             {"--", "--", "--", "--", "--", "--", "--", "--"}
         };
-        ChessGame game = new ChessGame("Alice", "Bob", board);
+        ChessGame game = new ChessGame("null", "Alice", "Bob", board);
         assertTrue(game.isStaleMate("White"));
         assertFalse(game.isStaleMate("Black"));
     }
@@ -601,7 +601,7 @@ public class ChessGameTest {
             {"--", "--", "--", "--", "--", "BQ", "--", "--"},
             {"--", "--", "--", "--", "--", "--", "--", "WK"}
         };
-        ChessGame game = new ChessGame("Alice", "Bob", board);
+        ChessGame game = new ChessGame("null", "Alice", "Bob", board);
         assertTrue(game.isStaleMate("White"));
         assertFalse(game.isStaleMate("Black"));
     }
@@ -619,14 +619,14 @@ public class ChessGameTest {
             {"WR", "--", "--", "--", "--", "--", "--", "--"},
             {"--", "--", "--", "--", "--", "--", "--", "BK"}
         };
-        ChessGame game = new ChessGame("Alice", "Bob", board);
+        ChessGame game = new ChessGame("null", "Alice", "Bob", board);
         assertTrue(game.isStaleMate("Black"));
         assertFalse(game.isStaleMate("White"));
     }
 
     @Test
     public void testMakeMove() {
-        ChessGame game = new ChessGame("Alice", "Bob");
+        ChessGame game = new ChessGame("null", "Alice", "Bob");
         ChessBoard board = game.getBoard();
         Player playerWhite = game.getPlayer("White");
         Player playerBlack = game.getPlayer("Black");

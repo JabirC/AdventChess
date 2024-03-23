@@ -45,19 +45,19 @@ public class ChessGameService {
 
         if(mode.equals("classic")){
             if(isFirstSessionWhite){
-                chessGame = new ChessGame(session1, session2);
+                chessGame = new ChessGame(gameId, session1, session2);
             }
             else{
-                chessGame = new ChessGame(session2, session1);
+                chessGame = new ChessGame(gameId, session2, session1);
             }
         }
         else {
             board = ChessGame.createRandom();
             if(isFirstSessionWhite){
-                chessGame = new ChessGame(session1, session2, board);
+                chessGame = new ChessGame(gameId, session1, session2, board);
             }
             else{
-                chessGame = new ChessGame(session2, session1, board);
+                chessGame = new ChessGame(gameId, session2, session1, board);
             }
         }
 
@@ -99,7 +99,7 @@ public class ChessGameService {
                 }
 
                 if(game.isStaleMate(opponentColor)){
-                    String terminalMessage = String.format("{\"result\" : \"Tie!\",\"condition\" : \"Stalemate\" }");
+                    String terminalMessage = String.format("{\"result\" : \"Stalemate\",\"condition\" : \"%s\" }", game.getPlayerColor(session));
                     messagingTemplate.convertAndSend("/topic/state" + gameId, terminalMessage);
                 }
             }
@@ -112,6 +112,15 @@ public class ChessGameService {
 
     public ChessGame getGameBySession(String sessionId) {
         return userGameMap.get(sessionId);
+    }
+
+    public void handleDisconnect(String session, String reason){
+        ChessGame game = userGameMap.get(session);
+        if(game != null){
+            String opponent = game.getOpponentName(session);
+            String terminalMessage = String.format("{\"result\" : \"%s Wins!\",\"condition\" : \"%s\" }", game.getOpponentColor(session), reason);
+            messagingTemplate.convertAndSend("/topic/state" + game.getGameId(), terminalMessage);
+        }
     }
 
     // Additional methods for managing game state, moves, etc.

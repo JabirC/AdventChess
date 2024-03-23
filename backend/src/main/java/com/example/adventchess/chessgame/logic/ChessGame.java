@@ -10,16 +10,19 @@ public class ChessGame {
     private Player playerWhite;
     private Player playerBlack;
     private Player currentPlayer;
+    private String gameId;
 
-    public ChessGame(String playerWhiteName, String playerBlackName) {
+    public ChessGame(String gameId, String playerWhiteName, String playerBlackName) {
         this.board = new ChessBoard();
+        this.gameId = gameId;
         playerWhite = new Player(playerWhiteName, "White");
         playerBlack = new Player(playerBlackName, "Black");
         currentPlayer = playerWhite;
     }
 
-    public ChessGame(String playerWhiteName, String playerBlackName, String[][] initialState) {
+    public ChessGame(String gameId, String playerWhiteName, String playerBlackName, String[][] initialState) {
         this.board = new ChessBoard(initialState);
+        this.gameId = gameId;
         playerWhite = new Player(playerWhiteName, "White");
         playerBlack = new Player(playerBlackName, "Black");
         currentPlayer = playerWhite;
@@ -370,6 +373,10 @@ public class ChessGame {
         else{
             return "White";
         }
+    }
+
+    public String getGameId(){
+        return gameId;
     }
     
 

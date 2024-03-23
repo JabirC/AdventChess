@@ -112,16 +112,16 @@ export class ChessboardComponent implements AfterViewInit {
   }
 
   ngOnDestroy(): void {
-    this.webSocketService.disconnect(this.mode);
+    this.webSocketService.disconnect("Disconnection");
   }
 
   disc(): void {
-    this.webSocketService.disconnect(this.mode);
+    this.webSocketService.resign("Resignation");
   }
 
   @HostListener('window:beforeunload', ['$event'])
   beforeunloadHandler(event: Event) {
-    this.webSocketService.disconnect(this.mode);
+    this.webSocketService.disconnect("Disconnection");
   }
   
   @HostListener('window:resize', ['$event'])

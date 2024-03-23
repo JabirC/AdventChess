@@ -33,6 +33,12 @@ export class WebSocketService {
     }
   }
 
+  resign(reason: string): void {
+    if (this.stompClient.connected) {
+      this.stompClient.send("/app/disconnect", {}, reason);
+    }
+  }
+
  
   subscribe(destination: string, callback: (message: any) => void): void {
     if (this.stompClient.connected) {

@@ -96,11 +96,13 @@ public class ChessGameService {
                 if (game.isCheckMated(opponentColor)) {
                     String terminalMessage = String.format("{\"result\" : \"%s Wins!\",\"condition\" : \"Checkmate\" }", game.getPlayerColor(session));
                     messagingTemplate.convertAndSend("/topic/state" + gameId, terminalMessage);
+                    removeGame(session);
                 }
 
                 if(game.isStaleMate(opponentColor)){
                     String terminalMessage = String.format("{\"result\" : \"Stalemate\",\"condition\" : \"%s\" }", game.getPlayerColor(session));
                     messagingTemplate.convertAndSend("/topic/state" + gameId, terminalMessage);
+                    removeGame(session);
                 }
             }
         }
@@ -120,8 +122,15 @@ public class ChessGameService {
             String opponent = game.getOpponentName(session);
             String terminalMessage = String.format("{\"result\" : \"%s Wins!\",\"condition\" : \"%s\" }", game.getOpponentColor(session), reason);
             messagingTemplate.convertAndSend("/topic/state" + game.getGameId(), terminalMessage);
+            removeGame(session);
         }
     }
 
+    public void removeGame(String session){
+        ChessGame game = userGameMap.get(session);
+        String opponent = game.getOpponentName(session);
+        userGameMap.remove(session);
+        userGameMap.remove(opponent);
+    }
     // Additional methods for managing game state, moves, etc.
 }

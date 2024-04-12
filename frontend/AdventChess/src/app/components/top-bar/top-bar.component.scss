@@ -38,5 +38,15 @@
 
 .buttons-container {
     display: flex;
-    justify-content: flex-end; 
+    justify-content: flex-end;
+}
+
+.play-button {
+    width: 80px;
+    height: 40px;
+    border-radius: 5px;
+}
+
+.play-button:hover {
+    background-color: rgba(182, 182, 182, 0.675);
 }

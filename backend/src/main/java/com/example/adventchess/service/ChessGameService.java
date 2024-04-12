@@ -169,6 +169,9 @@ public class ChessGameService {
     public void handleDisconnect(String session, String reason){
         ChessGame game = userGameMap.get(session);
         if(game != null){
+            if(rematchMap.containsKey(game.getGameId())){
+                rematchMap.remove(game.getGameId());
+            }
             String opponent = game.getOpponentName(session);
             String terminalMessage = String.format("{\"result\" : \"%s Wins!\",\"condition\" : \"%s\" }", game.getOpponentColor(session), reason);
             messagingTemplate.convertAndSend("/topic/state" + game.getGameId(), terminalMessage);
@@ -179,11 +182,13 @@ public class ChessGameService {
     }
 
     public void handleRematch(String gameId, String session, String mode){
-        if(rematchMap.containsKey(gameId)){
-            startRematch(gameId, session, mode);
-        }
-        else{
-            rematchMap.put(gameId, session);
+        if(userGameMap.containsKey(session)){
+            if(rematchMap.containsKey(gameId)){
+                startRematch(gameId, session, mode);
+            }
+            else{
+                rematchMap.put(gameId, session);
+            }
         }
     }
 

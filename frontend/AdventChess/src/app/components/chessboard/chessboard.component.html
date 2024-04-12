@@ -6,7 +6,17 @@
     <div class="overlay-title">{{message}}</div>
     <div class="overlay-subtitle">By {{submessage}}</div>
     <div class="overlay-separator1"></div>
-    <button class="overlay-button">Rematch</button>
+    <ng-container *ngIf="rematch; else disabled">
+      <ng-container *ngIf="!isLoading; else load">
+          <button #rematch class="overlay-button" (click)="handleRematch()">Rematch</button>
+      </ng-container>
+      <ng-template #load>
+        <button #rematch class="overlay-button opacity-50 loading" (click)="cancelRematch()"></button>
+      </ng-template>
+    </ng-container>
+    <ng-template #disabled>
+      <button class="overlay-button pointer-events-none opacity-50">Rematch</button>
+    </ng-template>
     <div class="overlay-separator2"></div>
     <button class="overlay-button" (click)="gameMenu()">Menu</button>
   </div>

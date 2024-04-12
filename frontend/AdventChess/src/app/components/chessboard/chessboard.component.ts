@@ -16,21 +16,26 @@ export class ChessboardComponent implements AfterViewInit {
   boundary = { top: 0, bottom: 100, left: 0, right: 100, scroll: 0, windowSize:0};
   boardState: string[][] = [];
   isWhite!: boolean;
-  isConnected: boolean = false;
   orientationWhite!: boolean;
   @ViewChild('chessboardContainer') chessboardContainer!: ElementRef;
   @ViewChild('overlay') overlay!: ElementRef;
+  @ViewChild('rematch') rematchButton!: ElementRef; // ViewChild reference
+
   containerWidth!: number;
   username!: string;
   gameSession!: string;
   turn!: boolean;
   message!: string;
   submessage!: string;
+  rematch!: boolean;
+  isLoading!: boolean;
   
   constructor(private renderer: Renderer2, private cdr: ChangeDetectorRef, private webSocketService: WebSocketService, private router: Router) {
     // Initialize the boardState with a default chessboard configuration
     this.isWhite = true;
     this.isWhite? this.orientationWhite = true: this.orientationWhite = false;
+    this.rematch = true;
+    this.isLoading = false;
     this.initializeBoard();
   }
 
@@ -90,6 +95,8 @@ export class ChessboardComponent implements AfterViewInit {
       });
 
       this.webSocketService.subscribe('/topic/reply' + this.username, (message) => {
+        this.overlayOff();
+        this.isLoading = false;
         this.gameSession = message.gameId;
         this.boardState = message.gameState.reverse().map((row: string) => [...row]);
         this.isWhite = message.isWhite;
@@ -103,7 +110,10 @@ export class ChessboardComponent implements AfterViewInit {
         });
 
         this.webSocketService.subscribe('/topic/state' + this.gameSession, (msg)=>{
-          this.overlayOn(msg.result, msg.condition);
+          if(!this.message){
+            this.overlayOn(msg.result, msg.condition);
+          }
+          // this.webSocketService.disconnect("Disconnection");
         });
       });
       this.webSocketService.sendMessage("/app/connect/game", this.mode);
@@ -202,6 +212,8 @@ export class ChessboardComponent implements AfterViewInit {
 
   overlayOff(){
     this.overlay.nativeElement.style.display = 'none';
+    this.message = '';
+    this.submessage = '';
   }
 
   gameMenu(){
@@ -211,5 +223,17 @@ export class ChessboardComponent implements AfterViewInit {
   onOverlayMessageClick(event: MouseEvent): void {
     event.stopPropagation();
   }
+
+  handleRematch(){
+    this.webSocketService.sendMessage(`/app/game/${this.gameSession}/rematch`, this.mode);
+    this.isLoading = true;
+  }
+
+  cancelRematch(){
+    this.rematch = false;
+    this.isLoading = false;
+    this.webSocketService.disconnect("disc");
+  }
+
 
 }

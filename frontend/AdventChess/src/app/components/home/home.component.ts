@@ -14,6 +14,6 @@ export class HomeComponent {
   }
 
   navigateToPlay(){
-    this.router.navigate(['/play']);
+    this.router.navigate(['/mode']);
   }
 }

@@ -20,6 +20,9 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.CompletableFuture;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
+
 
 // import java.lang.InterruptedException;
 
@@ -67,11 +70,18 @@ public class GameController {
         }
   }
 
+
+
   @MessageMapping("/disconnect")
   public void disconnect(Principal principal, String reason) {
       String session = principal.getName();
       chessGameService.handleDisconnect(session, reason);
-      // Perform any necessary cleanup or other actions
+  }
+
+  @MessageMapping("/game/{gameId}/rematch")
+  public void handleRematch(@DestinationVariable String gameId, Principal principal, String mode) {
+      String session = principal.getName();
+      chessGameService.handleRematch(gameId, session, mode);
   }
 
   @MessageMapping("/game/{gameId}/move")
@@ -126,7 +136,7 @@ private CompletableFuture<Boolean> checkHeartbeatAsync(String sessionId) {
           simpMessagingTemplate.convertAndSend("/topic/ping" + sessionId, message);
           
           // Wait for pong response within a timeout period
-          Thread.sleep(1000); // Wait for 1 second (adjust as needed)
+          Thread.sleep(500); // Wait for .5 second (adjust as needed)
           
           // Check if pong response was received within the timeout
           if(pings.contains(sessionId)){

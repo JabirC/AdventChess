@@ -19,6 +19,7 @@ import com.google.gson.Gson;
 public class ChessGameService {
 
     private final Map<String, ChessGame> userGameMap = new HashMap<>();
+    private final Map<String, String> rematchMap = new HashMap<>();
 
     @Autowired
     private final SimpMessageSendingOperations messagingTemplate;
@@ -29,6 +30,57 @@ public class ChessGameService {
 
     public void createGameSession(String session1, String session2, String mode) {
         String gameId = UUID.randomUUID().toString();
+        ChessGame chessGame;
+        String[][] board = {
+            {"BR", "BN", "BB", "BQ", "BK", "BB", "BN", "BR"},
+            {"BP", "BP", "BP", "BP", "BP", "BP", "BP", "BP"},
+            {"--", "--", "--", "--", "--", "--", "--", "--"},
+            {"--", "--", "--", "--", "--", "--", "--", "--"},
+            {"--", "--", "--", "--", "--", "--", "--", "--"},
+            {"--", "--", "--", "--", "--", "--", "--", "--"},
+            {"WP", "WP", "WP", "WP", "WP", "WP", "WP", "WP"},
+            {"WR", "WN", "WB", "WQ", "WK", "WB", "WN", "WR"}
+        };
+        Random random = new Random();
+        Boolean isFirstSessionWhite = random.nextBoolean();
+
+        if(mode.equals("classic")){
+            if(isFirstSessionWhite){
+                chessGame = new ChessGame(gameId, session1, session2);
+            }
+            else{
+                chessGame = new ChessGame(gameId, session2, session1);
+            }
+        }
+        else {
+            board = ChessGame.createRandom();
+            if(isFirstSessionWhite){
+                chessGame = new ChessGame(gameId, session1, session2, board);
+            }
+            else{
+                chessGame = new ChessGame(gameId, session2, session1, board);
+            }
+        }
+
+        // Store the ChessGame instance associated with each user's session ID
+        userGameMap.put(session1, chessGame);
+        userGameMap.put(session2, chessGame);
+
+        // Send a message to each user to notify the start of the game
+
+        Gson gson = new Gson();
+        String messageSession1 = gson.toJson(new GameStateMessage(gameId, chessGame.getStringBoard(), isFirstSessionWhite, isFirstSessionWhite));
+        String messageSession2 = gson.toJson(new GameStateMessage(gameId, chessGame.getStringBoard(), !isFirstSessionWhite, !isFirstSessionWhite));
+        // String message = String.format("{\"gameId\" : \"%s\"}", gameId);
+
+        messagingTemplate.convertAndSend("/topic/reply" + session1, messageSession1);
+        messagingTemplate.convertAndSend("/topic/reply" + session2, messageSession2);
+    }
+
+
+    public void startRematch(String gameId, String session1, String mode) {
+        String session2 = rematchMap.get(gameId);
+        rematchMap.remove(gameId);
         ChessGame chessGame;
         String[][] board = {
             {"BR", "BN", "BB", "BQ", "BK", "BB", "BN", "BR"},
@@ -96,13 +148,11 @@ public class ChessGameService {
                 if (game.isCheckMated(opponentColor)) {
                     String terminalMessage = String.format("{\"result\" : \"%s Wins!\",\"condition\" : \"Checkmate\" }", game.getPlayerColor(session));
                     messagingTemplate.convertAndSend("/topic/state" + gameId, terminalMessage);
-                    removeGame(session);
                 }
 
                 if(game.isStaleMate(opponentColor)){
                     String terminalMessage = String.format("{\"result\" : \"Stalemate\",\"condition\" : \"%s\" }", game.getPlayerColor(session));
                     messagingTemplate.convertAndSend("/topic/state" + gameId, terminalMessage);
-                    removeGame(session);
                 }
             }
         }
@@ -122,7 +172,18 @@ public class ChessGameService {
             String opponent = game.getOpponentName(session);
             String terminalMessage = String.format("{\"result\" : \"%s Wins!\",\"condition\" : \"%s\" }", game.getOpponentColor(session), reason);
             messagingTemplate.convertAndSend("/topic/state" + game.getGameId(), terminalMessage);
-            removeGame(session);
+            if(!reason.equals("Resignation")){
+                removeGame(session);
+            }
+        }
+    }
+
+    public void handleRematch(String gameId, String session, String mode){
+        if(rematchMap.containsKey(gameId)){
+            startRematch(gameId, session, mode);
+        }
+        else{
+            rematchMap.put(gameId, session);
         }
     }
 

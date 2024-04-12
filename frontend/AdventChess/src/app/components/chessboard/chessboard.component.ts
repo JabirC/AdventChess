@@ -110,6 +110,11 @@ export class ChessboardComponent implements AfterViewInit {
         });
 
         this.webSocketService.subscribe('/topic/state' + this.gameSession, (msg)=>{
+          if(msg.condition != "Resignation"){
+            this.rematch = false;
+            this.isLoading = false;
+            this.webSocketService.disconnect("disc");
+          }
           if(!this.message){
             this.overlayOn(msg.result, msg.condition);
           }

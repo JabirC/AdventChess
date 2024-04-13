@@ -127,7 +127,7 @@ public class ChessGameService {
         Random random = new Random();
         Boolean isFirstSessionWhite = random.nextBoolean();
 
-        if(mode.equals("classic")){
+        if(mode.equals("\"classic\"")){
             if(isFirstSessionWhite){
                 chessGame = new ChessGame(gameId, session1, session2);
             }
@@ -284,9 +284,11 @@ public class ChessGameService {
      */
     public void removeGame(String session){
         ChessGame game = userGameMap.get(session);
-        String opponent = game.getOpponentName(session);
-        userGameMap.remove(session);
-        userGameMap.remove(opponent);
+        if(game != null){
+            String opponent = game.getOpponentName(session);
+            userGameMap.remove(session);
+            userGameMap.remove(opponent);
+        }
     }
 
 }

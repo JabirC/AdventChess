@@ -63,6 +63,7 @@ export class ChessboardComponent implements AfterViewInit {
     this.boardState = defaultBoard.map(row => [...row]);
   }
 
+  // Map piece names to their image urls
   keyValuePairs = new Map([
     ['BR', '../../../assets/pieces/rook-b.svg'],
     ['BN', '../../../assets/pieces/knight-b.svg'],
@@ -82,22 +83,26 @@ export class ChessboardComponent implements AfterViewInit {
 
   ]);
 
+  // Check if square dark
   isDarkSquare(row: number, col: number): boolean {
     return (row + col) % 2 !== 0;
   }
 
+  // Check if square was involved in last move and is dark
   isMoveSquareDark(row: number, col: number): boolean {
     return (this.getMappingMove(this.toRow, "row") == row && this.getMappingMove(this.toCol, "col") == col 
            || this.getMappingMove(this.fromRow, "row") == row && this.getMappingMove(this.fromCol, "col") == col)
            && this.isDarkSquare(row, col);
   }
 
+  // Check if square was involved in last move and is light
   isMoveSquareLight(row: number, col: number): boolean {
     return (this.getMappingMove(this.toRow, "row") == row && this.getMappingMove(this.toCol, "col") == col 
            || this.getMappingMove(this.fromRow, "row") == row && this.getMappingMove(this.fromCol, "col") == col)
            && !this.isDarkSquare(row, col);
   }
 
+  // Handles websocket connection, and destination subsriptions after successful connection
   ngAfterViewInit(): void {
     // this.containerWidth = this.chessboardContainer.nativeElement.clientWidth;
     this.setBoundary();
@@ -107,11 +112,13 @@ export class ChessboardComponent implements AfterViewInit {
       // console.log('User:', user);
       this.username = user;
 
+      // for ping-pong functionality to check player connection from backend
       this.webSocketService.subscribe('/topic/ping' + this.username, (message) => {
         this.webSocketService.sendMessage("/app/pong", "PONG");
         console.log("pinged");
       });
 
+      // New game is created
       this.webSocketService.subscribe('/topic/reply' + this.username, (message) => {
         this.overlayOff();
         this.isLoading = false;
@@ -121,6 +128,7 @@ export class ChessboardComponent implements AfterViewInit {
         this.orientationWhite = message.isWhite;
         this.turn = message.turn;
 
+        // A move is made
         this.webSocketService.subscribe('/topic/state' + this.gameSession + this.username, (move)=>{
           this.boardState = move.gameState.reverse().map((row: string) => [...row]);
           this.turn = move.turn;
@@ -132,6 +140,7 @@ export class ChessboardComponent implements AfterViewInit {
           }
         });
 
+        // End game conditions
         this.webSocketService.subscribe('/topic/state' + this.gameSession, (msg)=>{
           if(msg.condition != "Resignation"){
             this.rematch = false;
@@ -144,19 +153,24 @@ export class ChessboardComponent implements AfterViewInit {
           // this.webSocketService.disconnect("Disconnection");
         });
       });
+
+      // Sends a message to initiate joining a game queue
       this.webSocketService.sendMessage("/app/connect/game", this.mode);
     });
 
   }
 
+  // Send disconnect message when the component is destoryed
   ngOnDestroy(): void {
     this.webSocketService.disconnect("Disconnection");
   }
 
+  // Handle resignation from the game
   disc(): void {
     this.webSocketService.resign("Resignation");
   }
 
+  // Handle window before unload event
   @HostListener('window:beforeunload', ['$event'])
   beforeunloadHandler(event: Event) {
     this.webSocketService.disconnect("Disconnection");
@@ -176,6 +190,7 @@ export class ChessboardComponent implements AfterViewInit {
   }
 
 
+  // Set the boundary for the draggable pieces
   private setBoundary(): void {
     if (this.chessboardContainer) {
       this.containerWidth = this.chessboardContainer.nativeElement.clientWidth;
@@ -185,20 +200,17 @@ export class ChessboardComponent implements AfterViewInit {
     }
   }
 
+  // Handle the change in board position after a move
   handleBoardChange(newCoordinates: number[], oldRow: number, oldCol: number) {
     const containerWidth = this.chessboardContainer.nativeElement.clientWidth;
     // const squareSize = containerWidth / 8;
 
     const pieceName: string = this.boardState[this.getMapping(oldRow)][this.getMapping(oldCol)];
-    console.log(oldRow);
-    console.log(oldCol);
     this.boardState[this.getMapping(oldRow)][this.getMapping(oldCol)] = "--";
     this.boardState[this.getMapping(newCoordinates[0])][this.getMapping(newCoordinates[1])] = pieceName;
-    // this.boardState[this.getMapping(oldRow)][this.getMapping(oldCol)] = "--";
-    // this.boardState[this.getMapping(oldRow)][this.getMapping(oldCol)] = pieceName;
 
+    // Send the move to the backend to verify validity
     this.webSocketService.sendMessage(`/app/game/${this.gameSession}/move`, {fromRow: this.getMappingMove(oldRow, "row"), fromCol: this.getMappingMove(oldCol, "col"), toRow: this.getMappingMove(newCoordinates[0], "row"), toCol: this.getMappingMove(newCoordinates[1], "col")});
-    console.log(this.boardState);
   }
 
   // Used to inverse the chessboard based on player color
@@ -207,6 +219,7 @@ export class ChessboardComponent implements AfterViewInit {
     return mappedIndex;
   }
 
+  // Map the index based on the board orientation for moves
   getMappingMove(index: number, rowOrCol: String){
     if(this.orientationWhite){
       if(rowOrCol == "row"){
@@ -227,10 +240,12 @@ export class ChessboardComponent implements AfterViewInit {
 
   }
 
+  // Rotate the board based on player color
   rotateBoard(){
     this.orientationWhite = !this.orientationWhite;
   }
 
+  // Display an overlay message
   overlayOn(msg: string, submsg: string){
     this.message = msg;
     this.submessage = submsg;
@@ -238,25 +253,30 @@ export class ChessboardComponent implements AfterViewInit {
     this.overlay.nativeElement.style.display = 'block';
   }
 
+  // Hide the overlay message
   overlayOff(){
     this.overlay.nativeElement.style.display = 'none';
     this.message = '';
     this.submessage = '';
   }
 
+  // Navigate to the game menu
   gameMenu(){
     this.router.navigate(['/mode']);
   }
 
+  // Handle click event on overlay message
   onOverlayMessageClick(event: MouseEvent): void {
     event.stopPropagation();
   }
 
+  // Handle rematch request
   handleRematch(){
     this.webSocketService.sendMessage(`/app/game/${this.gameSession}/rematch`, this.mode);
     this.isLoading = true;
   }
 
+  // Cancel the rematch request
   cancelRematch(){
     this.rematch = false;
     this.isLoading = false;

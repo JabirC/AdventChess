@@ -13,6 +13,11 @@ export class WebSocketService {
 
   constructor() {}
 
+  /**
+   * Establishes a WebSocket connection to the specified endpoint.
+   * Upon successful connection, resolves a promise with the username retrieved from the connection frame headers.
+   * @returns A promise with the username of the connected user.
+   */
   connect(): Promise<string> {
     const socket = new SockJS(this.webSocketEndPoint);
     this.stompClient = Stomp.over(socket);
@@ -25,6 +30,10 @@ export class WebSocketService {
     });
   }
 
+  /**
+   * Disconnects the WebSocket connection.
+   * @param mode The mode of disconnection (e.g., "disconnect", "timeout").
+   */
   disconnect(mode: string): void {
     if (this.stompClient.connected) {
       this.stompClient.send("/app/disconnect", {}, mode);
@@ -33,6 +42,10 @@ export class WebSocketService {
     }
   }
 
+  /**
+   * Resigns from a game by sending a resignation message over the WebSocket connection.
+   * @param reason The reason for resignation.
+   */
   resign(reason: string): void {
     if (this.stompClient.connected) {
       this.stompClient.send("/app/disconnect", {}, reason);
@@ -40,6 +53,11 @@ export class WebSocketService {
   }
 
  
+  /**
+   * Subscribes to a specific destination on the WebSocket server to receive messages.
+   * @param destination The destination to subscribe to (e.g., a topic or queue).
+   * @param callback The callback function to be invoked when a message is received.
+   */
   subscribe(destination: string, callback: (message: any) => void): void {
     if (this.stompClient.connected) {
       this.stompClient.subscribe(destination, (message: any) => {
@@ -49,6 +67,11 @@ export class WebSocketService {
     }
   }
 
+  /**
+   * Sends a message to a specific destination on the WebSocket server.
+   * @param destination The destination where to send the message.
+   * @param message The message to be sent, converted to JSON format.
+   */
   sendMessage(destination: string, message: any): void {
     if (this.stompClient.connected) {
       this.stompClient.send(destination, {}, JSON.stringify(message));

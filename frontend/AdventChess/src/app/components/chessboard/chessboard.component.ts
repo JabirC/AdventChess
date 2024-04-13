@@ -127,6 +127,10 @@ export class ChessboardComponent implements AfterViewInit {
         this.isWhite = message.isWhite;
         this.orientationWhite = message.isWhite;
         this.turn = message.turn;
+        this.fromRow = -1;
+        this.fromCol = -1;
+        this.toRow = -1;
+        this.toCol = -1;
 
         // A move is made
         this.webSocketService.subscribe('/topic/state' + this.gameSession + this.username, (move)=>{
@@ -142,7 +146,8 @@ export class ChessboardComponent implements AfterViewInit {
 
         // End game conditions
         this.webSocketService.subscribe('/topic/state' + this.gameSession, (msg)=>{
-          if(msg.condition != "Resignation"){
+          if(msg.condition != "Resignation" && msg.condition != "Checkmate"){
+            console.log(msg.condition);
             this.rematch = false;
             this.isLoading = false;
             this.webSocketService.disconnect("disc");
@@ -150,7 +155,6 @@ export class ChessboardComponent implements AfterViewInit {
           if(!this.message){
             this.overlayOn(msg.result, msg.condition);
           }
-          // this.webSocketService.disconnect("Disconnection");
         });
       });
 

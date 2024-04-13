@@ -6,11 +6,21 @@ public class GameStateMessage {
     private boolean isWhite;
     private boolean turn;
 
-    public GameStateMessage(String gameId, String[][] gameState, boolean isWhite, boolean turn) {
+    private int fromRow;
+    private int fromCol;
+    private int toRow;
+    private int toCol;
+
+    public GameStateMessage(String gameId, String[][] gameState, boolean isWhite, boolean turn, MoveMessage move) {
         this.gameId = gameId;
         this.gameState = gameState;
         this.isWhite = isWhite;
         this.turn = turn;
+
+        this.fromRow = move.getFromRow();
+        this.fromCol = move.getFromCol();
+        this.toRow = move.getToRow();
+        this.toCol = move.getToCol();
     }
 
     // Getters and setters (not necessary for Gson serialization)
@@ -44,5 +54,39 @@ public class GameStateMessage {
 
     public void setTurn(boolean turn){
         this.turn = turn;
+    }
+
+
+    public int getFromRow(){
+        return fromRow;
+    }
+
+    public void setFromRow(int row){
+        this.fromRow = row;
+    }
+
+    public int getFromCol(){
+        return fromCol;
+    }
+
+    public void setFromCol(int col){
+        this.fromCol = col;
+    }
+
+
+    public int getToRow(){
+        return toRow;
+    }
+
+    public void setToRow(int row){
+        this.toRow = row;
+    }
+
+    public int getToCol(){
+        return toCol;
+    }
+
+    public void setToCol(int col){
+        this.toCol = col;
     }
 }

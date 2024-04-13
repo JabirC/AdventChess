@@ -69,8 +69,8 @@ public class ChessGameService {
         // Send a message to each user to notify the start of the game
 
         Gson gson = new Gson();
-        String messageSession1 = gson.toJson(new GameStateMessage(gameId, chessGame.getStringBoard(), isFirstSessionWhite, isFirstSessionWhite));
-        String messageSession2 = gson.toJson(new GameStateMessage(gameId, chessGame.getStringBoard(), !isFirstSessionWhite, !isFirstSessionWhite));
+        String messageSession1 = gson.toJson(new GameStateMessage(gameId, chessGame.getStringBoard(), isFirstSessionWhite, isFirstSessionWhite, new MoveMessage(-1, -1, -1, -1)));
+        String messageSession2 = gson.toJson(new GameStateMessage(gameId, chessGame.getStringBoard(), !isFirstSessionWhite, !isFirstSessionWhite, new MoveMessage(-1, -1, -1, -1)));
         // String message = String.format("{\"gameId\" : \"%s\"}", gameId);
 
         messagingTemplate.convertAndSend("/topic/reply" + session1, messageSession1);
@@ -120,8 +120,8 @@ public class ChessGameService {
         // Send a message to each user to notify the start of the game
 
         Gson gson = new Gson();
-        String messageSession1 = gson.toJson(new GameStateMessage(gameId, chessGame.getStringBoard(), isFirstSessionWhite, isFirstSessionWhite));
-        String messageSession2 = gson.toJson(new GameStateMessage(gameId, chessGame.getStringBoard(), !isFirstSessionWhite, !isFirstSessionWhite));
+        String messageSession1 = gson.toJson(new GameStateMessage(gameId, chessGame.getStringBoard(), isFirstSessionWhite, isFirstSessionWhite, new MoveMessage(-1, -1, -1, -1)));
+        String messageSession2 = gson.toJson(new GameStateMessage(gameId, chessGame.getStringBoard(), !isFirstSessionWhite, !isFirstSessionWhite, new MoveMessage(-1, -1, -1, -1)));
         // String message = String.format("{\"gameId\" : \"%s\"}", gameId);
 
         messagingTemplate.convertAndSend("/topic/reply" + session1, messageSession1);
@@ -137,8 +137,12 @@ public class ChessGameService {
             if(isValidMove){
                 game.switchTurns();
             }
-            String messageSession1 = gson.toJson(new GameStateMessage(gameId, game.getStringBoard(), false, !isValidMove));
-            String messageSession2 = gson.toJson(new GameStateMessage(gameId, game.getStringBoard(), false, isValidMove));
+            else{
+                move = new MoveMessage(-1, -1, -1, -1);
+            }
+
+            String messageSession1 = gson.toJson(new GameStateMessage(gameId, game.getStringBoard(), false, !isValidMove, move));
+            String messageSession2 = gson.toJson(new GameStateMessage(gameId, game.getStringBoard(), false, isValidMove, move));
             messagingTemplate.convertAndSend("/topic/state" + gameId + session, messageSession1);
             messagingTemplate.convertAndSend("/topic/state" + gameId + game.getOpponentName(session), messageSession2);
 
@@ -157,7 +161,7 @@ public class ChessGameService {
             }
         }
         else{
-            String messageSession1 = gson.toJson(new GameStateMessage(gameId, game.getStringBoard(), false, false));
+            String messageSession1 = gson.toJson(new GameStateMessage(gameId, game.getStringBoard(), false, false, new MoveMessage(-1,-1,-1,-1)));
             messagingTemplate.convertAndSend("/topic/state" + gameId + session, messageSession1);
         }
     }
@@ -198,5 +202,5 @@ public class ChessGameService {
         userGameMap.remove(session);
         userGameMap.remove(opponent);
     }
-    // Additional methods for managing game state, moves, etc.
+
 }

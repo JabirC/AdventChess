@@ -51,6 +51,8 @@
         <div *ngFor="let col of [0, 1, 2, 3, 4, 5, 6, 7]" class="square square{{row}}{{col}} flex items-center justify-center"  
         [class.dark]="isDarkSquare(row, col)"  
         [class.light]="!isDarkSquare(row, col)" 
+        [class.moveSquareLight]="isMoveSquareLight(row, col)"
+        [class.moveSquareDark]="isMoveSquareDark(row, col)"
         [style.z-index]="0" 
         [attr.row]="row" 
         [attr.col]="col"

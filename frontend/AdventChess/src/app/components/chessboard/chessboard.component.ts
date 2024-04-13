@@ -29,6 +29,12 @@ export class ChessboardComponent implements AfterViewInit {
   submessage!: string;
   rematch!: boolean;
   isLoading!: boolean;
+
+  fromRow = -1;
+  fromCol = -1;
+  toRow = -1;
+  toCol = -1;
+
   
   constructor(private renderer: Renderer2, private cdr: ChangeDetectorRef, private webSocketService: WebSocketService, private router: Router) {
     // Initialize the boardState with a default chessboard configuration
@@ -80,6 +86,18 @@ export class ChessboardComponent implements AfterViewInit {
     return (row + col) % 2 !== 0;
   }
 
+  isMoveSquareDark(row: number, col: number): boolean {
+    return (this.getMappingMove(this.toRow, "row") == row && this.getMappingMove(this.toCol, "col") == col 
+           || this.getMappingMove(this.fromRow, "row") == row && this.getMappingMove(this.fromCol, "col") == col)
+           && this.isDarkSquare(row, col);
+  }
+
+  isMoveSquareLight(row: number, col: number): boolean {
+    return (this.getMappingMove(this.toRow, "row") == row && this.getMappingMove(this.toCol, "col") == col 
+           || this.getMappingMove(this.fromRow, "row") == row && this.getMappingMove(this.fromCol, "col") == col)
+           && !this.isDarkSquare(row, col);
+  }
+
   ngAfterViewInit(): void {
     // this.containerWidth = this.chessboardContainer.nativeElement.clientWidth;
     this.setBoundary();
@@ -105,8 +123,13 @@ export class ChessboardComponent implements AfterViewInit {
 
         this.webSocketService.subscribe('/topic/state' + this.gameSession + this.username, (move)=>{
           this.boardState = move.gameState.reverse().map((row: string) => [...row]);
-          console.log(move.turn);
           this.turn = move.turn;
+          if(move.fromRow != -1){
+            this.fromRow = move.fromRow;
+            this.fromCol = move.fromCol;
+            this.toRow = move.toRow;
+            this.toCol = move.toCol;
+          }
         });
 
         this.webSocketService.subscribe('/topic/state' + this.gameSession, (msg)=>{

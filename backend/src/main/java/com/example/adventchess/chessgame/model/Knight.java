@@ -3,8 +3,8 @@ import java.util.ArrayList;
 import java.util.List;
 // Knight
 public class Knight extends ChessPiece{
-    public Knight(String color, int homeRow, int homeColumn) {
-        super("Knight", color, homeRow, homeColumn);
+    public Knight(String name, String color, int homeRow, int homeColumn) {
+        super(name, color, homeRow, homeColumn);
     }
     public List<int[]> possibleMoves(ChessBoard board) {
         int[] position = getCurrentPosition();

@@ -10,7 +10,7 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 @Configuration
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
-  private String url = "http://127.0.0.1:8081";
+  private String url = "http://localhost:4200";
 
   @Override
   public void configureMessageBroker(MessageBrokerRegistry config) {

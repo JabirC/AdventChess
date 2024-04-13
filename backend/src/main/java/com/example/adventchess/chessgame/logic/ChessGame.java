@@ -3,24 +3,28 @@ import java.util.ArrayList;
 import java.util.List;
 import adventchess.chessgame.model.*;
 import java.util.Scanner;
+import java.util.Random;
 
 public class ChessGame {
     private ChessBoard board;
     private Player playerWhite;
     private Player playerBlack;
     private Player currentPlayer;
+    private String gameId;
 
-    public ChessGame(String playerWhiteName, String playerBlackName) {
+    public ChessGame(String gameId, String playerWhiteName, String playerBlackName) {
         this.board = new ChessBoard();
+        this.gameId = gameId;
         playerWhite = new Player(playerWhiteName, "White");
         playerBlack = new Player(playerBlackName, "Black");
         currentPlayer = playerWhite;
     }
 
-    public ChessGame(String playerWhiteName, String playerBlackName, String[][] initialState) {
+    public ChessGame(String gameId, String playerWhiteName, String playerBlackName, String[][] initialState) {
         this.board = new ChessBoard(initialState);
-        playerWhite = new Player("White", playerWhiteName);
-        playerBlack = new Player("Black", playerBlackName);
+        this.gameId = gameId;
+        playerWhite = new Player(playerWhiteName, "White");
+        playerBlack = new Player(playerBlackName, "Black");
         currentPlayer = playerWhite;
     }
 
@@ -148,7 +152,7 @@ public class ChessGame {
         return player;
     }
 
-    private void switchTurns() {
+    public void switchTurns() {
         // Switch turns between players
         currentPlayer = (currentPlayer == playerWhite) ? playerBlack: playerWhite;
     }
@@ -285,5 +289,95 @@ public class ChessGame {
             switchTurns();
         }
     }
+
+    // public Boolean verifyMove(String playerName, )
+
+    // Creates a random initial board state
+    public static String[][] createRandom(){
+        String[][] board = new String[8][8];
+        Random random = new Random();
+
+        String[] pieces = {"R", "N", "B", "Q"};
+
+
+        for (int i = 0; i < 8; i++) {
+            // Loop through each column in the current row
+            for (int j = 0; j < 8; j++) {
+                board[i][j] = "--";
+            }
+        }
+
+        // Initialize Kings 
+        board[0][4] = "BK";
+        board[7][4] = "WK";
+
+        // Initialize a random amount of pawns
+        for(int i=0; i < 8; i++){
+            if(random.nextBoolean()){
+                board[1][i] = "BP";
+                board[6][i] = "WP";
+            }
+        }
+
+        // Initalize main pieces
+        for(int i=0; i < 8; i++){
+            if(i==4) continue;
+            if(random.nextBoolean()){
+                int pieceIndex = random.nextInt(4);
+                String piece = pieces[pieceIndex];
+
+                board[0][i] = "B" + piece;
+                board[7][i] = "W" + piece;
+
+                if(pieceIndex == 0 || pieceIndex == 3){
+                    board[1][i] = "BP";
+                    board[6][i] = "WP";
+                }
+            }
+        }
+
+        return board;
+
+    }
+
+    public String getOpponentName(String session){
+        if(playerWhite.getName().equals(session)){
+            return playerBlack.getName();
+        }
+        else{
+            return playerWhite.getName();
+        }
+    }
+
+    public boolean isCurrentPlayer(String session){
+        return currentPlayer.getName().equals(session);
+    }
+
+    public String[][] getStringBoard(){
+        return board.getStringBoard();
+    }
+
+    public String getPlayerColor(String session){
+        if(playerWhite.getName().equals(session)){
+            return "White";
+        }
+        else{
+            return "Black";
+        }
+    }
+
+    public String getOpponentColor(String session){
+        if(playerWhite.getName().equals(session)){
+            return "Black";
+        }
+        else{
+            return "White";
+        }
+    }
+
+    public String getGameId(){
+        return gameId;
+    }
+    
 
 }

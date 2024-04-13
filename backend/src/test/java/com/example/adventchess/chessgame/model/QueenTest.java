@@ -10,7 +10,7 @@ public class QueenTest {
     void testPossibleMovesQueenHorizontalVertical() {
         // Set up
         ChessBoard board = new ChessBoard();
-        Queen queen = new Queen("White", 3, 3);
+        Queen queen = new Queen("WQ", "White", 3, 3);
         board.placePiece(queen,3,3);
 
         // Queen can move horizontally and vertically

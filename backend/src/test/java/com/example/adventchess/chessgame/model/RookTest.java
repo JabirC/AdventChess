@@ -10,7 +10,7 @@ public class RookTest {
     void testPossibleMovesRookHorizontalVertical() {
         // Set up
         ChessBoard board = new ChessBoard();
-        Rook rook = new Rook("White", 3, 3);
+        Rook rook = new Rook("WR", "White", 3, 3);
         board.placePiece(rook,3,3);
 
         // Rook can move horizontally and vertically

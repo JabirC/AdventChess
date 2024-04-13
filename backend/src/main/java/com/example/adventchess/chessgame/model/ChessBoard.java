@@ -30,19 +30,19 @@ public class ChessBoard {
 
     private void initializeBoard() {
         // Place white pieces
-        placePiece(new Rook("White", 0, 0), 0, 0);
-        placePiece(new Knight("White", 0, 1), 0, 1);
-        placePiece(new Bishop("White", 0, 2), 0, 2);
-        placePiece(new Queen("White", 0, 3), 0, 3);
-        placePiece(new Bishop("White", 0, 5), 0, 5);
-        placePiece(new Knight("White", 0, 6), 0, 6);
-        placePiece(new Rook("White", 0, 7), 0, 7);
-        ChessPiece whiteKing = new King("White", 0, 4);
+        placePiece(new Rook("WR", "White", 0, 0), 0, 0);
+        placePiece(new Knight("WN", "White", 0, 1), 0, 1);
+        placePiece(new Bishop("WB", "White", 0, 2), 0, 2);
+        placePiece(new Queen("WQ", "White", 0, 3), 0, 3);
+        placePiece(new Bishop("WB", "White", 0, 5), 0, 5);
+        placePiece(new Knight("WN", "White", 0, 6), 0, 6);
+        placePiece(new Rook("WR", "White", 0, 7), 0, 7);
+        ChessPiece whiteKing = new King("WK", "White", 0, 4);
         placePiece(whiteKing, 0, 4);
         this.whiteKing = whiteKing;
 
         for (int i = 0; i < 8; i++) {
-            placePiece(new Pawn("White", 1, i), 1, i);
+            placePiece(new Pawn("WP", "White", 1, i), 1, i);
         }
 
         for (int i = 0; i < 2; i++) {
@@ -53,19 +53,19 @@ public class ChessBoard {
         }
 
         // Place black pieces
-        placePiece(new Rook("Black", 7, 0), 7, 0);
-        placePiece(new Knight("Black", 7, 1), 7, 1);
-        placePiece(new Bishop("Black", 7, 2), 7, 2);
-        placePiece(new Queen("Black", 7, 3), 7, 3);
-        placePiece(new Bishop("Black", 7, 5), 7, 5);
-        placePiece(new Knight("Black", 7, 6), 7, 6);
-        placePiece(new Rook("Black", 7, 7), 7, 7);
-        ChessPiece blackKing = new King("Black", 7, 4);
+        placePiece(new Rook("BR", "Black", 7, 0), 7, 0);
+        placePiece(new Knight("BN", "Black", 7, 1), 7, 1);
+        placePiece(new Bishop("BB", "Black", 7, 2), 7, 2);
+        placePiece(new Queen("BQ", "Black", 7, 3), 7, 3);
+        placePiece(new Bishop("BB", "Black", 7, 5), 7, 5);
+        placePiece(new Knight("BN", "Black", 7, 6), 7, 6);
+        placePiece(new Rook("BR", "Black", 7, 7), 7, 7);
+        ChessPiece blackKing = new King("BK", "Black", 7, 4);
         placePiece(blackKing, 7, 4);
         this.blackKing = blackKing;
 
         for (int i = 0; i < 8; i++) {
-            placePiece(new Pawn("Black", 6, i), 6, i);
+            placePiece(new Pawn("BP","Black", 6, i), 6, i);
         }
 
         for (int i = 7; i > 5; i--) {
@@ -89,64 +89,64 @@ public class ChessBoard {
     
                 switch (pieceSymbol) {
                     case "WR":
-                        Rook whiteRook = new Rook("White", 7 - i, j);
+                        Rook whiteRook = new Rook("WR", "White", 7 - i, j);
                         placePiece(whiteRook, 7 - i, j);
                         whitePieces.add(whiteRook);
                         break;
                     case "WN":
-                        Knight whiteKnight = new Knight("White", 7 - i, j);
+                        Knight whiteKnight = new Knight("WN", "White", 7 - i, j);
                         placePiece(whiteKnight, 7 - i, j);
                         whitePieces.add(whiteKnight);
                         break;
                     case "WB":
-                        Bishop whiteBishop = new Bishop("White", 7 - i, j);
+                        Bishop whiteBishop = new Bishop("WB", "White", 7 - i, j);
                         placePiece(whiteBishop, 7 - i, j);
                         whitePieces.add(whiteBishop);
                         break;
                     case "WQ":
-                        Queen whiteQueen = new Queen("White", 7 - i, j);
+                        Queen whiteQueen = new Queen("WQ", "White", 7 - i, j);
                         placePiece(whiteQueen, 7 - i, j);
                         whitePieces.add(whiteQueen);
                         break;
                     case "WK":
-                        ChessPiece whiteKing = new King("White", 7 - i, j);
+                        ChessPiece whiteKing = new King("WK", "White", 7 - i, j);
                         placePiece(whiteKing, 7 - i, j);
                         this.whiteKing = whiteKing;
                         whitePieces.add(whiteKing);
                         break;
                     case "WP":
-                        Pawn whitePawn = new Pawn("White", 7 - i, j);
+                        Pawn whitePawn = new Pawn("WP", "White", 7 - i, j);
                         placePiece(whitePawn, 7 - i, j);
                         whitePieces.add(whitePawn);
                         break;
                     case "BR":
-                        Rook blackRook = new Rook("Black", 7 - i, j);
+                        Rook blackRook = new Rook("BR", "Black", 7 - i, j);
                         placePiece(blackRook, 7 - i, j);
                         blackPieces.add(blackRook);
                         break;
                     case "BN":
-                        Knight blackKnight = new Knight("Black", 7 - i, j);
+                        Knight blackKnight = new Knight("BN", "Black", 7 - i, j);
                         placePiece(blackKnight, 7 - i, j);
                         blackPieces.add(blackKnight);
                         break;
                     case "BB":
-                        Bishop blackBishop = new Bishop("Black", 7 - i, j);
+                        Bishop blackBishop = new Bishop("BB", "Black", 7 - i, j);
                         placePiece(blackBishop, 7 - i, j);
                         blackPieces.add(blackBishop);
                         break;
                     case "BQ":
-                        Queen blackQueen = new Queen("Black", 7 - i, j);
+                        Queen blackQueen = new Queen("BQ", "Black", 7 - i, j);
                         placePiece(blackQueen, 7 - i, j);
                         blackPieces.add(blackQueen);
                         break;
                     case "BK":
-                        ChessPiece blackKing = new King("Black", 7 - i, j);
+                        ChessPiece blackKing = new King("BK", "Black", 7 - i, j);
                         placePiece(blackKing, 7 - i, j);
                         this.blackKing = blackKing;
                         blackPieces.add(blackKing);
                         break;
                     case "BP":
-                        Pawn blackPawn = new Pawn("Black", 7 - i, j);
+                        Pawn blackPawn = new Pawn("BP", "Black", 7 - i, j);
                         placePiece(blackPawn, 7 - i, j);
                         blackPieces.add(blackPawn);
                         break;
@@ -291,5 +291,21 @@ public class ChessBoard {
         else{
             return board[fromRow][fromCol];
         }
+    }
+
+    public String[][] getStringBoard(){
+        String[][] stringBoard = new String[8][8];
+        for (int i = 0; i < stringBoard.length; i++) {
+            for (int j = 0; j < stringBoard[i].length; j++) {
+                if(board[i][j] == null){
+                    stringBoard[i][j] = "--";
+                }
+                else{
+                    stringBoard[i][j] = board[i][j].getName();
+                }
+            }
+            System.out.println();
+        }
+        return stringBoard;
     }
 }

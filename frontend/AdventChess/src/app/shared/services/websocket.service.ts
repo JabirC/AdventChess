@@ -9,7 +9,7 @@ import * as Stomp from 'stompjs';
 })
 export class WebSocketService {
   private stompClient: any;
-  webSocketEndPoint = 'https://localhost:443/wss';
+  webSocketEndPoint = 'http://localhost:8080/wss';
 
   constructor() {}
 

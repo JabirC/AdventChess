@@ -30,11 +30,16 @@
     </div>
   </ng-container>
   <ng-template #gameStarted>
-    <ng-container *ngIf="!turn;">
+    <ng-container *ngIf="!turn; else yourTurn">
       <div class="status-container flex items-center justify-start">
         <div class="loading">Waiting for opponent's move</div>
       </div>
     </ng-container>
+    <ng-template #yourTurn>
+      <div class="status-container flex items-center justify-start">
+        <div>It's your turn!</div>
+      </div>
+    </ng-template>
     <div class="resign-container flex items-center justify-center">
       <button class="resign" (click)="disc()"></button>
     </div>

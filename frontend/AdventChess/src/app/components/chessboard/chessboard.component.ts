@@ -107,15 +107,12 @@ export class ChessboardComponent implements AfterViewInit {
     // this.containerWidth = this.chessboardContainer.nativeElement.clientWidth;
     this.setBoundary();
     this.cdr.detectChanges();
-    console.log(this.mode);
     this.webSocketService.connect().then(user => {
-      // console.log('User:', user);
       this.username = user;
 
       // for ping-pong functionality to check player connection from backend
       this.webSocketService.subscribe('/topic/ping' + this.username, (message) => {
         this.webSocketService.sendMessage("/app/pong", "PONG");
-        console.log("pinged");
       });
 
       // New game is created
@@ -147,7 +144,6 @@ export class ChessboardComponent implements AfterViewInit {
         // End game conditions
         this.webSocketService.subscribe('/topic/state' + this.gameSession, (msg)=>{
           if(msg.condition != "Resignation" && msg.condition != "Checkmate"){
-            console.log(msg.condition);
             this.rematch = false;
             this.isLoading = false;
             this.webSocketService.disconnect("disc");

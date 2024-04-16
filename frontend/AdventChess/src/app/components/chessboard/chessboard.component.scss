@@ -181,3 +181,23 @@
 .moveSquareDark {
     background-color: #d38f5c; /* Dark color for dark squares */
 }
+
+.tooltip-rotate {
+    visibility: hidden;
+    font-size: small;
+    position: absolute;
+}
+
+.rotate-container:hover .tooltip-rotate{
+    visibility: visible;
+}
+
+.tooltip-resign {
+    visibility: hidden;
+    font-size: small;
+    position: absolute;
+}
+
+.resign-container:hover .tooltip-resign{
+    visibility: visible;
+}

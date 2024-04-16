@@ -1,6 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import SockJS from 'sockjs-client';
 import * as Stomp from 'stompjs';
 
@@ -22,9 +20,9 @@ export class WebSocketService {
   connect(): Promise<string> {
     const socket = new SockJS(this.webSocketEndPoint);
     this.stompClient = Stomp.over(socket);
+    this.stompClient.debug = false;
     return new Promise<string>((resolve, reject) => {
         this.stompClient.connect({}, (frame: any) => {
-        console.log('Connected:', frame);
         let user = frame.headers['user-name'];
         resolve(user);
         });

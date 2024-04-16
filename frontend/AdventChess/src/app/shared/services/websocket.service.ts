@@ -20,7 +20,7 @@ export class WebSocketService {
   connect(): Promise<string> {
     const socket = new SockJS(this.webSocketEndPoint);
     this.stompClient = Stomp.over(socket);
-    this.stompClient.debug = false;
+    this.stompClient.debug = () => {};
     return new Promise<string>((resolve, reject) => {
         this.stompClient.connect({}, (frame: any) => {
         let user = frame.headers['user-name'];

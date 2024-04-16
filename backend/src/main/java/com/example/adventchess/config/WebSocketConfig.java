@@ -10,7 +10,8 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 @Configuration
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
-  private String url = "http://localhost:4200";
+  // private String url = "http://localhost:4200";
+  private String url = "https://advent-chess.vercel.app";
 
   @Override
   public void configureMessageBroker(MessageBrokerRegistry config) {
@@ -21,7 +22,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
   @Override
   public void registerStompEndpoints(StompEndpointRegistry registry) {
     registry
-        .addEndpoint("/ws")
+        .addEndpoint("/wss")
         .setAllowedOrigins(url)
         .setHandshakeHandler(new CustomHandshakeHandler())
         .withSockJS();

@@ -1,4 +1,4 @@
-# ![](https://https://github.com/JabirC/AdventChess/blob/main/frontend/AdventChess/src/assets/AdventChess-logo.png)
+# ![](https://github.com/JabirC/AdventChess/blob/main/frontend/AdventChess/src/assets/AdventChess-logo.png)
 
 <br>
 

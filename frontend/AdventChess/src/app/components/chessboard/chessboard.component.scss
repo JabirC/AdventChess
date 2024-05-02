@@ -40,7 +40,6 @@
 .light {
     background-color: #ffffff; /* Dark color for dark squares */
     color: #fff2ff; /* Text color for dark squares */
-    // color: #575757;
 } 
 
 .highlighted-element {
@@ -76,8 +75,8 @@
 }
 
 .back {
-    height: 50px;
-    width: 50px;
+    height: 44px;
+    width: 44px;
     background-image: url('../../../assets/home.png');
     background-size: cover; /* Make sure the image covers the entire button */
     background-repeat: no-repeat; /* Ensure the image doesn't repeat */

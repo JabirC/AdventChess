@@ -23,10 +23,10 @@
 </div>
 
 <div class="board-control poppins-custom flex flex-row items-center justify-center w-full font-bold text-xl text-[#575757] space-x-5 ">
-  <div class="w-1/4 flex items-center justify-center bg-gray-100 rounded-md pt-2 pb-2 mb-2" [ngClass]="turn? 'bg-white text-black' : 'bg-[#787878] text-[#4a4a4a]'">
+  <div class="w-1/4 flex items-center justify-center bg-gray-100 rounded-md pt-2 pb-2 mb-2" [ngClass]="turn? 'bg-white text-black' : 'bg-[#6d6d6d] text-[#4a4a4a]'">
     {{formatNumber(playerTime.min)}}:{{formatNumber(playerTime.sec)}}
   </div>
-  <div class="w-1/4 flex items-center justify-center bg-gray-100 rounded-md pt-2 pb-2 mb-2" [ngClass]="turn? 'bg-[#787878] text-[#4a4a4a]' : 'text-black'">
+  <div class="w-1/4 flex items-center justify-center bg-gray-100 rounded-md pt-2 pb-2 mb-2" [ngClass]="turn? 'bg-[#6d6d6d] text-[#4a4a4a]' : 'text-black'">
     {{formatNumber(opponentTime.min)}}:{{formatNumber(opponentTime.sec)}}
   </div>
   <!-- <div class="w-full bg-white h-16 rounded-3xl mb-2"></div> -->
@@ -107,7 +107,7 @@
   <ng-template #gameStarted>
     <ng-container *ngIf="!turn; else yourTurn">
       <div class="status-container flex items-center justify-start">
-        <div class="loading">Waiting for opponent's move</div>
+        <div class="loading">Waiting for opponent</div>
       </div>
     </ng-container>
     <ng-template #yourTurn>
@@ -123,21 +123,21 @@
     <div class="separator"></div> -->
     <div class="resign-container flex items-center justify-center">
       <button class="resign" (click)="disc()"></button>
-      <span class="tooltip-resign rounded bg-gray-100 mt-16 p-1">
+      <span class="tooltip-resign rounded bg-gray-100 -mt-16 p-1">
         Resign
       </span>
     </div>
     <div class="separator"></div>
     <div class="rotate-container flex items-center justify-center">
       <button class="rotate" (click)="rotateBoard()"></button>
-      <span class="tooltip-rotate rounded bg-gray-100 mt-16 p-1">
+      <span class="tooltip-rotate rounded bg-gray-100 -mt-16 p-1">
         Rotate
       </span>
     </div>
     <div class="separator"></div>
     <div class="resign-container flex items-center justify-center">
       <button class="back" (click)="goHome()"></button>
-      <span class="tooltip-resign rounded bg-gray-100 mt-16 p-1">
+      <span class="tooltip-resign rounded bg-gray-100 -mt-16 p-1">
         Homepage
       </span>
     </div>

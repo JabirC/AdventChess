@@ -122,7 +122,7 @@ export class pieceDragDirective {
       );
 
       const newY = this.clamp(
-        event.touches[0].clientY - (71 + rect.width / 2) + this.boundary.scroll,
+        event.touches[0].clientY - ((this.boundary.windowHeight /2) - rect.width * 3.5) + this.boundary.scroll,
         this.boundary.top - rect.height / 2,
         this.boundary.bottom - rect.height / 2
       );

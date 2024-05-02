@@ -7,8 +7,8 @@ import * as Stomp from 'stompjs';
 })
 export class WebSocketService {
   private stompClient: any;
-  // webSocketEndPoint = 'http://localhost:8080/wss';
-  webSocketEndPoint = 'https://advent-chess-8bff396baa53.herokuapp.com/wss';
+  webSocketEndPoint = 'http://localhost:8080/wss';
+  // webSocketEndPoint = 'https://advent-chess-8bff396baa53.herokuapp.com/wss';
 
   constructor() {}
 

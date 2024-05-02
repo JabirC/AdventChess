@@ -12,15 +12,18 @@ import { WebSocketService } from '../../shared/services/websocket.service';
 })
 export class GameComponent {
   mode!: string;
+  gameTime!: Number;
   username!: string;
 
   constructor(private route: ActivatedRoute, private router: Router, private webSocketService: WebSocketService) {
   }
   
   ngOnInit() {
-    this.route.params.subscribe(params => {
+    this.route.queryParams.subscribe(params => {
       this.mode = params['mode'];
-      // console.log(this.mode);
+      this.gameTime = params['time'];
+      console.log(this.gameTime);
+      console.log(this.mode)
     });
   }
 

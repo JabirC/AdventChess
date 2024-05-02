@@ -16,4 +16,8 @@ export class HomeComponent {
   navigateToPlay(){
     this.router.navigate(['/mode']);
   }
+
+  navigateToWebsite(): void {
+    window.open('https://github.com/JabirC/AdventChess', '_blank');
+  }
 }

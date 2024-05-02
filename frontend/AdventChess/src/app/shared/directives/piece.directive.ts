@@ -5,7 +5,7 @@ import { Directive, ElementRef, Renderer2, HostListener, Input, ViewChild, Outpu
   standalone: true
 })
 export class pieceDragDirective {
-  @Input() boundary!: { top: number; bottom: number; left: number; right: number; scroll: number; windowSize: number};
+  @Input() boundary!: { top: number; bottom: number; left: number; right: number; scroll: number; windowSize: number; windowHeight: number};
   @Input()curRow!: number;
   @Input()curCol!: number;
 
@@ -54,9 +54,10 @@ export class pieceDragDirective {
   @HostListener('document:mousemove', ['$event'])
   onMouseMove(event: MouseEvent): void {
     if (this.isDragging) {
+      // console.log(this.boundary.bottom);
       const rect = this.el.nativeElement.getBoundingClientRect();
       const newX = this.clamp(event.clientX - ((this.boundary.windowSize / 2) - rect.width * 3.5), this.boundary.left - rect.width/2, this.boundary.right - rect.width/2);
-      const newY = this.clamp(event.clientY - (141 + rect.width/2) + this.boundary.scroll, this.boundary.top - rect.height/2 , this.boundary.bottom - rect.height/2 );
+      const newY = this.clamp(event.clientY - ((this.boundary.windowHeight /2) - rect.width * 3.5) + this.boundary.scroll, this.boundary.top - rect.height/2 , this.boundary.bottom - rect.height/2 );
       this.el.nativeElement.style.left = newX + 'px';
       this.el.nativeElement.style.top = newY  + 'px';
 
@@ -121,7 +122,7 @@ export class pieceDragDirective {
       );
 
       const newY = this.clamp(
-        event.touches[0].clientY - (141 + rect.width / 2) + this.boundary.scroll,
+        event.touches[0].clientY - (71 + rect.width / 2) + this.boundary.scroll,
         this.boundary.top - rect.height / 2,
         this.boundary.bottom - rect.height / 2
       );

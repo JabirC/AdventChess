@@ -13,7 +13,8 @@ import { Router } from '@angular/router';
 })
 export class ChessboardComponent implements AfterViewInit {
   @Input() mode!: string;
-  boundary = { top: 0, bottom: 100, left: 0, right: 100, scroll: 0, windowSize:0};
+  @Input() time!: Number;
+  boundary = { top: 0, bottom: 100, left: 0, right: 100, scroll: 0, windowSize:0, windowHeight:0};
   boardState: string[][] = [];
   isWhite!: boolean;
   orientationWhite!: boolean;
@@ -29,6 +30,17 @@ export class ChessboardComponent implements AfterViewInit {
   submessage!: string;
   rematch!: boolean;
   isLoading!: boolean;
+  intervalId: any;
+  over = false;
+
+  opponentTime = {
+    min: 0,
+    sec: 0
+  };
+  playerTime = {
+    min: 0,
+    sec: 0
+  };
 
   fromRow = -1;
   fromCol = -1;
@@ -83,6 +95,50 @@ export class ChessboardComponent implements AfterViewInit {
 
   ]);
 
+  startCountdown(): void {
+    this.intervalId = setInterval(() => {
+      if(this.turn){
+        if (this.playerTime.min === 0 && this.playerTime.sec === 0) {
+          this.stopCountdown()
+          this.webSocketService.sendMessage(`/app/game/${this.gameSession}/time`, "")
+        } 
+        else if(this.playerTime.sec === 0){
+          this.playerTime.min -= 1;
+          this.playerTime.sec = 59;
+        }
+        else{
+          this.playerTime.sec -=1;
+        }
+      }
+      else{
+        if (this.opponentTime.min === 0 && this.opponentTime.sec === 0) {
+          this.stopCountdown();
+          this.webSocketService.sendMessage(`/app/game/${this.gameSession}/time`, "")
+        } 
+        else if(this.opponentTime.sec === 0){
+          this.opponentTime.min -= 1;
+          this.opponentTime.sec = 59;
+        }
+        else{
+          this.opponentTime.sec -=1;
+        }
+      }
+    }, 1000); // Update countdown every second (1000 milliseconds)
+  }
+
+  stopCountdown(): void {
+    clearInterval(this.intervalId);
+  }
+
+  formatNumber(num: number): string {
+    if (num < 10) {
+      let val = "0".concat(num.toString());
+      return val;
+    } else {
+      return num.toString();
+    }
+  }
+
   // Check if square dark
   isDarkSquare(row: number, col: number): boolean {
     return (row + col) % 2 !== 0;
@@ -106,7 +162,11 @@ export class ChessboardComponent implements AfterViewInit {
   ngAfterViewInit(): void {
     // this.containerWidth = this.chessboardContainer.nativeElement.clientWidth;
     this.setBoundary();
+    this.playerTime.min = +this.time;
+    this.opponentTime.min = +this.time;
     this.cdr.detectChanges();
+    this.setBoundary();
+    
     this.webSocketService.connect().then(user => {
       this.username = user;
 
@@ -128,6 +188,11 @@ export class ChessboardComponent implements AfterViewInit {
         this.fromCol = -1;
         this.toRow = -1;
         this.toCol = -1;
+        this.playerTime.min = +this.time;
+        this.playerTime.sec = 0;
+        this.opponentTime.min = +this.time;
+        this.opponentTime.sec = 0;
+        this.startCountdown();
 
         // A move is made
         this.webSocketService.subscribe('/topic/state' + this.gameSession + this.username, (move)=>{
@@ -141,21 +206,32 @@ export class ChessboardComponent implements AfterViewInit {
           }
         });
 
+        // Time updates
+        this.webSocketService.subscribe('/topic/time' + this.gameSession + this.username, (time)=>{
+          this.playerTime.min = Math.floor(time.playerTime / 60);
+          this.playerTime.sec = time.playerTime % 60;
+
+          this.opponentTime.min = Math.floor(time.opponentTime / 60);
+          this.opponentTime.sec = time.opponentTime % 60;
+        });
+
         // End game conditions
         this.webSocketService.subscribe('/topic/state' + this.gameSession, (msg)=>{
-          if(msg.condition != "Resignation" && msg.condition != "Checkmate"){
+          if(msg.condition != "Resignation" && msg.condition != "Checkmate" && msg.condition != "Timeout"){
             this.rematch = false;
             this.isLoading = false;
             this.webSocketService.disconnect("disc");
+            this.over = true;
           }
           if(!this.message){
             this.overlayOn(msg.result, msg.condition);
           }
+          this.stopCountdown();
         });
       });
 
       // Sends a message to initiate joining a game queue
-      this.webSocketService.sendMessage("/app/connect/game", this.mode);
+      this.webSocketService.sendMessage("/app/connect/game", {mode: this.mode, time: this.time});
     });
 
   }
@@ -197,6 +273,7 @@ export class ChessboardComponent implements AfterViewInit {
       this.boundary.bottom = this.containerWidth;
       this.boundary.right= this.containerWidth;
       this.boundary.windowSize = window.innerWidth;
+      this.boundary.windowHeight = document.documentElement.scrollHeight;
     }
   }
 
@@ -260,9 +337,19 @@ export class ChessboardComponent implements AfterViewInit {
     this.submessage = '';
   }
 
+  overlayOffDisc(){
+    this.overlayOff();
+    this.webSocketService.disconnect("disc");
+    this.over = true;
+  }
+
   // Navigate to the game menu
   gameMenu(){
     this.router.navigate(['/mode']);
+  }
+
+  goHome(){
+    this.router.navigate(['/home']);
   }
 
   // Handle click event on overlay message

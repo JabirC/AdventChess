@@ -1,14 +1,14 @@
 
-<div class="page-container w-full flex flex-col items-center justify-center">
-        <div class="title-container flex flex-col items-center justify-center">
-                <h1 class="title"> Welcome to AdventChess</h1> 
-                <div class="separator"></div>
-                <h2 class="subtitle">where the timeless game of chess transforms into an epic adventure!</h2>
+<div class="bg-[#629cff] min-h-screen w-full flex flex-col items-center justify-center space-y-10 pl-6 pr-6">
+        <div class="flex flex-col items-center justify-center">
+                <h1 class="title text-[#3f3f3f] poppins-custom text-center font-bold text-6xl  sm:text-6xl tracking-2xl"> Welcome to AdventChess</h1> 
         </div>
-        <div class="separator"></div>
-        <div class="home-container w-3/5 sm:w-3/5 md:w-2/5 lg:w-4/12 xl:w-4/12 flex flex-col items-center justify-center">
-            <button class="play-button" (click)="navigateToPlay()">Play</button>
+        <div class="w-full poppins-custom flex flex-col sm:flex-row  items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4 ">
+            <!-- <button class="w-full sm:w-48 h-12 rounded-lg bg-white text-black text-lg font-semibold  hover:bg-[#d4d4d4]" (click)="navigateToPlay()">Create a Game</button> -->
+            <button class="w-full sm:w-48 h-12 rounded-lg bg-white text-black text-lg font-semibold  hover:bg-[#d4d4d4]" (click)="navigateToPlay()">Join Queue</button>
             <!-- <div class="separator"></div> -->
             <!-- <button class="login-button">Login</button> -->
         </div>
+                <button class="poppins-custom absolute bottom-4 font-light text-[#3f3f3f] hover:text-black underline" (click)="navigateToWebsite()">Built with passion by Jabir Chowdhury</button>
+
 </div>

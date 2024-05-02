@@ -1,86 +1,18 @@
-.page-container {
-    height: 600px;
+.play {
+    border-bottom: 4px solid #366cc9;
+    text-shadow: rgb(54, 108, 201) 0px -2px;
 }
 
-.home-container {
-    height: 400px;
-    border-radius: 15px;
-    border-color: rgb(200, 200, 200);
-    position: relative;
-    background-color: rgb(102, 57, 9); 
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.895);
+.back {
+    border-bottom: 4px solid #232229;
+    text-shadow: rgb(35, 34, 41) 0px -2px;
 }
 
-.guest-container {
-    height: 100px;
-}
-
-
-.title-container {
-    height: 100px;
-}
 
 .title {
-    font-size: 25px;
-    font-stretch: 100%;
-    font-weight: 500;
-    color: rgb(252, 176, 122);
-    text-align : center;
+    border-bottom: 1px solid #d5d0d0;
 }
 
-.adventure-container, .classic-container {
-    width: 80%;
-}
-
-.classic-button {
-    background-color: rgb(239, 239, 239);
-}
-
-.adventure-button {
-    background-color: rgb(239, 239, 239);
-    color: black;
-}
-
-.tooltip-adventure {
-    visibility: hidden;
-    position: absolute;
-    margin-top: 300px;
-}
-
-.tooltip-classic{
-    visibility: hidden;
-    position: absolute;
-    margin-top: 160px;
-}
-
-.adventure-img, .classic-img{
-    width: 300px;
-    height: 300px;
-    border-radius: 10px;
-}
-
-.adventure-container:hover  .tooltip-adventure{
-    visibility: visible;
-}
-
-.classic-container:hover .tooltip-classic{
-    visibility: visible;
-}
-
-.classic-button, .adventure-button {
-    width: 100%;
-    height: 50px;
-    font-weight: 600;
-    border-radius: 10px;
-}
-.classic-button:hover, .adventure-button:hover {
-    background-color: #ffffff92; /* New background color on hover */
-}
-
-.guest-button {
-    color: whitesmoke;
-}
-
-.separator {
-    height:20px;
+.option {
+    border: 6px solid #979cf2; 
 }

@@ -1,22 +1,18 @@
-<main class="flex flex-col items-center justify-center">
-    <div class="page-container w-full flex flex-col items-center justify-center">
-        <div class="home-container w-3/5 sm:w-3/5 md:w-2/5 lg:w-4/12 xl:w-3/12 flex flex-col items-center justify-center">
-            <div class="title-container flex flex-col items-center">
-                <h1 class="title">Choose a mode</h1>
+<main class=" bg-[#629cff] min-h-screen w-full flex justify-center items-center">
+        <div class="poppins-custom bg-white rounded-xl w-full sm:max-w-sm ml-6 mr-6 flex flex-col items-center justify-center">
+            <h1 class="w-4/5 text-center text-2xl font-semibold text-black mb-8 mt-8">Choose a mode</h1>
+            <div class="w-4/5 flex flex-row justify-center items-center space-x-4 ">
+                <button #adventure class="option w-32 h-12 bg-[#e8e8e8] rounded-md font-semibold" (click)="changeMode('adventure')">Adventure</button>
+                <button #classic class="w-32 h-12 bg-[#e8e8e8] rounded-md font-semibold" (click)="changeMode('classic')">Classic</button>
             </div>
-            <div class="adventure-container flex flex-row items-center justify-center">
-                <button class="adventure-button" (click)="startGame('adventure')">Adventure</button>
-                <!-- <div class="tooltip-adventure -mb-60 flex flex-col items-center justify-center">
-                    <img src="../../assets/adventure-start.gif" class="adventure-img">
-                </div> -->
-             </div>
-            <div class="separator"></div>
-            <div class="classic-container flex flex-row items-center justify-center">
-                <button class="classic-button" (click)="startGame('classic')">Classic</button>
-                <!-- <div class="tooltip-classic -mb-60 flex flex-col items-center justify-center">
-                    <img src="../../assets/classic-start.png" class="classic-img">
-                </div> -->
-             </div>
+            <div class="w-4/5 h-4 title mt-2"></div>
+            <div class="w-20 h-4 mb-2"></div>
+            <div class="w-4/5 flex flex-row justify-center items-center space-x-4 mb-8 ">
+                <button #button5 class="option w-1/4 h-12 bg-[#e8e8e8] rounded-md font-semibold" (click)="changeTime('5')">5 min</button>
+                <button #button10 class="w-1/4 h-12 bg-[#e8e8e8] rounded-md font-semibold" (click)="changeTime('10')">10 min</button>
+                <button #button20 class="w-1/4 h-12 bg-[#e8e8e8] rounded-md font-semibold" (click)="changeTime('20')">20 min</button>
+            </div>
+            <button class="play w-5/6  h-12 rounded-lg bg-[#629cff] text-lg font-semibold text-white hover:bg-[#7eaaf7] mb-2" (click)="startGame()">Play</button>
+            <button class="back w-5/6  h-12 rounded-lg bg-[#3f3f3f] text-lg font-semibold text-white hover:bg-[#515151] mb-8" (click)="goBack()">Back</button>
         </div>
-    </div>
 </main>

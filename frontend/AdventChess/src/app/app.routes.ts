@@ -7,7 +7,7 @@ import { GameComponent } from './components/game/game.component';
 export const routes: Routes = [
     { path: 'home', component: HomeComponent },
     // { path: 'play', component: LoginComponent },
-    { path: 'game/:mode', component: GameComponent },
+    { path: 'game', component: GameComponent },
     { path: 'mode', component: ModeComponent },
     { path: '', redirectTo: '/home', pathMatch: 'full' },
     { path: '**', redirectTo: '/home' }, // Handle 404 - Page Not Found

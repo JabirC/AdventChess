@@ -3,6 +3,10 @@
     position: relative;
 }
 
+.chessboard-border{
+    border-radius: 20px;
+    border: 10px solid rgb(66, 66, 66);
+}
 .square {
     position: absolute;
 }
@@ -29,13 +33,14 @@
 }
 
 .dark {
-    background-color: #7a3f0cbe; /* Dark color for dark squares */
+    background-color: #ab8d73; /* Dark color for dark squares */
     color: #fff2ff; /* Text color for dark squares */
 }
 
 .light {
-    background-color: #eeeed2; /* Dark color for dark squares */
+    background-color: #ffffff; /* Dark color for dark squares */
     color: #fff2ff; /* Text color for dark squares */
+    // color: #575757;
 } 
 
 .highlighted-element {
@@ -51,7 +56,7 @@
     width: 30px;
     // border-radius: 10px;
     // color: white;
-    background-image: url('../../../assets/rotate-button.png');
+    background-image: url('../../../assets/rotate-black.png');
     background-size: cover; /* Make sure the image covers the entire button */
     background-repeat: no-repeat; /* Ensure the image doesn't repeat */
     border: none; /* Remove default button border */
@@ -60,9 +65,20 @@
 }
 
 .resign {
-    height: 30px;
-    width: 30px;
-    background-image: url('../../../assets/resign-button.png');
+    height: 40px;
+    width: 40px;
+    background-image: url('../../../assets/resign-white-flag.png');
+    background-size: cover; /* Make sure the image covers the entire button */
+    background-repeat: no-repeat; /* Ensure the image doesn't repeat */
+    border: none; /* Remove default button border */
+    cursor: pointer; /* Change cursor to pointer on hover */
+    /* Optionally, you can add other styling such as padding, margin, etc. */
+}
+
+.back {
+    height: 50px;
+    width: 50px;
+    background-image: url('../../../assets/home.png');
     background-size: cover; /* Make sure the image covers the entire button */
     background-repeat: no-repeat; /* Ensure the image doesn't repeat */
     border: none; /* Remove default button border */
@@ -80,9 +96,9 @@
     // background-color: black;
     // color: white;
     height: 30px;
-    font-weight: 300;
+    font-weight: 500;
     font-size: medium;
-    color: #6b6b6ae8;
+    color: #ffffffe8;
 }
 .board-control {
     height: 70px ;
@@ -115,14 +131,14 @@
     bottom: 0;
     background-color: rgba(0,0,0,0.5);
     z-index: 2;
-    // cursor: pointer;
+    cursor: pointer;
 }
 
 .overlay-message {
     position: absolute;
     width: 300px;
     height: 400px;
-    top: 55%;
+    top: 50%;
     left: 50%;
     transform:translate(-50%, -50%);
     background-color: rgb(255, 255, 255);
@@ -157,7 +173,7 @@
     height: 50px;
 }
 .overlay-separator2 {
-    height: 20px;
+    height: 10px;
 }
 
 .overlay-img {
